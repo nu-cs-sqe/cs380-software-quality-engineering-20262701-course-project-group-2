@@ -1,8 +1,9 @@
-# YOUR PROJECT NAME
+# 2D CHESS GAME
 
 ## Contributors
-- PERSON
-- PERSON
+- Annie Liu
+- Ian Song
+- Andres Arecibia
 
 ## Dependencies
 - JDK 11
