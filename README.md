@@ -1,3 +1,4 @@
+![Gradle Build](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/actions/workflows/main.yml/badge.svg)
 # 2D CHESS GAME
 
 ## Contributors
@@ -17,3 +18,4 @@ N/A
 N/A
 ### Others
 N/A
+https://github.com/nu-cs-sqe
