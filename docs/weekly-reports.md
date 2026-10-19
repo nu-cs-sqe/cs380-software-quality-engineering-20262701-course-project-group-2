@@ -1,7 +1,7 @@
 # Week 3 (10/12/2026-10/18/2026)
 **Planning and Progress Tracking**:
-1. [done] Annie: made team group, set up the repo (no PR links; committed directly to main, since we were unable to establish branch protection rules anyways
-2. [done] Andres, Annie, Ian: decided on project, talked about goals for the course 
+1. [done] Annie: made team group, set up the repo (no PR links; committed directly to main, since we were [unable to establish branch protection rules anyways](https://edstem.org/us/courses/106417/discussion/8406575?answer=19512752))
+2. [done] Andres, Annie, Ian: set up communication avenue (iMessage), got to know each other, decided on project (2-D chess), talked about goals for the course, set up a meeting with Professor Yiji, wrote week 3 report
 
 # Week 4 (10/19/2026-10/25/2026)
 **Planning and Progress Tracking**:
