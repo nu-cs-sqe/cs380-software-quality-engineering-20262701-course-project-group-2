@@ -11,8 +11,8 @@ Inputs:
 Output:
 - `PieceColor` Case: WHITE, BLACK
 
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-| G1 | `getCurrentTurn()` | Newly initialized `Game` | `PieceColor.WHITE` | :x: |
+| Test Case ID | Method(s) under test | State of the System      | Expected Output    | Implemented?      |
+|--------------|----------------------|--------------------------|--------------------|-------------------|
+| G1           | `getCurrentTurn()`   | Newly initialized `Game` | `PieceColor.WHITE` | :white_checkmark: |
 
 > Further BVA may be needed as features expand. This is preliminary only for the game setup feature.
