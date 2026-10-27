@@ -1,21 +1,21 @@
 package controller;
 
-import domain.Board;
+import domain.Game;
 import domain.Location;
 import domain.piece.Piece;
 
 public class BoardController {
-    private final Board board;
+    private final Game game;
 
-    public BoardController() {
-        board = new Board();
+    public BoardController(Game game){
+        this.game = game;
     }
 
-    public void handleSquareClick(Location location) {
+    public Piece[][] getBoardSnapshot(){
+        return game.getBoardSnapshot();
+    }
+
+    public void handleSquareClick(Location location){
         // TODO
-    }
-
-    public Piece[][] getBoardSnapshot() {
-        return board.getSnapshot();
     }
 }

@@ -1,6 +1,7 @@
 package view;
 
 import controller.BoardController;
+import domain.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,8 @@ public class MainView extends JFrame {
     }
 
     private void addBoardView() {
-        BoardController boardController = new BoardController();
+        Game game = new Game();
+        BoardController boardController = new BoardController(game);
         BoardView boardView = new BoardView(boardController);
         add(boardView, BorderLayout.CENTER);
     }
