@@ -6,6 +6,7 @@ import domain.piece.PieceType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BoardTest {
 
@@ -75,5 +76,36 @@ public class BoardTest {
         assertEquals(16, blackPieces);
         assertEquals(16, whitePieces);
         assertEquals(32, emptySquares);
+    }
+
+    @Test
+    public void GetSnapshot_OnNewBoard_PlaceAllPiecesInStartingPositions(){
+        Board board = new Board();
+
+        Piece[][] snapshot = board.getSnapshot();
+
+        PieceType[] majorPieces = {
+                PieceType.ROOK,
+                PieceType.KNIGHT,
+                PieceType.BISHOP,
+                PieceType.QUEEN,
+                PieceType.KING,
+                PieceType.BISHOP,
+                PieceType.KNIGHT,
+                PieceType.ROOK
+        };
+
+        for(int column = 0; column < 8; column++){
+            assertPiece(snapshot[0][column], majorPieces[column], PieceColor.BLACK);
+            assertPiece(snapshot[1][column], PieceType.PAWN, PieceColor.BLACK);
+
+            assertNull(snapshot[2][column]);
+            assertNull(snapshot[3][column]);
+            assertNull(snapshot[4][column]);
+            assertNull(snapshot[5][column]);
+
+            assertPiece(snapshot[6][column], PieceType.PAWN, PieceColor.WHITE);
+            assertPiece(snapshot[7][column], majorPieces[column], PieceColor.WHITE);
+        }
     }
 }
