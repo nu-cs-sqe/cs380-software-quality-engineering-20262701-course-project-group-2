@@ -5,11 +5,11 @@
 
 # Week 4 (10/19/2026-10/25/2026)
 **Planning and Progress Tracking**:
-1. [done] Person: Task (Links to PR)
-2. [not started] Person: Task (Links to PR)
-3. [80% done] Person: Task (Links to PR)
-4. etc.
-
+1. [done] Andres, Annie, Ian: Create plans for our MVC design
+2. [done] Andres, Annie, Ian: Decided on Swing for GUI library
+3. [done] Annie: Import and merge starter code into the repo, so that game is setup
+4. [done] Andres, Annie, Ian: Create user stories
+ 
 # Week 5 (10/26/2026-11/01/2026)
 **Planning and Progress Tracking**:
 1. [done] Person: Task (Links to PR)
