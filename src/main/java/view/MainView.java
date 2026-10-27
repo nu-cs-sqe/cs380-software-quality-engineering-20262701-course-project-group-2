@@ -6,16 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainView extends JFrame {
-    private BoardView boardView;
-    private BoardController boardController;
+    private final String player1Name;
+    private final String player2Name;
 
-    private GameStatsView gameStatsView;
-    private String player1Name;
-    private String player2Name;
-
-    public MainView(String Player1Name, String Player2Name) {
-        this.player1Name = Player1Name;
-        this.player2Name = Player2Name;
+    public MainView(String player1Name, String player2Name) {
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
 
         configureMainView();
         addGameStatsView();
@@ -25,20 +21,21 @@ public class MainView extends JFrame {
         validate();
     }
 
-    private void configureMainView(){
+    private void configureMainView() {
         setTitle("Yiji's Chess Game GUI Example :)!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 1200);
-        setLocationRelativeTo(null); // Center the window on the screen
+        setLocationRelativeTo(null);
     }
 
-    private void addGameStatsView(){
-        gameStatsView = new GameStatsView(player1Name, player2Name);
+    private void addGameStatsView() {
+        GameStatsView gameStatsView = new GameStatsView(player1Name, player2Name);
         add(gameStatsView, BorderLayout.PAGE_START);
     }
+
     private void addBoardView() {
-        boardController = new BoardController();
-        boardView = new BoardView(boardController);
+        BoardController boardController = new BoardController();
+        BoardView boardView = new BoardView(boardController);
         add(boardView, BorderLayout.CENTER);
     }
 }

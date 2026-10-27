@@ -2,63 +2,48 @@ package domain;
 
 import domain.piece.*;
 
-import static domain.piece.PieceColor.*;
+import static domain.piece.PieceColor.BLACK;
+import static domain.piece.PieceColor.WHITE;
 
 public class Board {
+    private static final int BOARD_SIZE = 8;
 
-    private final int TOTAL_ROWS = 8;
-    private final int TOTAL_COLS = 8;
-    private Piece[][] pieces;
+    private final Piece[][] pieces;
 
-
-    public Board(){
+    public Board() {
+        pieces = new Piece[BOARD_SIZE][BOARD_SIZE];
         initializeBoard();
     }
 
-    private void initializeBoard(){
-        pieces = new Piece[TOTAL_ROWS][TOTAL_COLS];
+    private void initializeBoard() {
+        initializePieces(BLACK, 0, 1);
+        initializePieces(WHITE, 7, 6);
+    }
 
-        // Initialize pawns
-        for (int i = 0; i < TOTAL_COLS; i++) {
-            pieces[1][i] = new Pawn(BLACK);
-            pieces[6][i] = new Pawn(WHITE);
+    private void initializePieces(PieceColor color, int pieceRow, int pawnRow) {
+        for (int column = 0; column < BOARD_SIZE; column++) {
+            pieces[pawnRow][column] = new Pawn(color);
         }
 
-        // Initialize rooks
-        pieces[0][0] = new Rook(BLACK);
-        pieces[0][7] = new Rook(BLACK);
-        pieces[7][0] = new Rook(WHITE);
-        pieces[7][7] = new Rook(WHITE);
-
-        // Initialize knights
-        pieces[0][1] = new Knight(BLACK);
-        pieces[0][6] = new Knight(BLACK);
-        pieces[7][1] = new Knight(WHITE);
-        pieces[7][6] = new Knight(WHITE);
-
-        // Initialize bishops
-        pieces[0][2] = new Bishop(BLACK);
-        pieces[0][5] = new Bishop(BLACK);
-        pieces[7][2] = new Bishop(WHITE);
-        pieces[7][5] = new Bishop(WHITE);
-
-        // Initialize queens and kings
-        pieces[0][3] = new Queen(BLACK);
-        pieces[0][4] = new King(BLACK);
-        pieces[7][3] = new Queen(WHITE);
-        pieces[7][4] = new King(WHITE);
+        pieces[pieceRow][0] = new Rook(color);
+        pieces[pieceRow][1] = new Knight(color);
+        pieces[pieceRow][2] = new Bishop(color);
+        pieces[pieceRow][3] = new Queen(color);
+        pieces[pieceRow][4] = new King(color);
+        pieces[pieceRow][5] = new Bishop(color);
+        pieces[pieceRow][6] = new Knight(color);
+        pieces[pieceRow][7] = new Rook(color);
     }
 
     public Piece[][] getSnapshot() {
-        Piece[][] snapshot = new Piece[TOTAL_ROWS][TOTAL_COLS];
-        for(int i = 0; i < TOTAL_ROWS; i++) {
-            for (int j = 0; j < TOTAL_COLS; j++) {
-                if (pieces[i][j] != null) {
-                    snapshot[i][j] = pieces[i][j].makeCopy();
+        Piece[][] snapshot = new Piece[BOARD_SIZE][BOARD_SIZE];
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int column = 0; column < BOARD_SIZE; column++) {
+                if (pieces[row][column] != null) {
+                    snapshot[row][column] = pieces[row][column].makeCopy();
                 }
             }
         }
         return snapshot;
     }
-
 }

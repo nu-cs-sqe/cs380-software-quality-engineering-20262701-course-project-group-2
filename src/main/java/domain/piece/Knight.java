@@ -7,6 +7,6 @@ public class Knight extends Piece {
 
     @Override
     public Piece makeCopy() {
-        return new Knight(this.getColor());
+        return new Knight(getColor());
     }
 }

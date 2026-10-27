@@ -3,26 +3,19 @@ package controller;
 import domain.Board;
 import domain.Location;
 import domain.piece.Piece;
-import view.BoardView;
 
 public class BoardController {
-    private BoardView boardView;
-    private Board board;
+    private final Board board;
 
     public BoardController() {
-        this.board = new Board();
-    }
-
-    public void setBoardView(BoardView boardView) {
-        this.boardView = boardView;
+        board = new Board();
     }
 
     public void handleSquareClick(Location location) {
         // TODO
-        System.out.println("TEST: Square clicked at " + location.getX() + ", " + location.getY());
     }
 
     public Piece[][] getBoardSnapshot() {
-        return this.board.getSnapshot();
+        return board.getSnapshot();
     }
 }
