@@ -1,8 +1,9 @@
-package ui;
+package controller;
 
 import domain.Board;
 import domain.Location;
 import domain.piece.Piece;
+import view.BoardView;
 
 public class BoardController {
     private BoardView boardView;
@@ -12,7 +13,7 @@ public class BoardController {
         this.board = new Board();
     }
 
-    void setBoardView(BoardView boardView) {
+    public void setBoardView(BoardView boardView) {
         this.boardView = boardView;
     }
 

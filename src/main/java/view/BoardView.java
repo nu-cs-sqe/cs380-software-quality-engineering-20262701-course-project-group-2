@@ -1,4 +1,6 @@
-package ui;
+package view;
+
+import controller.BoardController;
 
 import domain.Location;
 import domain.piece.Piece;

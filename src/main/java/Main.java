@@ -1,4 +1,4 @@
-package ui;
+import view.WelcomeView;
 
 import javax.swing.*;
 

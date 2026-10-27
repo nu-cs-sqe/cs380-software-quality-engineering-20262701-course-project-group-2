@@ -1,4 +1,6 @@
-package ui;
+package view;
+
+import controller.BoardController;
 
 import javax.swing.*;
 import java.awt.*;
