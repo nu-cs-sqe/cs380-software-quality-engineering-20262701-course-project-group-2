@@ -31,4 +31,16 @@ public class GameTest {
 
         assertEquals(expectedRows, actualRows);
     }
+
+    // Integration test verifying everything works properly at setup
+    @Test
+    public void NewGame_InitializeBoardAndWhiteTurn(){
+        Game game = new Game();
+
+        Piece[][] snapshot = game.getBoardSnapshot();
+        PieceColor currentTurn = game.getCurrentTurn();
+
+        assertEquals(8, snapshot.length);
+        assertEquals(PieceColor.WHITE, currentTurn);
+    }
 }
