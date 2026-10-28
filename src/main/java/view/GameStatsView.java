@@ -1,15 +1,12 @@
 package view;
 
-import controller.BoardController;
-import domain.piece.PieceColor;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class GameStatsView extends JPanel {
     private final JLabel currentPlayerLabel;
 
-    public GameStatsView(String player1Name, String player2Name, BoardController boardController) {
+    public GameStatsView(String player1Name, String player2Name) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(true);
         setBackground(new Color(104, 76, 150));
@@ -26,11 +23,7 @@ public class GameStatsView extends JPanel {
         player2Label.setFont(new Font("Arial", Font.BOLD, 20));
         player2Label.setForeground(Color.WHITE);
 
-        String currentPlayerName = boardController.getCurrentTurn() == PieceColor.WHITE
-                ? player1Name
-                : player2Name;
-
-        currentPlayerLabel = new JLabel("Current Player: " + currentPlayerName);
+        currentPlayerLabel = new JLabel("Current Player: " + player1Name); // FIXME: update dynamically
         currentPlayerLabel.setFont(new Font("Arial", Font.BOLD, 30));
         currentPlayerLabel.setForeground(Color.WHITE);
 
@@ -38,9 +31,5 @@ public class GameStatsView extends JPanel {
         add(player1Label);
         add(player2Label);
         add(currentPlayerLabel);
-    }
-
-    public String getCurrentPlayerText() {
-        return currentPlayerLabel.getText();
     }
 }
