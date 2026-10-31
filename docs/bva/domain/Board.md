@@ -228,33 +228,53 @@ this test is necessary to check that a black pawn is moving in the opposite dire
  
 
 
-> BTW NOT COVERED - en passant, promotion, the "leaves own king in check" rule, and the moved-yet tracking that revokes castling rights. M26-M30 decide castling by what is on the board *now*, so they assume the pieces are where they are regardless of how they got there — a king that has already moved and come back would still be offered the castle until some has-moved flag exists.
----
+> BTW NOT COVERED - en passant, promotion, the "leaves own king in check" rule, and the moved-yet tracking that revokes castling rights. M26 and M27 assume the pieces are where they are regardless of how they got there; M28 and M29 are the cases that need a has-moved flag, so they cannot pass until that flag exists.
+
 
 ## BVA/thinking process documentation: `Board.getValidMoves(pieceColor currentTurn, pieceType type, Location location)`
 
 ### Inputs
 
-- `from` coordinates: on the board (interval [0,7] on both axes) or off it (-1, 8)
-  - off it: 4 boundaries (two axes x two sides) 
+- `from` coordinates: [0,7]
 - content of `from`: cases {piece of the active colour, piece of the other colour, empty}
 - piece type: cases {PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING}
-- piece color: cases {white, black} 
-- pawn start row: cases {on it, off it} 
+- piece color: cases {white, black}
+- pawn start row: cases {on it, off it}
 - candidate destination squares: interval [0,7] x [0,7], each case {empty, own piece, opposing piece}
-  - the edge columns 0 and 7 are the off-by-one boundaries for the destination set: no member may be at column -1 or 8 (M6, M7, M19)
 - path: cases {clear, blocked by own piece, blocked by opposing piece}
-  - blocked by own piece: the own square and everything behind it are excluded (M3, M6, M10, M13, M14, M16, M17)
-  - blocked by opposing piece: the opposing square is included, everything behind it is excluded (M4, M5, M9, M12, M20, M21, M23)
-  - not a constraint for a knight (M13, M19, M20) or a king (M14, M15, M21), which do not slide
-- castling (king only, and only from its start square): cases {path clear and own rook on the corner, far square of the path occupied, near square occupied, no own rook on the corner, queenside b1 occupied}
-  - the castle destination is two squares away and is the only destination that is not adjacent: (6, 7) kingside, (2, 7) queenside (M26, M27)
-  - the near/far split matters because the two sides need different numbers of empty squares: kingside 2 (f1, g1), queenside 3 (b1, c1, d1) (M28, M30)
-  - the rook must be the king's own, on its original corner (M29)
-  - the assertion of "not in check, not passing through or into check" is deferred with the check rule itself, so it is not a boundary here yet
-- freedom of the piece: cases {boxed in, one destination open, every direction open}
-  - every direction open is only reachable on a constructed single-piece board, so it is documented as such (M8, M22, M24, M25) and is what fixes the upper bound of the set size: rook 14, bishop 13, queen 27, king 8 plus at most 2 castling squares (10), knight 8
+- only for castling: king, rook {have been moved, have not been moved{
 
 ### Outputs
 
-- a set of `Location`: every legal destination and nothing else
+- a set of `Location`: every legal destination
+
+---
+
+### Method under test: `movePiece(Location from, Location to)`
+
+
+#### Relocation
+
+- **E1: movePiece_ToEmptySquare_pieceRelocated** ( :x: )
+    - **State of the system**:
+      - standard starting board
+      - from: (4, 6) (white pawn), to: (4, 5)
+    - **Expected output**: `snapshot[6][4]` is `null` and `snapshot[5][4]` is a WHITE PAWN
+  
+- **E2: movePiece_ToEmptySquareTwoRows_pieceRelocated** ( :x: )
+    - **State of the system**:
+      - standard starting board
+      - from: (4, 6) (white pawn), to: (4, 4)
+    - **Expected output**: `snapshot[6][4]` is `null`, `snapshot[4][4]` is a WHITE PAWN
+  
+- **E3: movePiece_ToOpponentPiece_captureReplacesAndRemoves** ( :x: )
+    - **State of the system**:
+      - after white (4, 6) -> (4, 4) and black (5, 1) -> (5, 3)
+      - from: (4, 4) (white pawn), to: (5, 3) (black pawn)
+    - **Expected output**: `snapshot[4][4]` is `null`, `snapshot[3][5]` is a WHITE PAWN, the black pawn is DEAD
+
+- **E4 movePiece_KingTwoSquares_rookAlsoRelocated** ( :x: )
+    - **State of the system**:
+      - setup of m26
+    - **Expected output**: `snapshot[7][4]` is `null`, `snapshot[7][6]` is a WHITE KING, `snapshot[7][7]` is `null` and `snapshot[7][5]` is a WHITE ROOK
+---
