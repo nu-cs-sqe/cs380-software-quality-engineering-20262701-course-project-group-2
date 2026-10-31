@@ -169,6 +169,33 @@ this test is necessary to check that a black pawn is moving in the opposite dire
       - from: (3, 3) (white king, not on an edge, nothing at all to block it)
     - **Expected output**: `{(2, 2), (2, 3), (2, 4), (3, 2), (3, 4), (4, 2), (4, 3), (4, 4)}`
 
+- **M26: getValidMoves_King_RightCastlePathClear_returnIncludingCastle** ( :x: )
+    - **State of the system**:
+      - neither rook nor king has been moved yet
+      - after white (4, 6) -> (4, 4), black (7, 1) -> (7, 3), white (5, 7) -> (4, 6) (bishop off f1), black (7, 3) -> (7, 4), white (6, 7) -> (5, 5) (knight off g1)
+      - from: (4, 7) (white king; f1 (5, 7) and g1 (6, 7) are empty, own rook still on h1 (7, 7), own pieces still on d1 (3, 7), d2 (3, 6), e2 (4, 6) and f2 (5, 6))
+    - **Expected output**: `{(5, 7), (6, 7)}` 
+  
+- **M27: getValidMoves_King_LeftCastlePathClear_returnIncludingCastle** ( :x: )
+    - **State of the system**:
+      - neither rook nor king has been moved yet
+      - after white (3, 6) -> (3, 4) (pawn off d2), black (6, 1) -> (6, 3), white (1, 6) -> (1, 4) (pawn off b2), black (6, 3) -> (6, 4), white (2, 7) -> (0, 5) (bishop off c1), black (6, 4) -> (6, 5), white (1, 7) -> (2, 5) (knight off b1), black (5, 1) -> (5, 3), white (3, 7) -> (3, 6) (queen off d1), black (5, 3) -> (5, 4)
+      - from: (4, 7) (white king; b1 (1, 7), c1 (2, 7) and d1 (3, 7) are empty, own rook still on a1 (0, 7), own bishop still on f1 (5, 7))
+    - **Expected output**: `{(3, 7), (2, 7)}` 
+  
+- **M28: getValidMoves_King_RightCastlePathClear_KingMoved_NoCastle** ( :x: )
+    - **State of the system**:
+        - king has been moved
+        - same setup as M26 but king has also moved one square to right
+    - **Expected output**: `{(5, 7)}`
+
+- **M29: getValidMoves_King_RightCastlePathClear_RookMoved_NoCastle** ( :x: )
+    - **State of the system**:
+        - rook has been moved
+        - same setup as M26 but rook has also moved one square to left
+    - **Expected output**: `{(5, 7)}`
+
+  
 #### Queen
 
 - **M16: getValidMoves_Queen_BoxedIn_returnEmpty** ( :x: )
@@ -201,7 +228,7 @@ this test is necessary to check that a black pawn is moving in the opposite dire
  
 
 
-> BTW NOT COVERED - castling, en passant, promotion and the "leaves own king in check" rule
+> BTW NOT COVERED - en passant, promotion, the "leaves own king in check" rule, and the moved-yet tracking that revokes castling rights. M26-M30 decide castling by what is on the board *now*, so they assume the pieces are where they are regardless of how they got there — a king that has already moved and come back would still be offered the castle until some has-moved flag exists.
 ---
 
 ## BVA/thinking process documentation: `Board.getValidMoves(pieceColor currentTurn, pieceType type, Location location)`
@@ -220,8 +247,13 @@ this test is necessary to check that a black pawn is moving in the opposite dire
   - blocked by own piece: the own square and everything behind it are excluded (M3, M6, M10, M13, M14, M16, M17)
   - blocked by opposing piece: the opposing square is included, everything behind it is excluded (M4, M5, M9, M12, M20, M21, M23)
   - not a constraint for a knight (M13, M19, M20) or a king (M14, M15, M21), which do not slide
+- castling (king only, and only from its start square): cases {path clear and own rook on the corner, far square of the path occupied, near square occupied, no own rook on the corner, queenside b1 occupied}
+  - the castle destination is two squares away and is the only destination that is not adjacent: (6, 7) kingside, (2, 7) queenside (M26, M27)
+  - the near/far split matters because the two sides need different numbers of empty squares: kingside 2 (f1, g1), queenside 3 (b1, c1, d1) (M28, M30)
+  - the rook must be the king's own, on its original corner (M29)
+  - the assertion of "not in check, not passing through or into check" is deferred with the check rule itself, so it is not a boundary here yet
 - freedom of the piece: cases {boxed in, one destination open, every direction open}
-  - every direction open is only reachable on a constructed single-piece board, so it is documented as such (M8, M22, M24, M25) and is what fixes the upper bound of the set size: rook 14, bishop 13, queen 27, king 8, knight 8
+  - every direction open is only reachable on a constructed single-piece board, so it is documented as such (M8, M22, M24, M25) and is what fixes the upper bound of the set size: rook 14, bishop 13, queen 27, king 8 plus at most 2 castling squares (10), knight 8
 
 ### Outputs
 
