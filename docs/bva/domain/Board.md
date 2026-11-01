@@ -2,6 +2,10 @@
 
 ### Method under test: `getSnapshot()`
 
+**Purpose / use:** Gives Game/controller/view code a safe representation of the board for inspection and display.
+
+**Expected behavior:** Returns a snapshot/copy of the current 8x8 board state so callers can inspect the board without directly owning the Board's internal array.
+
 Inputs:
 - State Collection: newly initialized chess board
     - The current public interface only allows the standard initialized board state.
@@ -24,67 +28,89 @@ Outputs:
 | B3           | `getSnapshot()`      | Newly initialized `Board` | Snapshot contains exactly 32 occupied squares: 16 Black pieces and 16 White pieces; the remaining 32 squares are empty | :white_check_mark: |
 | B4           | `getSnapshot()`      | Newly initialized `Board` | All 32 pieces are in their standard starting chess positions                                                           | :white_check_mark: |
 
-> Further BVA may be needed as features expand. This is preliminary only for the game setup feature.
+> Further BVA may be needed as features expand.
 
 ---
 
-### Method under test: `Board.getValidMovesByPiece(Location location, PieceType type, PieceColor color)`
-this may be too many arguments according to uncle bob
-the piece color is ONLY needed for the pawn since they move in opposite directions
-not sure if need to test returning an empty set? thoughts? 
+### Planned method under test: `getPieceAt(Location location)`
 
-- **M30: getValidMovesByPiece_WhitePawn** ( :x: )
-  - **State of the system**: standard starting board, white pawn at (4, 6); type: `PAWN`; color: `WHITE`
-  - **Expected output**: output of [Pawn.getValidMoves](piece/Pawn.md) test M1 `{(4, 5), (4, 4)}`
+**Purpose / use:** Lets Game inspect the piece currently stored on one board square.
 
-- **M31: getValidMovesByPiece_BlackPawn** ( :x: )
-  - **State of the system**: standard starting board, black pawn at (4, 1); type: `PAWN`; color: `BLACK`
-  - **Expected output**: output of [Pawn.getValidMoves](piece/Pawn.md) test M18 `{(4, 2), (4, 3)}`
-  
-- **M32: getValidMovesByPiece_Bishop** ( :x: )
-  - **State of the system**: after white (3, 6) -> (3, 4); white bishop at (2, 7); type: `BISHOP`; color: `WHITE`
-  - **Expected output**: output of [Bishop.getValidMoves](piece/Bishop.md) test M11 `{(3, 6), (4, 5), (5, 4), (6, 3), (7, 2)}`
+**Expected behavior:** Returns the piece at the requested location, or `null` when the square is empty.
 
-- **M33: getValidMovesByPiece_Knight** ( :x: )
-  - **State of the system**: standard starting board, white knight at (1, 7); type: `KNIGHT`; color: `WHITE`
-  - **Expected output**: output of [Knight.getValidMoves](piece/Knight.md) test M13 `{(0, 5), (2, 5)}`
-  
-- **M34: getValidMovesByPiece_King** ( :x: )
-  - **State of the system**: after white (4, 6) -> (4, 4); white king at (4, 7); type: `KING`; color: `WHITE`
-  - **Expected output**: output of [King.getValidMoves](piece/King.md) test M15 `{(4, 6)}`
-  
-- **M35: getValidMovesByPiece_Queen** ( :x: )
-  - **State of the system**: after white (3, 6) -> (3, 4); white queen at (3, 7); type: `QUEEN`; color: `WHITE`
-  - **Expected output**: output of [Queen.getValidMoves](piece/Queen.md) test M17 `{(3, 6), (3, 5)}`
-  
-- **M36: getValidMovesByPiece_Rook** ( :x: )
-  - **State of the system**: after white (7, 6) -> (7, 4) and white knight (6, 7) -> (5, 5); white rook at (7, 7); type: `ROOK`; color: `WHITE`
-  - **Expected output**: output of [Rook.getValidMoves](piece/Rook.md) test M7  `{(7, 6), (7, 5), (6, 7)}`
-  
+Inputs:
+
+Outputs:
+
+| Test Case ID | Method(s) under test            | State of the System | Expected Output | Implemented? |
+|--------------|---------------------------------|---------------------|-----------------|--------------|
+|              | `getPieceAt(Location location)` |                     |                 | :X:          |
+
+---
+
+### Method under test: `getValidMovesByPiece(Location location)`
+
+**Purpose / use:** Lets Game ask Board for the selected piece's movement-level destinations without passing duplicate type/color information. Board reads the piece at `location` and dispatches to that piece's `getValidMoves()` implementation.
+
+**Expected behavior:** Returns the movement-level / pseudo-legal destinations for the piece currently stored at `location`. This method does not filter moves based on whether the player's own king would be in check afterward.
+
+Inputs:
+- location coordinates: interval [0,7] for column and row
+- square content: cases {empty, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING}
+- piece color is obtained from the piece on the board
+- board state around the piece: cases inherited from the concrete piece movement rules
+
+Outputs:
+- a set of `Location`: the movement-level destinations returned by the corresponding piece logic
+- set size cases: {empty, exactly 1, 2 or more}
+
+| Test Case ID                                                   | Method(s) under test                      | State of the System                                                                  | Expected Output                                                                                             | Implemented? |
+|----------------------------------------------------------------|-------------------------------------------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|--------------|
+| M30<br><sub>getValidMovesByPiece_WhitePawn</sub>               | `getValidMovesByPiece(Location location)` | standard starting board, white pawn at (4, 6)                                        | output of [Pawn.getValidMoves](piece/Pawn.md) test M1 `{(4, 5), (4, 4)}`                                    | :X:          |
+| M31<br><sub>getValidMovesByPiece_BlackPawn</sub>               | `getValidMovesByPiece(Location location)` | standard starting board, black pawn at (4, 1)                                        | output of [Pawn.getValidMoves](piece/Pawn.md) test M18 `{(4, 2), (4, 3)}`                                   | :X:          |
+| M32<br><sub>getValidMovesByPiece_Bishop</sub>                  | `getValidMovesByPiece(Location location)` | after white (3, 6) -> (3, 4); white bishop at (2, 7)                                 | output of [Bishop.getValidMoves](piece/Bishop.md) test M11 `{(3, 6), (4, 5), (5, 4), (6, 3), (7, 2)}`       | :X:          |
+| M33<br><sub>getValidMovesByPiece_Knight</sub>                  | `getValidMovesByPiece(Location location)` | standard starting board, white knight at (1, 7)                                      | output of [Knight.getValidMoves](piece/Knight.md) test M13 `{(0, 5), (2, 5)}`                               | :X:          |
+| M34<br><sub>getValidMovesByPiece_King</sub>                    | `getValidMovesByPiece(Location location)` | after white (4, 6) -> (4, 4); white king at (4, 7)                                   | output of [King.getValidMoves](piece/King.md) test M15 `{(4, 6)}`                                           | :X:          |
+| M35<br><sub>getValidMovesByPiece_Queen</sub>                   | `getValidMovesByPiece(Location location)` | after white (3, 6) -> (3, 4); white queen at (3, 7)                                  | output of [Queen.getValidMoves](piece/Queen.md) test M17 `{(3, 6), (3, 5)}`                                 | :X:          |
+| M36<br><sub>getValidMovesByPiece_Rook</sub>                    | `getValidMovesByPiece(Location location)` | after white (7, 6) -> (7, 4) and white knight (6, 7) -> (5, 5); white rook at (7, 7) | output of [Rook.getValidMoves](piece/Rook.md) test M7 `{(7, 6), (7, 5), (6, 7)}`                            | :X:          |
+| M47<br><sub>getValidMovesByPiece_BoxedInRook_returnEmpty</sub> | `getValidMovesByPiece(Location location)` | standard starting board, white rook at (0, 7)                                        | `{}` — verifies that an empty destination set is correctly returned through the Board-level dispatch method | :X:          |
+
 ---
 
 ### Method under test: `movePiece(Location from, Location to)`
 
-- **M37: movePiece_ToEmptySquare_pieceRelocated** ( :x: )
-    - **State of the system**:
-      - standard starting board
-      - from: (4, 6) (white pawn), to: (4, 5)
-    - **Expected output**: `snapshot[6][4]` is `null` and `snapshot[5][4]` is a WHITE PAWN
-  
-- **M38: movePiece_ToEmptySquareTwoRows_pieceRelocated** ( :x: )
-    - **State of the system**:
-      - standard starting board
-      - from: (4, 6) (white pawn), to: (4, 4)
-    - **Expected output**: `snapshot[6][4]` is `null`, `snapshot[4][4]` is a WHITE PAWN
-  
-- **M39: movePiece_ToOpponentPiece_captureReplacesAndRemoves** ( :x: )
-    - **State of the system**:
-      - after white (4, 6) -> (4, 4) and black (5, 1) -> (5, 3)
-      - from: (4, 4) (white pawn), to: (5, 3) (black pawn)
-    - **Expected output**: `snapshot[4][4]` is `null`, `snapshot[3][5]` is a WHITE PAWN, the black pawn is DEAD
+**Purpose / use:** Performs the actual board-state mutation after Game/controller logic has already approved a move.
 
-- **E4 movePiece_KingTwoSquares_rookAlsoRelocated** ( :x: )
-    - **State of the system**:
-      - setup of m26
-    - **Expected output**: `snapshot[7][4]` is `null`, `snapshot[7][6]` is a WHITE KING, `snapshot[7][7]` is `null` and `snapshot[7][5]` is a WHITE ROOK
+**Expected behavior:** Relocates the piece from `from` to `to`. If `to` contains an opponent piece, that piece is replaced/removed. Board does not decide whether the move is legal.
+
+Inputs:
+- `from`: square containing the piece to relocate
+- `to`: cases {empty square, square occupied by opponent}
+
+Outputs:
+- Board state after relocation
+- Source square becomes empty
+- Destination contains the moved piece
+- If the destination held an opponent piece, that piece is removed
+
+| Test Case ID                                                          | Method(s) under test                    | State of the System                                                                                             | Expected Output                                                                             | Implemented? |
+|-----------------------------------------------------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|--------------|
+| M37<br><sub>movePiece_ToEmptySquare_pieceRelocated</sub>              | `movePiece(Location from, Location to)` | standard starting board<br>• from: (4, 6) (white pawn), to: (4, 5)                                              | `snapshot[6][4]` is `null` and `snapshot[5][4]` is a WHITE PAWN                             | :X:          |
+| M38<br><sub>movePiece_ToEmptySquareTwoRows_pieceRelocated</sub>       | `movePiece(Location from, Location to)` | standard starting board<br>• from: (4, 6) (white pawn), to: (4, 4)                                              | `snapshot[6][4]` is `null`, `snapshot[4][4]` is a WHITE PAWN                                | :X:          |
+| M39<br><sub>movePiece_ToOpponentPiece_captureReplacesAndRemoves</sub> | `movePiece(Location from, Location to)` | after white (4, 6) -> (4, 4) and black (5, 1) -> (5, 3)<br>• from: (4, 4) (white pawn), to: (5, 3) (black pawn) | `snapshot[4][4]` is `null`, `snapshot[3][5]` is a WHITE PAWN, and the black pawn is removed | :X:          |
+
 ---
+
+### Planned method under test: `findKing(PieceColor color)`
+
+**Purpose / use:** Lets Game locate a player's king when later checking check/checkmate and king safety.
+
+**Expected behavior:** Returns the current `Location` of the requested color's king.
+
+Inputs:
+
+Outputs:
+
+| Test Case ID | Method(s) under test         | State of the System | Expected Output | Implemented? |
+|--------------|------------------------------|---------------------|-----------------|--------------|
+|              | `findKing(PieceColor color)` |                     |                 | :X:          |

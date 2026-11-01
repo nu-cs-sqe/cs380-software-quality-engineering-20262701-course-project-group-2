@@ -4,40 +4,24 @@
 
 ### Method under test: `makeCopy()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|--------------|---------------------|-----------------|--------------|
-|              |                     |                 | :x:          |
-|              |                     |                 | :x:          |
-|              |                     |                 | :x:          |
+**Purpose / use:** Creates an independent `Queen` for board snapshots or simulated board states.
 
-#### Method under test: `getValidMoves()`
+**Expected behavior:** Returns a distinct `Queen` object with the same color as the original piece.
 
-- **M16: getValidMoves_Queen_BoxedIn_returnEmpty** ( :x: )
-    - **State of the system**:
-        - standard starting board
-        - from: (3, 7) (white queen, own pieces on (3, 6), (2, 6), (4, 6), (2, 7) and (4, 7))
-    - **Expected output**: `{}` — every in-board direction is blocked by a friendly piece
+| Test Case ID                                                        | Method(s) under test | State of the System | Expected Output                                               | Implemented? |
+|---------------------------------------------------------------------|----------------------|---------------------|---------------------------------------------------------------|--------------|
+| QC1<br><sub>makeCopy_WhiteQueen_ReturnEquivalentDistinctQueen</sub> | `makeCopy()`         | WHITE queen         | a distinct `Queen` object with type `QUEEN` and color `WHITE` | :X:          |
+| QC2<br><sub>makeCopy_BlackQueen_ReturnEquivalentDistinctQueen</sub> | `makeCopy()`         | BLACK queen         | a distinct `Queen` object with type `QUEEN` and color `BLACK` | :X:          |
 
-- **M17: getValidMoves_Queen_AdjacentsCleared_returnAdjacent** ( :x: )
-    - **State of the system**:
-        - after white (3, 6) -> (3, 4)
-        - from: (3, 7) (white queen)
-    - **Expected output**: `{(3, 6), (3, 5)}` exactly — the cleared file up to the own pawn on (3, 4); the diagonals are still blocked by own pawns, so the queen's combined sliding directions add nothing here
+### Method under test: `getValidMoves()`
 
-- **M23: getValidMoves_Queen_OpponentInFile_returnUpToOpponent** ( :x: )
-    - **State of the system**:
-        - after black (4, 1) -> (4, 3), black (4, 3) -> (4, 4), black (4, 4) -> (4, 5), white (3, 6) captures (4, 5), black (3, 1) -> (3, 3)
-        - from: (3, 7) (white queen; the file below it is empty down to the black pawn on (3, 3), and (2, 6) and (4, 6) still hold own pawns)
-    - **Expected output**: `{(3, 6), (3, 5), (3, 4), (3, 3)}`
+**Purpose / use:** Supplies the `Queen`'s normal movement options to Board/Game before Game-level legality filters are applied.
 
-- **M24: getValidMoves_Queen_AllDirectionsFromCentre_returnTwentySeven** ( :x: )
-    - **State of the system**:
-        - single white queen on (3, 3), every other square empty
-        - from: (3, 3) (white queen, not on an edge, nothing at all to block it)
-    - **Expected output**:
-        - row 3: `(0, 3), (1, 3), (2, 3), (4, 3), (5, 3), (6, 3), (7, 3)` (7)
-        - column 3: `(3, 0), (3, 1), (3, 2), (3, 4), (3, 5), (3, 6), (3, 7)` (7)
-        - diagonal 1: `(0, 0), (1, 1), (2, 2), (4, 4), (5, 5), (6, 6), (7, 7)` (7)
-        - diagonal 2: `(0, 6), (1, 5), (2, 4), (4, 2), (5, 1), (6, 0)` (6)
- 
-    
+**Expected behavior:** Returns all movement-level / pseudo-legal destinations the `Queen` is allowed to make from its current square, considering board boundaries, blockers, and captures. It does not remove moves because of Game-level king-safety rules.
+
+| Test Case ID                                                                    | Method(s) under test | State of the System                                                                                                                                                                                                                                                         | Expected Output                                                                                                                                                                                                                                                                                     | Implemented? |
+|---------------------------------------------------------------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| M16<br><sub>getValidMoves_Queen_BoxedIn_returnEmpty</sub>                       | `getValidMoves()`    | standard starting board<br>• from: (3, 7) (white queen, own pieces on (3, 6), (2, 6), (4, 6), (2, 7) and (4, 7))                                                                                                                                                            | `{}` — every in-board direction is blocked by a friendly piece                                                                                                                                                                                                                                      | :X:          |
+| M17<br><sub>getValidMoves_Queen_AdjacentsCleared_returnAdjacent</sub>           | `getValidMoves()`    | after white (3, 6) -> (3, 4)<br>• from: (3, 7) (white queen)                                                                                                                                                                                                                | `{(3, 6), (3, 5)}` exactly — the cleared file up to the own pawn on (3, 4); the diagonals are still blocked by own pawns                                                                                                                                                                            | :X:          |
+| M23<br><sub>getValidMoves_Queen_OpponentInFile_returnUpToOpponent</sub>         | `getValidMoves()`    | after black (4, 1) -> (4, 3), black (4, 3) -> (4, 4), black (4, 4) -> (4, 5), white (3, 6) captures (4, 5), black (3, 1) -> (3, 3)<br>• from: (3, 7) (white queen; the file below it is empty down to the black pawn on (3, 3), and (2, 6) and (4, 6) still hold own pawns) | `{(3, 6), (3, 5), (3, 4), (3, 3)}`                                                                                                                                                                                                                                                                  | :X:          |
+| M24<br><sub>getValidMoves_Queen_AllDirectionsFromCentre_returnTwentySeven</sub> | `getValidMoves()`    | single white queen on (3, 3), every other square empty<br>• from: (3, 3) (white queen, not on an edge, nothing at all to block it)                                                                                                                                          | row 3: `(0, 3), (1, 3), (2, 3), (4, 3), (5, 3), (6, 3), (7, 3)` (7)<br>• column 3: `(3, 0), (3, 1), (3, 2), (3, 4), (3, 5), (3, 6), (3, 7)` (7)<br>• diagonal 1: `(0, 0), (1, 1), (2, 2), (4, 4), (5, 5), (6, 6), (7, 7)` (7)<br>• diagonal 2: `(0, 6), (1, 5), (2, 4), (4, 2), (5, 1), (6, 0)` (6) | :X:          |
