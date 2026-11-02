@@ -16,6 +16,9 @@
    2. PR LINK: https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/11
 2. [done] Andres: reformatted BVA for consistency
 3. [done] Andres: updated design documents with new methods
+4. [done] Andres: finalized board setup, refactored code based on model view controller architecture, BVA/TDD for setup portion
+   5. PR: https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/9
+   6. PR: https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/8
 4. [done] Annie & Andres: discuss and align on system design and ideas for the piece move feature
 5. [20% done] Ian, Andres, Annie: begin implementing getValidMoves for each piece
 
