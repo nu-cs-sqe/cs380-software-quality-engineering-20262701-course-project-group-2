@@ -74,23 +74,22 @@ No additional boundary-specific cases are needed beyond the color/type cases abo
 
 **Purpose / use:** Provides the first stage of move generation. Board asks the concrete piece for the squares it can reach according to that piece's own movement rules, then Game applies additional legality rules.
 
-**Expected behavior:** Returns every movement-level destination the piece is allowed to make from its current square based on that piece's movement rules, board boundaries, blockers, and captures. It does **not** remove moves because they would leave the player's own king in check; that filtering belongs to `Game`.
+**Expected behavior:** Returns the squares the piece's own movement pattern reaches from `from`, clipped to the board. It reads **no other square**: the result is the same whatever else stands on the board, so there is no stopping at a blocker, no own-piece exclusion, and no capture square. Everything that depends on other pieces — blockers, captures, whether a move leaves the player's own king in check, and castling — is applied by [`Game.getLegalMoves()`](../Game.md).
 
 `getValidMoves(...)` is analyzed in each concrete piece class.
 
 ### Common inputs for the concrete `getValidMoves(...)` methods
 
 - `from` coordinates: interval [0,7] for column and row
-- candidate destination squares: interval [0,7] x [0,7]
-- candidate destination content: cases {empty, own piece, opposing piece}
-- path for sliding pieces: cases {clear, blocked by own piece, blocked by opposing piece}
+- `from` position on the board: cases {interior, edge, corner}
 - pawn start row: cases {on it, off it}
+- board content: none — no other square is read, which is the point of the boundary above
 
 ### Common output
 
-- a set of `Location`: every destination the piece is allowed to move to based on that piece's movement rules, board boundaries, blockers, and captures
+- a set of `Location`: every square the piece's movement pattern reaches from `from`, clipped to the board
 
 ### Scope note
 
-These piece-level methods do **not** filter moves based on whether the move would leave the player's own king in check or move the king into check. Those additional legality checks belong at the `Game` level.
+These piece-level methods do **not** look at other pieces at all. Blockers, captures, moves that would leave the player's own king in check, and castling are all decided at the `Game` level by [`Game.getLegalMoves()`](../Game.md). Cases that were originally written for `getValidMoves()` but depended on other pieces have been moved there with their IDs unchanged.
 
