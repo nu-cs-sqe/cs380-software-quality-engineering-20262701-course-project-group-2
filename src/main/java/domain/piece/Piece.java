@@ -26,7 +26,7 @@ public abstract class Piece {
 
     public abstract Piece makeCopy();
 
-    private Set<Location> getDirectionalMoves(Location from, int[][] directions) {
+    protected Set<Location> getDirectionalMoves(Location from, int[][] directions) {
         Set<Location> moves = new HashSet<>();
 
         if(directions == null){
@@ -54,7 +54,7 @@ public abstract class Piece {
         return moves;
     }
 
-    private boolean isInsideBoard(int column, int row) {
+    protected boolean isInsideBoard(int column, int row) {
         return column >= 0 && column < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
     }
 
