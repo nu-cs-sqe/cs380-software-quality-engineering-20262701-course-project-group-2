@@ -39,6 +39,9 @@
 - `makeCopy()` - **Purpose:** creates a distinct copy with the same type/color. **Used by:** board snapshots or simulated board states without sharing the original piece object.
 - `toString()` - **Purpose:** returns a readable piece description. **Used by:** debugging/display where a text form is useful.
 - `getValidMoves(...)` - **Purpose:** returns the movement-level destinations allowed by that piece's own movement rules. **Used by:** Board as the first stage of move generation before Game applies king-safety/special-game rules.
+private/helper methods
+- `getDirectionalMoves()` - **Purpose:** helper for pieces that move in some direction for extended number of tiles (king, queen, bishop, rook)
+- `isInsideBoard()` - **Purpose:** helper to check that pieces are inside the board used for `getValidMoves`
 
 ## `Piece Classes`
 
