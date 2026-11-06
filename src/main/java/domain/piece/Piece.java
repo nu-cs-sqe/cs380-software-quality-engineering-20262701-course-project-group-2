@@ -1,6 +1,13 @@
 package domain.piece;
 
+import domain.Location;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Piece {
+    private static final int BOARD_SIZE = 8;
+
     private final PieceType type;
     private final PieceColor color;
 
@@ -18,6 +25,38 @@ public abstract class Piece {
     }
 
     public abstract Piece makeCopy();
+
+    protected Set<Location> getDirectionalMoves(Location from, int[][] directions) {
+        Set<Location> moves = new HashSet<>();
+
+        if(directions == null){
+            return moves;
+        }
+
+        for(int[] direction : directions){
+            int columnDelta = direction[0];
+            int rowDelta = direction[1];
+
+            if(columnDelta == 0 && rowDelta == 0){
+                continue;
+            }
+
+            int column = from.getColumn() + columnDelta;
+            int row = from.getRow() + rowDelta;
+
+            while(isInsideBoard(column, row)){
+                moves.add(new Location(column, row));
+                column += columnDelta;
+                row += rowDelta;
+            }
+        }
+
+        return moves;
+    }
+
+    protected boolean isInsideBoard(int column, int row) {
+        return column >= 0 && column < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
+    }
 
     @Override
     public String toString() {
