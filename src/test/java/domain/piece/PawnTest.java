@@ -20,4 +20,16 @@ public class PawnTest {
         assertEquals(PieceType.PAWN, copy.getType());
         assertEquals(PieceColor.WHITE, copy.getColor());
     }
+    
+    @Test
+    public void MakeCopy_BlackPawn_ReturnEquivalentDistinctPawn(){
+        Pawn pawn = new Pawn(PieceColor.BLACK);
+
+        Piece copy = pawn.makeCopy();
+
+        assertNotSame(pawn, copy);
+        assertEquals(PieceType.PAWN, copy.getType());
+        assertEquals(PieceColor.BLACK, copy.getColor());
+    }
+
 }
