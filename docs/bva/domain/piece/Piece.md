@@ -74,8 +74,7 @@ No additional boundary-specific cases are needed beyond the color/type cases abo
 
 **Purpose / use:** Provides the first stage of move generation. Board asks the concrete piece for the squares it can reach according to that piece's own movement rules, then Game applies additional legality rules.
 
-**Expected behavior:** Returns the squares the piece's own movement pattern reaches from `from`, clipped to the board. It reads **no other square**: the result is the same whatever else stands on the board, so there is no stopping at a blocker, no own-piece exclusion, and no capture square. Everything that depends on other pieces — blockers, captures, whether a move leaves the player's own king in check, and castling — is applied by [`Game.getLegalMoves()`](../Game.md).
-
+**Expected behavior:** Returns the squares the piece's own movement pattern reaches from `from`, clipped to the board. 
 `getValidMoves(...)` is analyzed in each concrete piece class.
 
 ### Common inputs for the concrete `getValidMoves(...)` methods
