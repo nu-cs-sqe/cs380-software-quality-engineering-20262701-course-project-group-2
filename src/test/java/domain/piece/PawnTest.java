@@ -68,6 +68,17 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void GetValidMoves_Pawn_OneStepFromLastRank_ReturnLastRank(){
+        Pawn pawn = new Pawn(PieceColor.WHITE);
+        Location from = new Location(4, 1);
+
+        Set<Location> expected = Set.of(new Location(4, 0));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
+
     // M18
     @Test
     public void GetValidMoves_Pawn_Black_ReturnTwo(){
@@ -79,6 +90,8 @@ public class PawnTest {
 
         assertEquals(expected, actual);
     }
+
+
 
 
 
