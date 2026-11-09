@@ -2,8 +2,11 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class WelcomeView extends JFrame {
+    private static final int MAX_PLAYER_NAME_LENGTH = 30;
+
     private JTextField player1NameField;
     private JTextField player2NameField;
 
@@ -92,9 +95,7 @@ public class WelcomeView extends JFrame {
         startGameButton.setBorder(
                 BorderFactory.createLineBorder(Color.WHITE, 2, true)
         );
-        startGameButton.setCursor(
-                new Cursor(Cursor.HAND_CURSOR)
-        );
+        startGameButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startGameButton.addActionListener(event -> startGame());
 
         welcomePanel.add(
@@ -118,12 +119,46 @@ public class WelcomeView extends JFrame {
     }
 
     private void startGame() {
-        String player1Name = player1NameField.getText().trim();
-        String player2Name = player2NameField.getText().trim();
+        String player1Name = player1NameField.getText().strip();
+        String player2Name = player2NameField.getText().strip();
 
-        // FIXME: perform input validation on player names
+        Optional<String> validationError = validatePlayerNames(player1Name, player2Name);
+
+        if (validationError.isPresent()) {
+            showValidationError(validationError.get());
+            return;
+        }
 
         dispose();
         new MainView(player1Name, player2Name);
+    }
+
+    private Optional<String> validatePlayerNames(String player1Name, String player2Name) {
+        if (player1Name.isBlank() && player2Name.isBlank()) {
+            return Optional.of("Player 1 and Player 2 must each enter a name.");
+        }
+
+        if (player1Name.isBlank()) {
+            return Optional.of("Player 1 must enter a name.");
+        }
+
+        if (player2Name.isBlank()) {
+            return Optional.of("Player 2 must enter a name.");
+        }
+
+        if (player1Name.length() > MAX_PLAYER_NAME_LENGTH) {
+            return Optional.of("Player 1's name cannot exceed " + MAX_PLAYER_NAME_LENGTH + " characters.");
+        }
+
+        if (player2Name.length() > MAX_PLAYER_NAME_LENGTH) {
+            return Optional.of("Player 2's name cannot exceed " + MAX_PLAYER_NAME_LENGTH + " characters.");
+        }
+
+        return Optional.empty();
+    }
+
+    private void showValidationError(String message) {
+        JOptionPane.showMessageDialog(this, message,
+                "Invalid Player Name",JOptionPane.ERROR_MESSAGE);
     }
 }
