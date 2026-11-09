@@ -11,7 +11,7 @@
 | Test Case ID                                                      | Method(s) under test | State of the System | Expected Output                                             | Implemented?     |
 |-------------------------------------------------------------------|----------------------|---------------------|-------------------------------------------------------------|--------------    |
 | PC1<br><sub>makeCopy_WhitePawn_ReturnEquivalentDistinctPawn</sub> | `makeCopy()`         | WHITE pawn          | a distinct `Pawn` object with type `PAWN` and color `WHITE` |:white_check_mark:|
-| PC2<br><sub>makeCopy_BlackPawn_ReturnEquivalentDistinctPawn</sub> | `makeCopy()`         | BLACK pawn          | a distinct `Pawn` object with type `PAWN` and color `BLACK` | :X:              |
+| PC2<br><sub>makeCopy_BlackPawn_ReturnEquivalentDistinctPawn</sub> | `makeCopy()`         | BLACK pawn          | a distinct `Pawn` object with type `PAWN` and color `BLACK` |:white_check_mark:|
 
 ### Method under test: `getValidMoves()`
 
