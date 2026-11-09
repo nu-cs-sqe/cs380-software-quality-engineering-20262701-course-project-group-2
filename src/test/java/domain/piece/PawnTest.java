@@ -57,4 +57,29 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void GetValidMoves_Pawn_WhiteJustPastStartRow_ReturnOne(){
+        Pawn pawn = new Pawn(PieceColor.WHITE);
+        Location from = new Location(4, 5);
+
+        Set<Location> expected = Set.of(new Location(4, 4));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
+
+    // M18
+    @Test
+    public void GetValidMoves_Pawn_Black_ReturnTwo(){
+        Pawn pawn = new Pawn(PieceColor.BLACK);
+        Location from = new Location(4, 1);
+
+        Set<Location> expected = Set.of(new Location(4, 2), new Location(4, 3));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
+
+
+
 }
