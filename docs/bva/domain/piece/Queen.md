@@ -11,7 +11,7 @@
 | Test Case ID                                                        | Method(s) under test | State of the System | Expected Output                                               | Implemented? |
 |---------------------------------------------------------------------|----------------------|---------------------|---------------------------------------------------------------|--------------|
 | QC1<br><sub>makeCopy_WhiteQueen_ReturnEquivalentDistinctQueen</sub> | `makeCopy()`         | WHITE queen         | a distinct `Queen` object with type `QUEEN` and color `WHITE` | :white_check_mark:          |
-| QC2<br><sub>makeCopy_BlackQueen_ReturnEquivalentDistinctQueen</sub> | `makeCopy()`         | BLACK queen         | a distinct `Queen` object with type `QUEEN` and color `BLACK` | :x:          |
+| QC2<br><sub>makeCopy_BlackQueen_ReturnEquivalentDistinctQueen</sub> | `makeCopy()`         | BLACK queen         | a distinct `Queen` object with type `QUEEN` and color `BLACK` | :white_check_mark:          |
 
 ### Method under test: `getValidMoves()`
 
