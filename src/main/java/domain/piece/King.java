@@ -33,7 +33,9 @@ public class King extends Piece {
             int column = from.getColumn() + direction[0];
             int row = from.getRow() + direction[1];
 
-            moves.add(new Location(column,row));
+            if (isInsideBoard(column,row)){
+                moves.add(new Location(column,row));
+            }
         }
         return moves;
     }
