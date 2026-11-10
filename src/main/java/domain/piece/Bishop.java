@@ -6,6 +6,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Bishop extends Piece {
+
+    private static final int[][] DIRECTIONS = {
+            {-1, -1},
+            {1, 1},
+            {-1, 1},
+            {1, -1}
+    };
+
     public Bishop(PieceColor color) {
         super(PieceType.BISHOP, color);
     }
@@ -15,7 +23,8 @@ public class Bishop extends Piece {
         return new Bishop(getColor());
     }
 
-    public Set<Location> getValidMoves() {
-        return new HashSet<>();
+
+    public Set<Location> getValidMoves(Location from) {
+        return getDirectionalMoves(from, DIRECTIONS);
     }
 }
