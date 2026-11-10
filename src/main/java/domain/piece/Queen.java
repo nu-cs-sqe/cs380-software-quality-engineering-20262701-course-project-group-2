@@ -8,6 +8,16 @@ import java.util.Set;
 
 public class Queen extends Piece {
 
+    private static final int[][] DIRECTIONS = {
+            {0, -1},
+            {0, 1},
+            {-1, 0},
+            {1, 0},
+            {-1, -1},
+            {1, 1},
+            {-1, 1},
+            {1, -1}
+    };
 
     public Queen(PieceColor color) {
         super(PieceType.QUEEN, color);
@@ -19,6 +29,6 @@ public class Queen extends Piece {
     }
 
     public Set<Location> getValidMoves(Location from) {
-        return new HashSet<>();
+        return getDirectionalMoves(from, DIRECTIONS);
     }
 }
