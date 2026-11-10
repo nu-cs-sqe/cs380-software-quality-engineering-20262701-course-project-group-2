@@ -11,7 +11,7 @@
 | Test Case ID                                                      | Method(s) under test | State of the System | Expected Output                                             | Implemented? |
 |-------------------------------------------------------------------|----------------------|---------------------|-------------------------------------------------------------|--------------|
 | KC1<br><sub>makeCopy_WhiteKing_ReturnEquivalentDistinctKing</sub> | `makeCopy()`         | WHITE king          | a distinct `King` object with type `KING` and color `WHITE` | :white_check_mark:          |
-| KC2<br><sub>makeCopy_BlackKing_ReturnEquivalentDistinctKing</sub> | `makeCopy()`         | BLACK king          | a distinct `King` object with type `KING` and color `BLACK` | :x:          |
+| KC2<br><sub>makeCopy_BlackKing_ReturnEquivalentDistinctKing</sub> | `makeCopy()`         | BLACK king          | a distinct `King` object with type `KING` and color `BLACK` | :white_check_mark:          |
 
 ### Method under test: `getValidMoves()`
 
