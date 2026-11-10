@@ -7,11 +7,18 @@
 package "controller" {
 
     +class BoardController {
-        - {final} board: Board
+        - {final} game: Game
+        - selectedSquare: Location
+        - highlightedSquares: Set<Location>
 
-        + BoardController()
+        + BoardController(game: Game)
         + handleSquareClick(location: Location): void
+        + getSelectedSquare(): Location
+        + getHighlightedSquares(): Set<Location>
+        + getCurrentTurn(): PieceColor
         + getBoardSnapshot(): Piece[][]
+        + getGameMode(): GameMode
+        + getWinner(): PieceColor
     }
 }
 
@@ -24,10 +31,36 @@ package "domain" {
         + Board()
         - initializeBoard(): void
         - initializePieces(color: PieceColor, pieceRow: int, pawnRow: int): void
+
         + getSnapshot(): Piece[][]
+        + getPieceAt(location: Location): Piece
+        + getValidMovesByPiece(location: Location): Set<Location>
+        + movePiece(from: Location, to: Location): void
+        + findKing(color: PieceColor): Location
     }
 
     +class Game {
+        - {final} board: Board
+        - {final} gameMode: GameMode
+        - currentTurn: PieceColor
+        - winner: PieceColor
+
+        - whiteKingSideCastlingAvailable: boolean
+        - whiteQueenSideCastlingAvailable: boolean
+        - blackKingSideCastlingAvailable: boolean
+        - blackQueenSideCastlingAvailable: boolean
+
+        + Game(gameMode: GameMode)
+
+        + getCurrentTurn(): PieceColor
+        + getBoardSnapshot(): Piece[][]
+        + getGameMode(): GameMode
+        + getLegalMoves(location: Location): Set<Location>
+        + movePiece(from: Location, to: Location): void
+        + switchTurn(): void
+        + isInCheck(color: PieceColor): boolean
+        + isCheckmate(color: PieceColor): boolean
+        + getWinner(): PieceColor
     }
 
     +enum GameMode {
@@ -42,6 +75,8 @@ package "domain" {
         + Location(column: int, row: int)
         + getColumn(): int
         + getRow(): int
+        + equals(other: Object): boolean
+        + hashCode(): int
     }
 
     package "piece" {
@@ -54,37 +89,44 @@ package "domain" {
             + getType(): PieceType
             + getColor(): PieceColor
             + {abstract} makeCopy(): Piece
+            + {abstract} getValidMoves(from: Location, board: Piece[][]): Set<Location>
             + toString(): String
         }
 
         +class Pawn {
             + Pawn(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +class Rook {
             + Rook(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +class Knight {
             + Knight(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +class Bishop {
             + Bishop(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +class Queen {
             + Queen(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +class King {
             + King(color: PieceColor)
             + makeCopy(): Piece
+            + getValidMoves(from: Location, board: Piece[][]): Set<Location>
         }
 
         +enum PieceColor {
@@ -108,6 +150,7 @@ package "view" {
     +class WelcomeView {
         - player1NameField: JTextField
         - player2NameField: JTextField
+        - gameModeSelector: JComboBox<GameMode>
 
         + WelcomeView()
         - createWelcomeScreenUI(): void
@@ -117,8 +160,9 @@ package "view" {
     +class MainView {
         - {final} player1Name: String
         - {final} player2Name: String
+        - {final} boardController: BoardController
 
-        + MainView(player1Name: String, player2Name: String)
+        + MainView(player1Name: String, player2Name: String, gameMode: GameMode)
         - configureMainView(): void
         - addGameStatsView(): void
         - addBoardView(): void
@@ -130,25 +174,31 @@ package "view" {
         - {static} {final} LIGHT_SQUARE_COLOR: Color
         - {static} {final} DARK_SQUARE_COLOR: Color
         - {static} {final} SELECTED_SQUARE_COLOR: Color
+        - {static} {final} HIGHLIGHTED_SQUARE_COLOR: Color
+
         - {final} whitePieceImages: Map<PieceType, Image>
         - {final} blackPieceImages: Map<PieceType, Image>
         - {final} boardController: BoardController
-        - selectedRow: int
-        - selectedColumn: int
 
         + BoardView(boardController: BoardController)
         # paintComponent(graphics: Graphics): void
+
         - drawBoard(graphics: Graphics): void
         - loadPieceImages(): void
         - loadPieceImage(type: PieceType, color: PieceColor, imagePath: String): void
         - drawPieces(graphics: Graphics): void
         - drawSelectedSquare(graphics: Graphics): void
+        - drawHighlightedSquares(graphics: Graphics): void
     }
 
     +class GameStatsView {
+        - {final} player1Name: String
+        - {final} player2Name: String
+        - {final} boardController: BoardController
         - {final} currentPlayerLabel: JLabel
+        - {final} winnerLabel: JLabel
 
-        + GameStatsView(player1Name: String, player2Name: String)
+        + GameStatsView(player1Name: String, player2Name: String, boardController: BoardController)
     }
 }
 
@@ -160,11 +210,16 @@ Bishop -u-|> Piece
 Queen -u-|> Piece
 King -u-|> Piece
 
+
 Piece --> PieceType
 Piece --> PieceColor
+Piece ..> Location
 
-Board --> Piece
+
+Board --> "*" Piece
+Board ..> Location
 Board ..> PieceColor
+
 Board ..> Pawn
 Board ..> Rook
 Board ..> Knight
@@ -172,9 +227,20 @@ Board ..> Bishop
 Board ..> Queen
 Board ..> King
 
-BoardController --> Board
-BoardController ..> Location
+
+Game --> Board
+Game --> GameMode
+Game --> PieceColor
+Game ..> Location
+Game ..> Piece
+
+
+BoardController --> Game
+BoardController --> "*" Location
 BoardController ..> Piece
+BoardController ..> PieceColor
+BoardController ..> GameMode
+
 
 BoardView --> BoardController
 BoardView --> PieceType
@@ -182,11 +248,20 @@ BoardView ..> PieceColor
 BoardView ..> Piece
 BoardView ..> Location
 
-MainView ..> BoardController
+
+GameStatsView --> BoardController
+
+
+MainView --> BoardController
+MainView ..> Game
+MainView ..> GameMode
 MainView ..> BoardView
 MainView ..> GameStatsView
 
+
+WelcomeView ..> GameMode
 WelcomeView ..> MainView
+
 
 Main ..> WelcomeView
 
