@@ -11,7 +11,7 @@
 | Test Case ID                                                          | Method(s) under test | State of the System | Expected Output                                                 | Implemented? |
 |-----------------------------------------------------------------------|----------------------|---------------------|-----------------------------------------------------------------|--------------|
 | BC1<br><sub>makeCopy_WhiteBishop_ReturnEquivalentDistinctBishop</sub> | `makeCopy()`         | WHITE bishop        | a distinct `Bishop` object with type `BISHOP` and color `WHITE` | :white_check_mark:          |
-| BC2<br><sub>makeCopy_BlackBishop_ReturnEquivalentDistinctBishop</sub> | `makeCopy()`         | BLACK bishop        | a distinct `Bishop` object with type `BISHOP` and color `BLACK` | :X:          |
+| BC2<br><sub>makeCopy_BlackBishop_ReturnEquivalentDistinctBishop</sub> | `makeCopy()`         | BLACK bishop        | a distinct `Bishop` object with type `BISHOP` and color `BLACK` | :white_check_mark:          |
 
 ### Method under test: `getValidMoves()`
 
