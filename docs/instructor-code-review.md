@@ -9,5 +9,8 @@ The following chapters of the textbook are considered: Chapter 1, 2, 3, 4, 5, 6,
 Please note that this feedback does not include evaluation of your progress, the proper use of linters, the quality of your test cases, or your compliance of TDD/BDD workflow.  
 You can find the weekly feedback from your dedicated PM/TA for that.
 
+## Week 7 Code Review
+I have read every line of production code currently in the main branch. It looks like you have addressed the last feedback, and your new code doesn't introduce any new issues. I will do one more code review next week.
+
 ## Week 6 Code Review
 I have read every line of production code currently in the main branch. The only issue I identified is that the WelcomeView#createWelcomeScreenUI method is too big and should be broken into smaller methods. The code seems to be from the starter code I gave, which is totally fine. But make sure to refactor it according to the Clean Code principles and standards. 
