@@ -11,7 +11,7 @@ public class Game {
     private static final int BOARD_SIZE = 8;
 
     private final Board board;
-    private PieceColor currentTurn;
+    private final PieceColor currentTurn;
 
     public Game() {
         this(new Board());
@@ -31,7 +31,9 @@ public class Game {
     }
 
     public Set<Location> getLegalMoves(Location from) {
+        Piece[][] boardState = board.getSnapshot();
+        Piece piece = boardState[from.getRow()][from.getColumn()];
+        Set<Location> returnSet = new HashSet<>();
         return new HashSet<>();
     }
-
 }
