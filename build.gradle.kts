@@ -6,6 +6,7 @@ plugins {
     id("java")
     checkstyle
     id("com.github.spotbugs") version "6.0.25"
+    jacoco
 }
 
 group = "nu.csse.sqe"
@@ -32,6 +33,7 @@ tasks.compileJava {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 checkstyle {
@@ -62,5 +64,18 @@ tasks.spotbugsMain {
             "reports/spotbugs/spotbugs.html"
         )
         setStylesheet("fancy-hist.xsl")
+    }
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir(
+            "reports/jacoco"
+        )
     }
 }

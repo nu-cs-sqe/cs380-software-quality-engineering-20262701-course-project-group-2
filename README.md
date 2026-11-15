@@ -15,6 +15,7 @@
 ## Quality Tools
 - Checkstyle
 - SpotBugs Gradle Plugin 6.0.25
+- JaCoCo
 
 ## Exceptions
 
