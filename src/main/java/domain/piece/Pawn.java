@@ -25,12 +25,16 @@ public class Pawn extends Piece {
         int row = from.getRow();
         int direction = getColor() == PieceColor.WHITE ? WHITE_FORWARD : BLACK_FORWARD;
         int startRow = getColor() == PieceColor.WHITE ? WHITE_START_ROW : BLACK_START_ROW;
+        int oneStepRow = row + direction;
 
-        moves.add(new Location(column, row + direction));
+        if (!isInsideBoard(column, oneStepRow)) {
+            return moves;
+        }
+        moves.add(new Location(column, oneStepRow));
+
         if (row == startRow) {
-            moves.add(new Location(column, row + 2 * direction));
+            moves.add(new Location(column, oneStepRow + direction));
         }
         return moves;
     }
-
 }
