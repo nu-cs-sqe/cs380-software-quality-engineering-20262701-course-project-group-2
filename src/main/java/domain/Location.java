@@ -1,6 +1,8 @@
 package domain;
 
 public class Location {
+    private static final int HASH_MULTIPLIER = 31;
+
     private final int column;
     private final int row;
 
@@ -32,7 +34,6 @@ public class Location {
 
     @Override
     public int hashCode() {
-        return 31 * column + row;
+        return HASH_MULTIPLIER * column + row;
     }
-
 }
