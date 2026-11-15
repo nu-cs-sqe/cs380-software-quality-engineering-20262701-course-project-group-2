@@ -100,4 +100,15 @@ public class PawnTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void GetValidMoves_Pawn_BlackOffStartRow_ReturnOne(){
+        Pawn pawn = new Pawn(PieceColor.BLACK);
+        Location from = new Location(4, 3);
+
+        Set<Location> expected = Set.of(new Location(4, 4));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
 }
