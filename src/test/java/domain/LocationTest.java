@@ -15,4 +15,13 @@ public class LocationTest {
 
         assertTrue(actual);
     }
+
+    @Test
+    public void Equals_Null_ReturnFalse() {
+        Location location = new Location(3, 4);
+
+        boolean actual = location.equals(null);
+
+        assertFalse(actual);
+    }
 }
