@@ -90,7 +90,6 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
-    // M18
     @Test
     public void GetValidMoves_Pawn_Black_ReturnTwo(){
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -101,9 +100,4 @@ public class PawnTest {
 
         assertEquals(expected, actual);
     }
-
-
-
-
-
 }
