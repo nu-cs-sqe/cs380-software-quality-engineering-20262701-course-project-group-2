@@ -32,7 +32,19 @@
 N/A
 
 ### Mutation Testing
-N/A
+
+The following mutants were reviewed and determined to be equivalent:
+
+- `King#getValidMoves`: changing column addition to subtraction produces
+  the same set because `DIRECTIONS` contains every mirrored direction.
+- `King#getValidMoves`: changing row addition to subtraction produces
+  the same set for the same reason.
+- `Knight#getValidMoves`: changing column addition to subtraction produces
+  the same set because `JUMP_OFFSETS` contains mirrored jumps.
+- `Knight#getValidMoves`: changing row addition to subtraction produces
+  the same set for the same reason.
+- `Pawn#getValidMoves`: replacing the newly created empty set with another 
+  empty set does not change the specified collection contents.
 
 ### Others
 N/A

@@ -257,20 +257,20 @@ val mutationBadge by tasks.registering {
 
         val mutations = document.getElementsByTagName("mutation")
         val total = mutations.length
-        var killed = 0
+        var detected = 0
 
         for (index in 0 until mutations.length) {
             val mutation = mutations.item(index) as Element
 
-            if (mutation.getAttribute("status") == "KILLED") {
-                killed++
+            if (mutation.getAttribute("detected").toBoolean()) {
+                detected++
             }
         }
 
         val score = if (total == 0) {
             100
         } else {
-            killed * 100 / total
+            detected * 100 / total
         }
 
         val color = when {
@@ -282,7 +282,7 @@ val mutationBadge by tasks.registering {
         }
 
         val json =
-            """{"schemaVersion":1,"label":"mutation score","message":"$score% ($killed / $total)","color":"$color"}"""
+            """{"schemaVersion":1,"label":"mutation score","message":"$score% ($detected / $total)","color":"$color"}"""
 
         outFile.get().asFile.apply {
             parentFile.mkdirs()
