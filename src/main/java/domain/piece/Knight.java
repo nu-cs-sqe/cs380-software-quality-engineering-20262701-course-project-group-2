@@ -34,7 +34,9 @@ public class Knight extends Piece {
             int rowDelta = offset[1];
             int column = from.getColumn() + columnDelta;
             int row = from.getRow() + rowDelta;
-            moves.add(new Location(column, row));
+            if (isInsideBoard(column, row)) {
+                moves.add(new Location(column, row));
+            }
         }
         return moves;
     }
