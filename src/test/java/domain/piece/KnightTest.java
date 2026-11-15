@@ -1,6 +1,9 @@
 package domain.piece;
 
+import domain.Location;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -27,5 +30,20 @@ public class KnightTest {
         assertNotSame(knight, copy);
         assertEquals(PieceType.KNIGHT, copy.getType());
         assertEquals(PieceColor.BLACK, copy.getColor());
+    }
+
+    @Test
+    public void GetValidMoves_Knight_AllDirectionsFromCentre_ReturnEight(){
+        Knight knight = new Knight(PieceColor.WHITE);
+        Location from = new Location(3, 3);
+
+        Set<Location> expected = Set.of(
+                new Location(1, 2), new Location(1, 4),
+                new Location(2, 1), new Location(2, 5),
+                new Location(4, 1), new Location(4, 5),
+                new Location(5, 2), new Location(5, 4));
+        Set<Location> actual = knight.getValidMoves(from);
+
+        assertEquals(expected, actual);
     }
 }

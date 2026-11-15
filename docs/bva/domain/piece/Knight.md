@@ -11,7 +11,7 @@
 | Test Case ID                                                          | Method(s) under test | State of the System | Expected Output                                                 | Implemented? |
 |-----------------------------------------------------------------------|----------------------|---------------------|-----------------------------------------------------------------|--------------|
 | NC1<br><sub>makeCopy_WhiteKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | WHITE knight        | a distinct `Knight` object with type `KNIGHT` and color `WHITE` | :white_check_mark: |
-| NC2<br><sub>makeCopy_BlackKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | BLACK knight        | a distinct `Knight` object with type `KNIGHT` and color `BLACK` | :X:          |
+| NC2<br><sub>makeCopy_BlackKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | BLACK knight        | a distinct `Knight` object with type `KNIGHT` and color `BLACK` | :white_check_mark:          |
 
 ### Method under test: `getValidMoves()`
 
@@ -21,7 +21,7 @@
 
 | Test Case ID                                                                 | Method(s) under test | State of the System                                                                                                      | Expected Output                                                    | Implemented?       |
 |------------------------------------------------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|--------------------|
-| M25<br><sub>getValidMoves_Knight_AllDirectionsFromCentre_returnEight</sub>   | `getValidMoves()`    | a single white knight on (3, 3), every other square empty<br>• from: (3, 3)                                              | `{(1, 2), (1, 4), (2, 1), (2, 5), (4, 1), (4, 5), (5, 2), (5, 4)}` | :X:                |
+| M25<br><sub>getValidMoves_Knight_AllDirectionsFromCentre_returnEight</sub>   | `getValidMoves()`    | a single white knight on (3, 3), every other square empty<br>• from: (3, 3)                                              | `{(1, 2), (1, 4), (2, 1), (2, 5), (4, 1), (4, 5), (5, 2), (5, 4)}` | :white_check_mark:                |
 | M60<br><sub>getValidMoves_Knight_CornerTopLeft_returnTwo</sub>               | `getValidMoves()`    | a single white knight on (0, 0) (the top-left corner), every other square empty<br>• from: (0, 0)                        | `{(1, 2), (2, 1)}` — six of the eight jumps land off the board     | :white_check_mark: |
 | M61<br><sub>getValidMoves_Knight_CornerTopRight_returnTwo</sub>              | `getValidMoves()`    | a single white knight on (7, 0) (the top-right corner), every other square empty<br>• from: (7, 0)                       | `{(5, 1), (6, 2)}` — six of the eight jumps land off the board     | :white_check_mark: |
 | M62<br><sub>getValidMoves_Knight_CornerBottomLeft_returnTwo</sub>            | `getValidMoves()`    | a single white knight on (0, 7) (the bottom-left corner), every other square empty<br>• from: (0, 7)                     | `{(1, 5), (2, 6)}` — six of the eight jumps land off the board     | :white_check_mark: |
