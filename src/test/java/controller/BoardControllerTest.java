@@ -100,4 +100,17 @@ public class BoardControllerTest {
         assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_SelectOwnPiece_NoValidDestinations_NoHighlights(){
+        Location boxedInRook = new Location(0, 7);
+        expectStartingBoard(PieceColor.WHITE);
+        expect(mockGame.getLegalMoves(boxedInRook)).andReturn(Set.of());
+        replay(mockGame);
+
+        controller.handleSquareClick(boxedInRook);
+
+        assertSelection(boxedInRook, Set.of());
+        verify(mockGame);
+    }
 }
