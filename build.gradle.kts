@@ -83,6 +83,12 @@ tasks.spotbugsMain {
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
 
+    classDirectories.setFrom(
+        sourceSets.main.get().output.asFileTree.matching {
+            exclude(coverageExclusions)
+        }
+    )
+
     reports {
         xml.required = true
         csv.required = false
@@ -286,6 +292,14 @@ val mutationBadge by tasks.registering {
         println("Mutation badge: $json")
     }
 }
+
+val coverageExclusions = listOf(
+    "view/**",
+    "Main.class",
+    "domain/GameMode.class",
+    "domain/piece/PieceColor.class",
+    "domain/piece/PieceType.class"
+)
 
 val checkstyleBadge by tasks.registering {
     group = "verification"
