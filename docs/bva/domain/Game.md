@@ -64,13 +64,13 @@ Outputs:
 
 ---
 
-### Planned method under test: `getLegalMoves(Set<Location> locations, Piece piece)`
+### Planned method under test: `getLegalMoves(Location location)`
 
 **Purpose / use:** Provides the set of destinations the selected piece is actually allowed to move to depending on board position relative to other pieces (blocked piece logic, capture logic)
 
 **Expected behavior:** Starts from the piece's movement-level moves and filters/adds moves as required
 
-Inputs: Set<Location> locations, Piece piece, the current board
+Inputs: Set<Location> locations from getValidMoves, the current board, location the piece is moving from, the piece in question
 
 Outputs: Set<Location>
 
