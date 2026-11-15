@@ -19,7 +19,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class BoardView extends JPanel {
+public final class BoardView extends JPanel {
     private static final int BOARD_SIZE = 8;
     private static final int TILE_SIZE = 100;
     private static final Color LIGHT_SQUARE_COLOR = new Color(240, 217, 181);
