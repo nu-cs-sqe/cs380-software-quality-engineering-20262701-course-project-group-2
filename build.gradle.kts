@@ -1,8 +1,11 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
 import org.gradle.api.plugins.quality.Checkstyle
 
 plugins {
     id("java")
     checkstyle
+    id("com.github.spotbugs") version "6.0.25"
 }
 
 group = "nu.csse.sqe"
@@ -32,15 +35,32 @@ tasks.test {
 }
 
 checkstyle {
-    toolVersion = "10.12.4"
     isIgnoreFailures = false
-    maxErrors = 0
-    maxWarnings = 0
 }
 
 tasks.withType<Checkstyle>().configureEach {
     reports {
         xml.required = false
         html.required = true
+    }
+}
+
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+    effort = Effort.DEFAULT
+    reportLevel = Confidence.DEFAULT
+    maxHeapSize = "1g"
+    extraArgs = listOf("-nested:false")
+}
+
+tasks.spotbugsMain {
+    reports.create("html") {
+        required = true
+        outputLocation = layout.buildDirectory.file(
+            "reports/spotbugs/spotbugs.html"
+        )
+        setStylesheet("fancy-hist.xsl")
     }
 }
