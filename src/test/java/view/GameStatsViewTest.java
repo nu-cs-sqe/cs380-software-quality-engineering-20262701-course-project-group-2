@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GameStatsViewTest {
 
     @Test
-    public void GameStatsView_OnNewGame_DisplayWhitePlayer(){
+    public void GameStatsView_OnNewGame_DisplayWhitePlayer() {
         Game game = new Game();
         BoardController controller = new BoardController(game);
 
