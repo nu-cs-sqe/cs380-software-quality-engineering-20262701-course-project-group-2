@@ -113,4 +113,18 @@ public class BoardControllerTest {
         assertSelection(boxedInRook, Set.of());
         verify(mockGame);
     }
+
+    @Test
+    public void GetHighlightedSquares_SelectionWithExactlyOneMove_ReturnOne(){
+        Location king = new Location(4, 7);
+        Set<Location> kingMoves = Set.of(new Location(4, 6));
+        expectStartingBoard(PieceColor.WHITE);
+        expect(mockGame.getLegalMoves(king)).andReturn(kingMoves);
+        replay(mockGame);
+
+        controller.handleSquareClick(king);
+
+        assertSelection(king, kingMoves);
+        verify(mockGame);
+    }
 }
