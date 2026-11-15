@@ -1,11 +1,9 @@
 package domain.piece;
 
 import domain.Location;
-
 import java.util.Set;
 
 public class Rook extends Piece {
-
     private static final int[][] DIRECTIONS = {
             {0, -1},
             {0, 1},
