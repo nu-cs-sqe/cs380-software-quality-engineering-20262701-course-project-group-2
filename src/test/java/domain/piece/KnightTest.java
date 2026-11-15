@@ -103,4 +103,18 @@ public class KnightTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void GetValidMoves_Knight_OneInFromBottomRightCorner_ReturnFour(){
+        Knight knight = new Knight(PieceColor.WHITE);
+        Location from = new Location(6, 6);
+
+        Set<Location> expected = Set.of(
+                new Location(7, 4), new Location(5, 4),
+                new Location(4, 7), new Location(4, 5));
+        Set<Location> actual = knight.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
+
 }
