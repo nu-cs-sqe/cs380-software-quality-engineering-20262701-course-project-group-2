@@ -7,6 +7,8 @@ import domain.piece.PieceColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -53,6 +55,16 @@ public class BoardControllerTest {
         Location actual = controller.getSelectedSquare();
 
         assertNull(actual);
+        verify(mockGame);
+    }
+
+    @Test
+    public void GetHighlightedSquares_NoSelection_ReturnEmpty(){
+        replay(mockGame);
+
+        Set<Location> actual = controller.getHighlightedSquares();
+
+        assertEquals(Set.of(), actual);
         verify(mockGame);
     }
 }
