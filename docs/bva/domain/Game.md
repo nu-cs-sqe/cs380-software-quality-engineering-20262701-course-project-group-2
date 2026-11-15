@@ -66,9 +66,9 @@ Outputs:
 
 ### Planned method under test: `getLegalMoves(Set<Location> locations, Piece piece)`
 
-**Purpose / use:** Provides the final set of destinations the selected piece is actually allowed to move to after Game-level rules are applied
+**Purpose / use:** Provides the set of destinations the selected piece is actually allowed to move to depending on board position relative to other pieces (blocked piece logic, capture logic)
 
-**Expected behavior:** Starts from the piece's movement-level moves and filters/adds moves as required by rules such as king safety and castling.
+**Expected behavior:** Starts from the piece's movement-level moves and filters/adds moves as required
 
 Inputs: Set<Location> locations, Piece piece, the current board
 
@@ -126,13 +126,31 @@ Outputs: Set<Location>
 
 ### Planned method under test: `isInCheck(PieceColor color)`
 
-**Purpose / use:** Determines whether a player's king is currently attacked.
+**Purpose / use:** Determines whether a player's king is attacked.
 
 **Expected behavior:** Returns `true` when the requested color's king is in check and `false` otherwise.
 
-Inputs:
+Inputs: current state of the board, color of the current player trying to make a move, the piece checking the king
 
-Outputs:
+Outputs: boolean
+
+| Test Case ID | Method(s) under test          | State of the System | Expected Output | Implemented? |
+|--------------|-------------------------------|---------------------|-----------------|--------------|
+|   IC1     | `isInCheck(PieceColor color)` |    black king (2,0), white bishop (5,3), color = black      |    True    | :X:          |
+|   IC2     | `isInCheck(PieceColor color)` |    black king (2,0), white bishop (5,3), black pawn (3,1), color = black      |    False    | :X:          |
+
+---
+
+
+### Planned method under test: `getPlayableMoves(Set<Location> location, Piece piece)`
+
+**Purpose / use:** Determines the final set of playable moves that a player can move a piece after checking for king safety.
+
+**Expected behavior:** Returns a set of playable moves filtering out any moves that would put the player's own piece in check, unless those moves would lead to checkmate 
+
+Inputs: current state of the board, piece being moved, set of legal moves the piece can make
+
+Outputs: set<location>
 
 | Test Case ID | Method(s) under test          | State of the System | Expected Output | Implemented? |
 |--------------|-------------------------------|---------------------|-----------------|--------------|
