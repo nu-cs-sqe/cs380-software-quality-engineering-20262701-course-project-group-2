@@ -33,6 +33,11 @@ public class BoardController {
     }
 
     public void handleSquareClick(Location location){
-        // TODO
+        select(location);
+    }
+
+    private void select(Location location){
+        selectedSquare = location;
+        highlightedSquares = Set.copyOf(game.getLegalMoves(location));
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import domain.Board;
 import domain.Game;
 import domain.Location;
 import domain.piece.Piece;
@@ -9,11 +10,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BoardControllerTest {
+
+    private static final Location WHITE_PAWN = new Location(4, 6);
+    private static final Set<Location> WHITE_PAWN_MOVES = Set.of(new Location(4, 5), new Location(4, 4));
 
     private Game mockGame;
     private BoardController controller;
@@ -22,6 +29,21 @@ public class BoardControllerTest {
     public void setUp(){
         mockGame = createMock(Game.class);
         controller = new BoardController(mockGame);
+    }
+
+    private void expectStartingBoard(PieceColor currentTurn){
+        expect(mockGame.getBoardSnapshot()).andReturn(new Board().getSnapshot()).anyTimes();
+        expect(mockGame.getCurrentTurn()).andReturn(currentTurn).anyTimes();
+    }
+
+    private void expectWhitePawnCanBeSelected(){
+        expectStartingBoard(PieceColor.WHITE);
+        expect(mockGame.getLegalMoves(WHITE_PAWN)).andReturn(WHITE_PAWN_MOVES);
+    }
+
+    private void assertSelection(Location expectedSquare, Set<Location> expectedHighlights){
+        assertEquals(expectedSquare, controller.getSelectedSquare());
+        assertEquals(expectedHighlights, controller.getHighlightedSquares());
     }
 
     @Test
@@ -65,6 +87,17 @@ public class BoardControllerTest {
         Set<Location> actual = controller.getHighlightedSquares();
 
         assertEquals(Set.of(), actual);
+        verify(mockGame);
+    }
+
+    @Test
+    public void HandleSquareClick_SelectOwnPawn_NoPriorSelection_NewSelection(){
+        expectWhitePawnCanBeSelected();
+        replay(mockGame);
+
+        controller.handleSquareClick(WHITE_PAWN);
+
+        assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
         verify(mockGame);
     }
 }
