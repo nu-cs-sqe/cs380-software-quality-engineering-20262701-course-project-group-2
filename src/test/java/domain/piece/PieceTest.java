@@ -19,6 +19,22 @@ public class PieceTest {
         assertTrue(actual.isEmpty());
     }
 
+    @Test
+    public void GetDirectionalMoves_ZeroDirection_ReturnEmptySet() {
+        Piece piece = new TestPiece();
+        Location from = new Location(3, 3);
+        int[][] directions = {
+                {0, 0}
+        };
+
+        Set<Location> actual = piece.getDirectionalMoves(
+                from,
+                directions
+        );
+
+        assertTrue(actual.isEmpty());
+    }
+
     private static final class TestPiece extends Piece {
 
         private TestPiece() {
