@@ -35,6 +35,16 @@ public class PieceTest {
         assertTrue(actual.isEmpty());
     }
 
+    @Test
+    public void ToString_WhiteRook_ReturnColorAndType() {
+        Piece piece = new TestPiece();
+
+        String expected = "WHITE ROOK";
+        String actual = piece.toString();
+
+        assertEquals(expected, actual);
+    }
+
     private static final class TestPiece extends Piece {
 
         private TestPiece() {
