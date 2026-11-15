@@ -134,4 +134,15 @@ public class PawnTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void GetValidMoves_Pawn_BlackOnRightEdgeStartRow_ReturnTwo(){
+        Pawn pawn = new Pawn(PieceColor.BLACK);
+        Location from = new Location(7, 1);
+
+        Set<Location> expected = Set.of(new Location(7, 2), new Location(7, 3));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
 }
