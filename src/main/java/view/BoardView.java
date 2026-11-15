@@ -5,10 +5,10 @@ import domain.Location;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
 import domain.piece.PieceType;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class BoardView extends JPanel {
     private static final int BOARD_SIZE = 8;
@@ -33,7 +35,9 @@ public class BoardView extends JPanel {
 
     public BoardView(BoardController boardController) {
         this.boardController = boardController;
-        setPreferredSize(new Dimension(BOARD_SIZE * TILE_SIZE, BOARD_SIZE * TILE_SIZE));
+        setPreferredSize(
+                new Dimension(BOARD_SIZE * TILE_SIZE, BOARD_SIZE * TILE_SIZE)
+        );
         loadPieceImages();
         addMouseListener(new BoardMouseListener());
     }
@@ -49,7 +53,9 @@ public class BoardView extends JPanel {
     private void drawBoard(Graphics graphics) {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int column = 0; column < BOARD_SIZE; column++) {
-                Color squareColor = (row + column) % 2 == 0 ? LIGHT_SQUARE_COLOR : DARK_SQUARE_COLOR;
+                Color squareColor = (row + column) % 2 == 0
+                        ? LIGHT_SQUARE_COLOR
+                        : DARK_SQUARE_COLOR;
                 graphics.setColor(squareColor);
                 graphics.fillRect(column * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
@@ -73,7 +79,9 @@ public class BoardView extends JPanel {
     }
 
     private void loadPieceImage(PieceType type, PieceColor color, String imagePath) {
-        try (InputStream imageInputStream = getClass().getClassLoader().getResourceAsStream(imagePath)) {
+        try (InputStream imageInputStream = getClass()
+                .getClassLoader()
+                .getResourceAsStream(imagePath)) {
             if (imageInputStream == null) {
                 throw new IllegalStateException("Piece image not found: " + imagePath);
             }
@@ -84,11 +92,14 @@ public class BoardView extends JPanel {
             }
 
             Map<PieceType, Image> pieceImages = color == PieceColor.WHITE
-                ? whitePieceImages
-                : blackPieceImages;
+                    ? whitePieceImages
+                    : blackPieceImages;
             pieceImages.put(type, image);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load piece image: " + imagePath, e);
+        } catch (IOException exception) {
+            throw new IllegalStateException(
+                    "Unable to load piece image: " + imagePath,
+                    exception
+            );
         }
     }
 
@@ -100,15 +111,15 @@ public class BoardView extends JPanel {
                 Piece piece = boardSnapshot[row][column];
                 if (piece != null) {
                     Image pieceImage = piece.getColor() == PieceColor.WHITE
-                        ? whitePieceImages.get(piece.getType())
-                        : blackPieceImages.get(piece.getType());
+                            ? whitePieceImages.get(piece.getType())
+                            : blackPieceImages.get(piece.getType());
                     graphics.drawImage(
-                        pieceImage,
-                        column * TILE_SIZE,
-                        row * TILE_SIZE,
-                        TILE_SIZE,
-                        TILE_SIZE,
-                        this
+                            pieceImage,
+                            column * TILE_SIZE,
+                            row * TILE_SIZE,
+                            TILE_SIZE,
+                            TILE_SIZE,
+                            this
                     );
                 }
             }
@@ -122,20 +133,23 @@ public class BoardView extends JPanel {
 
         graphics.setColor(SELECTED_SQUARE_COLOR);
         graphics.fillRect(
-            selectedColumn * TILE_SIZE,
-            selectedRow * TILE_SIZE,
-            TILE_SIZE,
-            TILE_SIZE
+                selectedColumn * TILE_SIZE,
+                selectedRow * TILE_SIZE,
+                TILE_SIZE,
+                TILE_SIZE
         );
     }
 
-    private class BoardMouseListener extends MouseAdapter {
+    private final class BoardMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent event) {
             selectedColumn = event.getX() / TILE_SIZE;
             selectedRow = event.getY() / TILE_SIZE;
 
-            // FIXME: perform input validation
+            if (selectedColumn < 0 || selectedColumn >= BOARD_SIZE
+                    || selectedRow < 0 || selectedRow >= BOARD_SIZE) {
+                return;
+            }
 
             repaint();
             boardController.handleSquareClick(new Location(selectedColumn, selectedRow));
