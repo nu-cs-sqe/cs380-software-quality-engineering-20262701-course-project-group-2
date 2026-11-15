@@ -40,7 +40,10 @@ tasks.test {
 }
 
 checkstyle {
+    toolVersion = "10.12.4"
     isIgnoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
 }
 
 tasks.withType<Checkstyle>().configureEach {
