@@ -10,7 +10,7 @@
 
 | Test Case ID                                                          | Method(s) under test | State of the System | Expected Output                                                 | Implemented? |
 |-----------------------------------------------------------------------|----------------------|---------------------|-----------------------------------------------------------------|--------------|
-| NC1<br><sub>makeCopy_WhiteKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | WHITE knight        | a distinct `Knight` object with type `KNIGHT` and color `WHITE` | :X:          |
+| NC1<br><sub>makeCopy_WhiteKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | WHITE knight        | a distinct `Knight` object with type `KNIGHT` and color `WHITE` | :white_check_mark: |
 | NC2<br><sub>makeCopy_BlackKnight_ReturnEquivalentDistinctKnight</sub> | `makeCopy()`         | BLACK knight        | a distinct `Knight` object with type `KNIGHT` and color `BLACK` | :X:          |
 
 ### Method under test: `getValidMoves()`

@@ -17,4 +17,15 @@ public class KnightTest {
         assertEquals(PieceType.KNIGHT, copy.getType());
         assertEquals(PieceColor.WHITE, copy.getColor());
     }
+
+    @Test
+    public void MakeCopy_BlackKnight_ReturnEquivalentDistinctKnight(){
+        Knight knight = new Knight(PieceColor.BLACK);
+
+        Piece copy = knight.makeCopy();
+
+        assertNotSame(knight, copy);
+        assertEquals(PieceType.KNIGHT, copy.getType());
+        assertEquals(PieceColor.BLACK, copy.getColor());
+    }
 }
