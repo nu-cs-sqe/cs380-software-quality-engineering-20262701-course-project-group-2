@@ -25,16 +25,18 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate complexity badge data
-        run: ./gradlew complexityBadge -x pitest
+      - name: Generate JaCoCo and PIT badge data
+        run: ./gradlew complexityBadge mutationBadge
 
-      - name: Render complexity badge
+      - name: Render badge SVGs
         run: |
-          curl -fsSL -G "https://img.shields.io/static/v1" \
-            --data-urlencode "label=$(jq -r .label build/badges/complexity.json)" \
-            --data-urlencode "message=$(jq -r .message build/badges/complexity.json)" \
-            --data-urlencode "color=$(jq -r .color build/badges/complexity.json)" \
-            -o build/badges/complexity.svg
+          for badge in complexity mutation; do
+            curl -fsSL -G "https://img.shields.io/static/v1" \
+              --data-urlencode "label=$(jq -r .label build/badges/$badge.json)" \
+              --data-urlencode "message=$(jq -r .message build/badges/$badge.json)" \
+              --data-urlencode "color=$(jq -r .color build/badges/$badge.json)" \
+              -o build/badges/$badge.svg
+          done
 
       - name: Publish badges
         uses: peaceiris/actions-gh-pages@v4

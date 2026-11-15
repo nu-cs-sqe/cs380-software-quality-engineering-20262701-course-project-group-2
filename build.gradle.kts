@@ -101,7 +101,7 @@ pitest {
     pitestVersion = "1.15.0"
 
     threads = 4
-    outputFormats = setOf("HTML")
+    outputFormats = setOf("HTML", "XML")
     timestampedReports = false
 
     testSourceSets.set(
@@ -207,5 +207,72 @@ val complexityBadge by tasks.registering {
         }
 
         println("Complexity badge: $json")
+    }
+}
+
+val mutationBadge by tasks.registering {
+    group = "verification"
+    description = "Writes badge data for the PIT mutation score"
+
+    dependsOn("pitest")
+
+    val reportFile = layout.buildDirectory.file(
+        "reports/pitest/mutations.xml"
+    )
+    val outFile = layout.buildDirectory.file(
+        "badges/mutation.json"
+    )
+
+    inputs.file(reportFile)
+    outputs.file(outFile)
+
+    doLast {
+        val factory = DocumentBuilderFactory.newInstance().apply {
+            isValidating = false
+            setFeature(
+                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                false
+            )
+        }
+
+        val document = factory.newDocumentBuilder().parse(
+            reportFile.get().asFile
+        )
+
+        val mutations = document.getElementsByTagName("mutation")
+        val total = mutations.length
+        var killed = 0
+
+        for (index in 0 until mutations.length) {
+            val mutation = mutations.item(index) as Element
+
+            if (mutation.getAttribute("status") == "KILLED") {
+                killed++
+            }
+        }
+
+        val score = if (total == 0) {
+            100
+        } else {
+            killed * 100 / total
+        }
+
+        val color = when {
+            score == 100 -> "brightgreen"
+            score >= 80 -> "yellowgreen"
+            score >= 60 -> "yellow"
+            score >= 40 -> "orange"
+            else -> "red"
+        }
+
+        val json =
+            """{"schemaVersion":1,"label":"mutation score","message":"$score% ($killed / $total)","color":"$color"}"""
+
+        outFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+
+        println("Mutation badge: $json")
     }
 }
