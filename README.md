@@ -16,6 +16,7 @@
 - Checkstyle
 - SpotBugs Gradle Plugin 6.0.25
 - JaCoCo
+- PIT Gradle Plugin 1.15.0
 
 ## Exceptions
 
