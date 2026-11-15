@@ -1,5 +1,8 @@
+import org.gradle.api.plugins.quality.Checkstyle
+
 plugins {
     id("java")
+    checkstyle
 }
 
 group = "nu.csse.sqe"
@@ -26,4 +29,18 @@ tasks.compileJava {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = "10.12.4"
+    isIgnoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
+}
+
+tasks.withType<Checkstyle>().configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
 }
