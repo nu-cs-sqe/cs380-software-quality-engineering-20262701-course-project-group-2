@@ -6,13 +6,13 @@ import domain.piece.PieceColor;
 import java.util.HashSet;
 import java.util.Set;
 
+import static domain.piece.PieceType.PAWN;
+
 public class Game {
     private static final int BOARD_SIZE = 8;
 
     private final Board board;
     private final PieceColor currentTurn;
-
-    //current board state/piece in play
     private Piece[][] currentBoardState;
     private Piece currentPiece;
 
@@ -39,7 +39,7 @@ public class Game {
         Set<Location> returnSet = new HashSet<>();
 
         for (Location candidate : currentPiece.getValidMoves(from)){
-            if (!isBlockedByFriendly(candidate)) {
+            if (!isBlockedByFriendly(candidate) && isLegalByType(from, candidate)) {
                 returnSet.add(candidate);
             }
         }
@@ -47,9 +47,36 @@ public class Game {
         return returnSet;
     }
 
+    private boolean isLegalByType(Location from, Location destination){
+        switch (currentPiece.getType()) {
+            case KNIGHT:
+                return true;
+            default:
+                return isPathClear(from, destination);
+        }
+    }
+
     private boolean isBlockedByFriendly(Location destination){
         Piece destinationPiece = pieceAt(currentBoardState,destination);
-        return destinationPiece == null || destinationPiece.getColor() != currentPiece.getColor();
+        return destinationPiece != null && destinationPiece.getColor() == currentPiece.getColor();
+    }
+
+    private boolean isPathClear(Location from, Location to) {
+        int columnStep = Integer.signum(to.getColumn() - from.getColumn());
+        int rowStep = Integer.signum(to.getRow() - from.getRow());
+
+        int column = from.getColumn() + columnStep;
+        int row = from.getRow() + rowStep;
+
+        while (column != to.getColumn() || row != to.getRow()) {
+            if (pieceAt(currentBoardState, new Location(column, row)) != null) {
+                return false;
+            }
+            column += columnStep;
+            row += rowStep;
+        }
+
+        return true;
     }
 
 
