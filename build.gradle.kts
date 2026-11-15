@@ -1,6 +1,8 @@
 import com.github.spotbugs.snom.Confidence
 import com.github.spotbugs.snom.Effort
 import org.gradle.api.plugins.quality.Checkstyle
+import javax.xml.parsers.DocumentBuilderFactory
+import org.w3c.dom.Element
 
 plugins {
     id("java")
@@ -117,4 +119,93 @@ pitest {
     useClasspathFile.set(true)
     fileExtensionsToFilter.addAll("xml")
     exportLineCoverage = true
+}
+
+val complexityBadge by tasks.registering {
+    group = "verification"
+    description = "Writes badge data for missed cyclomatic complexity"
+
+    dependsOn(tasks.jacocoTestReport)
+
+    val reportFile = layout.buildDirectory.file(
+        "reports/jacoco/test/jacocoTestReport.xml"
+    )
+    val outFile = layout.buildDirectory.file(
+        "badges/complexity.json"
+    )
+
+    inputs.file(reportFile)
+    outputs.file(outFile)
+
+    doLast {
+        val factory = DocumentBuilderFactory.newInstance().apply {
+            isValidating = false
+            setFeature(
+                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                false
+            )
+        }
+
+        val document = factory.newDocumentBuilder().parse(
+            reportFile.get().asFile
+        )
+
+        val excludedClasses = setOf(
+            "Main",
+            "domain/GameMode",
+            "domain/piece/PieceColor",
+            "domain/piece/PieceType"
+        )
+
+        var missed = 0
+        var covered = 0
+
+        val classes = document.getElementsByTagName("class")
+
+        for (classIndex in 0 until classes.length) {
+            val classElement = classes.item(classIndex) as Element
+            val className = classElement.getAttribute("name")
+
+            if (className.startsWith("view/")
+                || className in excludedClasses) {
+                continue
+            }
+
+            val children = classElement.childNodes
+
+            for (childIndex in 0 until children.length) {
+                val counter = children.item(childIndex) as? Element
+                    ?: continue
+
+                if (counter.tagName != "counter") {
+                    continue
+                }
+
+                if (counter.getAttribute("type") == "COMPLEXITY") {
+                    missed += counter.getAttribute("missed").toInt()
+                    covered += counter.getAttribute("covered").toInt()
+                }
+            }
+        }
+
+        val total = missed + covered
+
+        val color = when {
+            missed == 0 -> "brightgreen"
+            total == 0 -> "lightgrey"
+            missed * 4 <= total -> "yellow"
+            missed * 2 <= total -> "orange"
+            else -> "red"
+        }
+
+        val json =
+            """{"schemaVersion":1,"label":"missed complexity","message":"$missed / $total","color":"$color"}"""
+
+        outFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+
+        println("Complexity badge: $json")
+    }
 }
