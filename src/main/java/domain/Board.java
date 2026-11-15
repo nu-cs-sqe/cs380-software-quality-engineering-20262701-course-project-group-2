@@ -1,12 +1,31 @@
 package domain;
 
-import domain.piece.*;
+import domain.piece.Bishop;
+import domain.piece.King;
+import domain.piece.Knight;
+import domain.piece.Pawn;
+import domain.piece.Piece;
+import domain.piece.PieceColor;
+import domain.piece.Queen;
+import domain.piece.Rook;
 
 import static domain.piece.PieceColor.BLACK;
 import static domain.piece.PieceColor.WHITE;
 
 public class Board {
     private static final int BOARD_SIZE = 8;
+    private static final int BLACK_PIECE_ROW = 0;
+    private static final int BLACK_PAWN_ROW = 1;
+    private static final int WHITE_PAWN_ROW = 6;
+    private static final int WHITE_PIECE_ROW = 7;
+    private static final int LEFT_ROOK_COLUMN = 0;
+    private static final int LEFT_KNIGHT_COLUMN = 1;
+    private static final int LEFT_BISHOP_COLUMN = 2;
+    private static final int QUEEN_COLUMN = 3;
+    private static final int KING_COLUMN = 4;
+    private static final int RIGHT_BISHOP_COLUMN = 5;
+    private static final int RIGHT_KNIGHT_COLUMN = 6;
+    private static final int RIGHT_ROOK_COLUMN = 7;
 
     private final Piece[][] pieces;
 
@@ -16,8 +35,8 @@ public class Board {
     }
 
     private void initializeBoard() {
-        initializePieces(BLACK, 0, 1);
-        initializePieces(WHITE, 7, 6);
+        initializePieces(BLACK, BLACK_PIECE_ROW, BLACK_PAWN_ROW);
+        initializePieces(WHITE, WHITE_PIECE_ROW, WHITE_PAWN_ROW);
     }
 
     private void initializePieces(PieceColor color, int pieceRow, int pawnRow) {
@@ -25,14 +44,14 @@ public class Board {
             pieces[pawnRow][column] = new Pawn(color);
         }
 
-        pieces[pieceRow][0] = new Rook(color);
-        pieces[pieceRow][1] = new Knight(color);
-        pieces[pieceRow][2] = new Bishop(color);
-        pieces[pieceRow][3] = new Queen(color);
-        pieces[pieceRow][4] = new King(color);
-        pieces[pieceRow][5] = new Bishop(color);
-        pieces[pieceRow][6] = new Knight(color);
-        pieces[pieceRow][7] = new Rook(color);
+        pieces[pieceRow][LEFT_ROOK_COLUMN] = new Rook(color);
+        pieces[pieceRow][LEFT_KNIGHT_COLUMN] = new Knight(color);
+        pieces[pieceRow][LEFT_BISHOP_COLUMN] = new Bishop(color);
+        pieces[pieceRow][QUEEN_COLUMN] = new Queen(color);
+        pieces[pieceRow][KING_COLUMN] = new King(color);
+        pieces[pieceRow][RIGHT_BISHOP_COLUMN] = new Bishop(color);
+        pieces[pieceRow][RIGHT_KNIGHT_COLUMN] = new Knight(color);
+        pieces[pieceRow][RIGHT_ROOK_COLUMN] = new Rook(color);
     }
 
     public Piece[][] getSnapshot() {

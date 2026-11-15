@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="error"/>
+    <property name="fileExtensions" value="java"/>
+    <property name="tabWidth" value="4"/>
+
+    <!-- Allows justified, targeted @SuppressWarnings("checkstyle:RuleName"). -->
+    <module name="SuppressWarningsFilter"/>
+
+    <!-- FILE FORMATTING -->
+
+    <!-- Every source file should end with a newline. -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- Use spaces rather than tab characters. -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="SuppressionFilter">
+        <property name="file"
+                  value="${config_loc}/suppressions.xml"/>
+        <property name="optional"
+                  value="false"/>
+    </module>
+
+    <!-- Keep lines readable without horizontal scrolling. -->
+    <module name="LineLength">
+        <property name="max" value="100"/>
+        <property name="ignorePattern"
+                  value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+    </module>
+
+    <!-- Very large files often indicate that a class has too many responsibilities. -->
+    <module name="FileLength">
+        <property name="max" value="500"/>
+    </module>
+
+    <module name="TreeWalker">
+        <module name="SuppressWarningsHolder"/>
+
+        <!-- FILE AND TYPE STRUCTURE -->
+
+        <module name="OuterTypeFilename"/>
+        <module name="OneTopLevelClass"/>
+        <module name="NoLineWrap">
+            <property name="tokens"
+                      value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
+        </module>
+
+        <!-- IMPORTS -->
+
+        <module name="AvoidStarImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+
+        <module name="CustomImportOrder">
+            <property name="customImportOrderRules"
+                      value="THIRD_PARTY_PACKAGE###STATIC"/>
+            <property name="sortImportsInGroupAlphabetically"
+                      value="true"/>
+            <property name="separateLineBetweenGroups"
+                      value="true"/>
+        </module>
+
+        <!-- NAMING -->
+
+        <module name="PackageName">
+            <property name="format"
+                      value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+
+        <module name="TypeName">
+            <property name="format"
+                      value="^[A-Z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <module name="ConstantName"/>
+
+        <module name="MemberName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <module name="StaticVariableName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <module name="ParameterName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <module name="LocalVariableName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <module name="CatchParameterName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!--
+            Regular production methods should be lowerCamelCase.
+
+            Underscores are also permitted because the course test naming style and
+            Cucumber-generated step names may use descriptive underscore-separated
+            names such as:
+                GetSnapshot_OnNewBoard_Return8x8Board
+                an_empty_chessboard
+        -->
+        <module name="MethodName">
+            <property name="format"
+                      value="^[a-z][a-zA-Z0-9]*$|^[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+$"/>
+        </module>
+
+        <!-- INDENTATION AND WHITESPACE -->
+
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="8"/>
+            <property name="arrayInitIndent" value="4"/>
+        </module>
+
+        <module name="GenericWhitespace"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyLoops" value="false"/>
+        </module>
+
+        <module name="OperatorWrap">
+            <property name="option" value="NL"/>
+        </module>
+
+        <!-- BRACES AND BLOCKS -->
+
+        <module name="NeedBraces">
+            <property name="tokens"
+                      value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR,
+                             LITERAL_IF, LITERAL_WHILE"/>
+        </module>
+
+        <module name="LeftCurly"/>
+
+        <module name="RightCurly">
+            <property name="id" value="RightCurlySame"/>
+            <property name="tokens"
+                      value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY,
+                             LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
+        </module>
+
+        <module name="RightCurly">
+            <property name="id" value="RightCurlyAlone"/>
+            <property name="option" value="alone"/>
+            <property name="tokens"
+                      value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR,
+                             LITERAL_WHILE, STATIC_INIT, INSTANCE_INIT,
+                             ANNOTATION_DEF, ENUM_DEF, INTERFACE_DEF,
+                             LITERAL_SWITCH"/>
+        </module>
+
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+            <property name="tokens"
+                      value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF,
+                             LITERAL_ELSE, LITERAL_SWITCH"/>
+        </module>
+
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName"
+                      value="expected|ignored"/>
+        </module>
+
+        <!-- DECLARATIONS AND ORGANIZATION -->
+
+        <module name="OneStatementPerLine"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="ModifierOrder"/>
+        <module name="DeclarationOrder"/>
+        <module name="OverloadMethodsDeclarationOrder"/>
+        <module name="ArrayTypeStyle"/>
+
+        <!-- Chapter 5: declare variables close to where they are used. -->
+        <module name="VariableDeclarationUsageDistance"/>
+
+        <module name="EmptyLineSeparator">
+            <property name="tokens"
+                      value="PACKAGE_DEF, IMPORT, STATIC_IMPORT, CLASS_DEF,
+                             INTERFACE_DEF, ENUM_DEF, STATIC_INIT,
+                             INSTANCE_INIT, METHOD_DEF, CTOR_DEF,
+                             VARIABLE_DEF"/>
+            <property name="allowNoEmptyLineBetweenFields"
+                      value="true"/>
+        </module>
+
+        <!-- CLEAN CODE: MEANINGFUL CONSTANTS AND EXPRESSIONS -->
+
+        <!--
+            Flags unexplained numeric literals.
+
+            Checkstyle ignores -1, 0, 1, and 2 by default. Other recurring
+            domain values should generally become meaningfully named constants.
+        -->
+        <module name="MagicNumber"/>
+
+        <module name="StringLiteralEquality"/>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <module name="CovariantEquals"/>
+
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+
+        <module name="InnerAssignment"/>
+        <module name="ModifiedControlVariable"/>
+        <module name="ParameterAssignment"/>
+
+        <module name="AvoidNestedBlocks"/>
+        <module name="AvoidDoubleBraceInitialization"/>
+        <module name="EmptyStatement"/>
+
+        <module name="MissingSwitchDefault"/>
+        <module name="DefaultComesLast"/>
+        <module name="FallThrough"/>
+
+        <module name="NoFinalizer"/>
+        <module name="UpperEll"/>
+
+        <!-- TO DO and FIX ME comments should not be merged as unfinished work. -->
+        <module name="TodoComment">
+            <property name="format" value="TODO|FIXME"/>
+        </module>
+
+        <!-- CLEAN CODE: ERROR HANDLING -->
+
+        <!--
+            Prevents broad catches such as Exception, RuntimeException,
+            Error, and Throwable.
+        -->
+        <module name="IllegalCatch"/>
+
+        <!-- FUNCTIONS SHOULD REMAIN SMALL -->
+
+        <!--
+            A method exceeding 40 lines should be reviewed for extraction
+            into smaller, intention-revealing methods.
+        -->
+        <module name="MethodLength">
+            <property name="max" value="40"/>
+            <property name="countEmpty" value="false"/>
+        </module>
+
+        <module name="ExecutableStatementCount">
+            <property name="max" value="30"/>
+        </module>
+
+        <!-- Clean Code strongly favors small parameter lists. -->
+        <module name="ParameterNumber">
+            <property name="max" value="4"/>
+            <property name="ignoreOverriddenMethods" value="true"/>
+        </module>
+
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
+
+        <module name="NestedForDepth">
+            <property name="max" value="2"/>
+        </module>
+
+        <module name="NestedTryDepth">
+            <property name="max" value="1"/>
+        </module>
+
+        <!--
+            Complexity above 10 usually indicates that a method should be
+            broken into smaller responsibilities.
+        -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+        </module>
+
+        <!-- CLASSES AND ENCAPSULATION -->
+
+        <!-- Fields should normally be private. -->
+        <module name="VisibilityModifier"/>
+
+        <!--
+            Detect actual local-variable shadowing, but permit conventional
+            constructor and setter parameters such as this.name = name.
+        -->
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+        </module>
+
+        <module name="HideUtilityClassConstructor"/>
+        <module name="FinalClass"/>
+        <module name="InterfaceIsType"/>
+        <module name="MutableException"/>
+        <module name="InnerTypeLast"/>
+
+        <!-- ANNOTATIONS AND COMMENTS -->
+
+        <module name="MissingOverride"/>
+        <module name="CommentsIndentation"/>
+
+    </module>
+</module>

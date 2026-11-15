@@ -7,16 +7,16 @@ public class Game {
     private final Board board;
     private PieceColor currentTurn;
 
-    public Game(){
+    public Game() {
         board = new Board();
         currentTurn = PieceColor.WHITE;
     }
 
-    public PieceColor getCurrentTurn(){
+    public PieceColor getCurrentTurn() {
         return currentTurn;
     }
 
-    public Piece[][] getBoardSnapshot(){
+    public Piece[][] getBoardSnapshot() {
         return board.getSnapshot();
     }
 }

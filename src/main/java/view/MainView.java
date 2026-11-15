@@ -2,11 +2,13 @@ package view;
 
 import controller.BoardController;
 import domain.Game;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
 
 public class MainView extends JFrame {
+    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 1200;
+
     private final String player1Name;
     private final String player2Name;
     private final BoardController boardController;
@@ -29,7 +31,7 @@ public class MainView extends JFrame {
     private void configureMainView() {
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 1200);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
     }
 

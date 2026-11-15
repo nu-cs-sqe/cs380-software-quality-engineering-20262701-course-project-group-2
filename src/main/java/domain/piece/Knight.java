@@ -1,12 +1,10 @@
 package domain.piece;
 
 import domain.Location;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class Knight extends Piece {
-
     private static final int[][] JUMP_OFFSETS = {
             {1, 2},
             {2, 1},
