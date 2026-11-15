@@ -29,12 +29,21 @@ jobs:
         continue-on-error: true
         run: ./gradlew checkstyleMain checkstyleTest
 
+      - name: Generate SpotBugs report
+        continue-on-error: true
+        run: ./gradlew spotbugsMain
+
       - name: Generate badge data
-        run: ./gradlew complexityBadge mutationBadge checkstyleBadge
+        run: |
+          ./gradlew \
+            complexityBadge \
+            mutationBadge \
+            checkstyleBadge \
+            spotbugsBadge
 
       - name: Render badge SVGs
         run: |
-          for badge in complexity mutation checkstyle; do
+          for badge in complexity mutation checkstyle spotbugs; do
             curl -fsSL -G "https://img.shields.io/static/v1" \
               --data-urlencode "label=$(jq -r .label build/badges/$badge.json)" \
               --data-urlencode "message=$(jq -r .message build/badges/$badge.json)" \

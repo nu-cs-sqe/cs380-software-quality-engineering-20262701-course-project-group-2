@@ -68,6 +68,13 @@ tasks.spotbugsMain {
         )
         setStylesheet("fancy-hist.xsl")
     }
+
+    reports.create("xml") {
+        required = true
+        outputLocation = layout.buildDirectory.file(
+            "reports/spotbugs/spotbugs.xml"
+        )
+    }
 }
 
 tasks.jacocoTestReport {
@@ -342,5 +349,61 @@ val checkstyleBadge by tasks.registering {
         }
 
         println("Checkstyle badge: $json")
+    }
+}
+
+val spotbugsBadge by tasks.registering {
+    group = "verification"
+    description = "Writes badge data for SpotBugs findings"
+
+    val reportFile = layout.buildDirectory.file(
+        "reports/spotbugs/spotbugs.xml"
+    )
+    val outFile = layout.buildDirectory.file(
+        "badges/spotbugs.json"
+    )
+
+    inputs.file(reportFile)
+    outputs.file(outFile)
+
+    doLast {
+        val factory = DocumentBuilderFactory.newInstance().apply {
+            isValidating = false
+            setFeature(
+                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                false
+            )
+        }
+
+        val document = factory.newDocumentBuilder().parse(
+            reportFile.get().asFile
+        )
+
+        val findings = document
+            .getElementsByTagName("BugInstance")
+            .length
+
+        val color = when {
+            findings == 0 -> "brightgreen"
+            findings <= 5 -> "yellow"
+            findings <= 20 -> "orange"
+            else -> "red"
+        }
+
+        val message = if (findings == 1) {
+            "1 finding"
+        } else {
+            "$findings findings"
+        }
+
+        val json =
+            """{"schemaVersion":1,"label":"SpotBugs","message":"$message","color":"$color"}"""
+
+        outFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+
+        println("SpotBugs badge: $json")
     }
 }
