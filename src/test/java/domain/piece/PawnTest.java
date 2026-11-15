@@ -167,4 +167,17 @@ public class PawnTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void GetValidMoves_Pawn_OneStepFromLastRankAtLeftEdge_ReturnOne(){
+        Pawn pawn = new Pawn(PieceColor.WHITE);
+        Location from = new Location(0, 1);
+
+        Set<Location> expected = Set.of(new Location(0, 0));
+        Set<Location> actual = pawn.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
+
+
 }
