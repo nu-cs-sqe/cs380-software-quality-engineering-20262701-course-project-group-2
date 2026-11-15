@@ -152,9 +152,10 @@ Inputs: current state of the board, piece being moved, set of legal moves the pi
 
 Outputs: set<location>
 
-| Test Case ID | Method(s) under test          | State of the System | Expected Output | Implemented? |
-|--------------|-------------------------------|---------------------|-----------------|--------------|
-|              | `isInCheck(PieceColor color)` |                     |                 | :X:          |
+| Test Case ID                                                    | Method(s) under test | State of the System                                                                | Expected Output | Implemented? |
+|-----------------------------------------------------------------|----------------------|------------------------------------------------------------------------------------|-----------------|--------------|
+| PM1<br/>getPlayableMoves_PawnBlockingCheck_returnEmpty          | `getPlayableMoves`   | black king (2,0), white bishop (5,3), black pawn (3,1) (black pawn on 3,1) | `{}` - can't move anywhere         | :X:          |
+| PM2<br/>getPlayableMoves_BishopBlockingCheck_returnMultipleAllowableMoves | `getPlayableMoves`   | black king (2,0), white bishop (5,3), black bishop (3,1) (black bishop)        |  `{(4,2),(5,3),(6,4)}`       | :X:          |
 
 ---
 
