@@ -8,19 +8,18 @@ import domain.piece.PieceColor;
 public class BoardController {
     private final Game game;
 
-    public BoardController(Game game){
+    public BoardController(Game game) {
         this.game = game;
     }
 
-    public Piece[][] getBoardSnapshot(){
+    public Piece[][] getBoardSnapshot() {
         return game.getBoardSnapshot();
     }
 
-    public PieceColor getCurrentTurn(){
+    public PieceColor getCurrentTurn() {
         return game.getCurrentTurn();
     }
 
-    public void handleSquareClick(Location location){
-        // TODO
+    public void handleSquareClick(Location location) {
     }
 }
