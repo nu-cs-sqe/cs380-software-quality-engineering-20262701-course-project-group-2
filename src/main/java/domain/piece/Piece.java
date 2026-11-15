@@ -26,6 +26,8 @@ public abstract class Piece {
 
     public abstract Piece makeCopy();
 
+    public abstract Set<Location> getValidMoves(Location from);
+
     protected Set<Location> getDirectionalMoves(Location from, int[][] directions) {
         Set<Location> moves = new HashSet<>();
 
