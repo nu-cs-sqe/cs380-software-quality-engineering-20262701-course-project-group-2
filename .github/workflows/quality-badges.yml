@@ -25,12 +25,16 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate JaCoCo and PIT badge data
-        run: ./gradlew complexityBadge mutationBadge
+      - name: Generate Checkstyle reports
+        continue-on-error: true
+        run: ./gradlew checkstyleMain checkstyleTest
+
+      - name: Generate badge data
+        run: ./gradlew complexityBadge mutationBadge checkstyleBadge
 
       - name: Render badge SVGs
         run: |
-          for badge in complexity mutation; do
+          for badge in complexity mutation checkstyle; do
             curl -fsSL -G "https://img.shields.io/static/v1" \
               --data-urlencode "label=$(jq -r .label build/badges/$badge.json)" \
               --data-urlencode "message=$(jq -r .message build/badges/$badge.json)" \

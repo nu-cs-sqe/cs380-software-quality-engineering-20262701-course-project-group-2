@@ -45,7 +45,7 @@ checkstyle {
 
 tasks.withType<Checkstyle>().configureEach {
     reports {
-        xml.required = false
+        xml.required = true
         html.required = true
     }
 }
@@ -274,5 +274,73 @@ val mutationBadge by tasks.registering {
         }
 
         println("Mutation badge: $json")
+    }
+}
+
+val checkstyleBadge by tasks.registering {
+    group = "verification"
+    description = "Writes badge data for Checkstyle violations"
+
+    val mainReport = layout.buildDirectory.file(
+        "reports/checkstyle/main.xml"
+    )
+    val testReport = layout.buildDirectory.file(
+        "reports/checkstyle/test.xml"
+    )
+    val outFile = layout.buildDirectory.file(
+        "badges/checkstyle.json"
+    )
+
+    outputs.file(outFile)
+
+    doLast {
+        val reportFiles = listOf(
+            mainReport.get().asFile,
+            testReport.get().asFile
+        ).filter { it.exists() }
+
+        if (reportFiles.isEmpty()) {
+            throw GradleException(
+                "No Checkstyle XML reports were found."
+            )
+        }
+
+        var violations = 0
+
+        for (reportFile in reportFiles) {
+            val factory = DocumentBuilderFactory.newInstance().apply {
+                isValidating = false
+                setFeature(
+                    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                    false
+                )
+            }
+
+            val document = factory.newDocumentBuilder().parse(reportFile)
+            violations += document.getElementsByTagName("error").length
+        }
+
+        val color = when {
+            violations == 0 -> "brightgreen"
+            violations <= 5 -> "yellow"
+            violations <= 20 -> "orange"
+            else -> "red"
+        }
+
+        val message = if (violations == 1) {
+            "1 violation"
+        } else {
+            "$violations violations"
+        }
+
+        val json =
+            """{"schemaVersion":1,"label":"Checkstyle","message":"$message","color":"$color"}"""
+
+        outFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+
+        println("Checkstyle badge: $json")
     }
 }
