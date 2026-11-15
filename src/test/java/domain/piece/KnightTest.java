@@ -57,4 +57,15 @@ public class KnightTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void GetValidMoves_Knight_CornerTopRight_ReturnTwo(){
+        Knight knight = new Knight(PieceColor.WHITE);
+        Location from = new Location(7, 0);
+
+        Set<Location> expected = Set.of(new Location(5, 1), new Location(6, 2));
+        Set<Location> actual = knight.getValidMoves(from);
+
+        assertEquals(expected, actual);
+    }
 }
