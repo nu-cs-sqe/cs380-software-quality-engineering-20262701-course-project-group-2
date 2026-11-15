@@ -7,6 +7,7 @@ import domain.piece.PieceColor;
 
 public class BoardController {
     private final Game game;
+    private Location selectedSquare;
 
     public BoardController(Game game){
         this.game = game;
@@ -18,6 +19,10 @@ public class BoardController {
 
     public PieceColor getCurrentTurn(){
         return game.getCurrentTurn();
+    }
+
+    public Location getSelectedSquare(){
+        return selectedSquare;
     }
 
     public void handleSquareClick(Location location){

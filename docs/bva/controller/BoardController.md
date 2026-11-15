@@ -62,7 +62,7 @@ Outputs:
 
 | Test Case ID                                                      | Method(s) under test  | State of the System                                                                                                        | Expected Output | Implemented? |
 |-------------------------------------------------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
-| C12<br><sub>getSelectedSquare_NoClick_ReturnNull</sub>            | `getSelectedSquare()` | newly constructed `BoardController`, standard starting board<br>• no click handled yet                                     | `null`          | :X:          |
+| C12<br><sub>getSelectedSquare_NoClick_ReturnNull</sub>            | `getSelectedSquare()` | newly constructed `BoardController`, standard starting board<br>• no click handled yet                                     | `null`          | :white_check_mark:          |
 | C13<br><sub>getSelectedSquare_PieceSelected_ReturnLocation</sub>  | `getSelectedSquare()` | standard starting board, WHITE to move<br>• `handleSquareClick((4, 6))` (white pawn)                                       | `(4, 6)`        | :X:          |
 | C14<br><sub>getSelectedSquare_AfterCompletedMove_ReturnNull</sub> | `getSelectedSquare()` | standard starting board, WHITE to move<br>• `handleSquareClick((4, 6))`, then `handleSquareClick((4, 5))` (move performed) | `null`          | :X:          |
 
