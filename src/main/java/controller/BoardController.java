@@ -37,6 +37,8 @@ public class BoardController {
             moveSelectedPieceTo(location);
         } else if (isOwnPiece(location)) {
             select(location);
+        } else {
+            clearSelection();
         }
     }
 
