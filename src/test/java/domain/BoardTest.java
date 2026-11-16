@@ -127,4 +127,23 @@ public class BoardTest {
                 PieceColor.WHITE
         );
     }
+
+    // M38
+    @Test
+    public void MovePiece_ToEmptySquareTwoRows_RelocatePiece() {
+        Board board = new Board();
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 4);
+
+        board.movePiece(from, to);
+
+        Piece[][] snapshot = board.getSnapshot();
+
+        assertNull(snapshot[6][4]);
+        assertPiece(
+                snapshot[4][4],
+                PieceType.PAWN,
+                PieceColor.WHITE
+        );
+    }
 }
