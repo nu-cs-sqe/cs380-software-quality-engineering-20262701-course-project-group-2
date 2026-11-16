@@ -1,9 +1,8 @@
 package domain.piece;
 
 import domain.Location;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -12,7 +11,7 @@ public class KingTest {
 
     // KC1
     @Test
-    public void MakeCopy_WhiteKing_ReturnEquivalentDistinctKing(){
+    public void MakeCopy_WhiteKing_ReturnEquivalentDistinctKing() {
         King king = new King(PieceColor.WHITE);
 
         Piece copy = king.makeCopy();
@@ -24,7 +23,7 @@ public class KingTest {
 
     // KC2
     @Test
-    public void MakeCopy_BlackKing_ReturnEquivalentDistinctKing(){
+    public void MakeCopy_BlackKing_ReturnEquivalentDistinctKing() {
         King king = new King(PieceColor.BLACK);
 
         Piece copy = king.makeCopy();
@@ -36,7 +35,7 @@ public class KingTest {
 
     // M22
     @Test
-    public void GetValidMoves_King_AllDirectionsFromCentre_returnEight(){
+    public void GetValidMoves_King_AllDirectionsFromCentre_returnEight() {
         King king = new King(PieceColor.WHITE);
         Location from = new Location(3, 3);
 
@@ -59,7 +58,7 @@ public class KingTest {
 
     // M64
     @Test
-    public void GetValidMoves_King_CornerTopLeft_returnThree(){
+    public void GetValidMoves_King_CornerTopLeft_returnThree() {
         King king = new King(PieceColor.WHITE);
         Location from = new Location(0, 0);
 
@@ -77,7 +76,7 @@ public class KingTest {
 
     // M65
     @Test
-    public void GetValidMoves_King_CornerTopRight_returnThree(){
+    public void GetValidMoves_King_CornerTopRight_returnThree() {
         King king = new King(PieceColor.WHITE);
         Location from = new Location(7, 0);
 
@@ -95,7 +94,7 @@ public class KingTest {
 
     // M66
     @Test
-    public void GetValidMoves_King_CornerBottomLeft_returnThree(){
+    public void GetValidMoves_King_CornerBottomLeft_returnThree() {
         King king = new King(PieceColor.WHITE);
         Location from = new Location(0, 7);
 
@@ -113,7 +112,7 @@ public class KingTest {
 
     // M67
     @Test
-    public void GetValidMoves_King_CornerBottomRight_returnThree(){
+    public void GetValidMoves_King_CornerBottomRight_returnThree() {
         King king = new King(PieceColor.WHITE);
         Location from = new Location(7, 7);
 

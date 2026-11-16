@@ -1,9 +1,8 @@
 package domain.piece;
 
 import domain.Location;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -12,7 +11,7 @@ public class BishopTest {
 
     // BC1
     @Test
-    public void MakeCopy_WhiteBishop_ReturnEquivalentDistinctBishop(){
+    public void MakeCopy_WhiteBishop_ReturnEquivalentDistinctBishop() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
 
         Piece copy = bishop.makeCopy();
@@ -24,7 +23,7 @@ public class BishopTest {
 
     // BC2
     @Test
-    public void MakeCopy_BlackBishop_ReturnEquivalentDistinctBishop(){
+    public void MakeCopy_BlackBishop_ReturnEquivalentDistinctBishop() {
         Bishop bishop = new Bishop(PieceColor.BLACK);
 
         Piece copy = bishop.makeCopy();
@@ -36,7 +35,7 @@ public class BishopTest {
 
     // M45
     @Test
-    public void GetValidMoves_Bishop_AllDirectionsFromCentre_returnThirteen(){
+    public void GetValidMoves_Bishop_AllDirectionsFromCentre_returnThirteen() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
         Location from = new Location(3, 3);
 
@@ -64,7 +63,7 @@ public class BishopTest {
 
     // M56
     @Test
-    public void GetValidMoves_Bishop_CornerTopLeft_returnSeven(){
+    public void GetValidMoves_Bishop_CornerTopLeft_returnSeven() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
         Location from = new Location(0, 0);
 
@@ -86,7 +85,7 @@ public class BishopTest {
 
     // M57
     @Test
-    public void GetValidMoves_Bishop_CornerTopRight_returnSeven(){
+    public void GetValidMoves_Bishop_CornerTopRight_returnSeven() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
         Location from = new Location(7, 0);
 
@@ -108,7 +107,7 @@ public class BishopTest {
 
     // M58
     @Test
-    public void GetValidMoves_Bishop_CornerBottomLeft_returnSeven(){
+    public void GetValidMoves_Bishop_CornerBottomLeft_returnSeven() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
         Location from = new Location(0, 7);
 
@@ -130,7 +129,7 @@ public class BishopTest {
 
     // M59
     @Test
-    public void GetValidMoves_Bishop_CornerBottomRight_returnSeven(){
+    public void GetValidMoves_Bishop_CornerBottomRight_returnSeven() {
         Bishop bishop = new Bishop(PieceColor.WHITE);
         Location from = new Location(7, 7);
 

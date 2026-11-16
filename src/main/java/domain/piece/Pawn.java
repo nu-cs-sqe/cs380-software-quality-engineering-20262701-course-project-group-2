@@ -1,6 +1,6 @@
 package domain.piece;
-import domain.Location;
 
+import domain.Location;
 import java.util.HashSet;
 import java.util.Set;
 

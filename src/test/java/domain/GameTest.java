@@ -19,7 +19,7 @@ public class GameTest {
 
     // G1
     @Test
-    public void GetCurrentTurn_OnNewGame_ReturnWhite(){
+    public void GetCurrentTurn_OnNewGame_ReturnWhite() {
         Game game = new Game();
 
         PieceColor expected = PieceColor.WHITE;
@@ -30,7 +30,7 @@ public class GameTest {
 
     // Integration test for Game & Board
     @Test
-    public void NewGame_InitializeBoard(){
+    public void NewGame_InitializeBoard() {
         Game game = new Game();
 
         Piece[][] snapshot = game.getBoardSnapshot();
@@ -43,7 +43,7 @@ public class GameTest {
 
     // Integration test verifying everything works properly at setup
     @Test
-    public void NewGame_InitializeBoardAndWhiteTurn(){
+    public void NewGame_InitializeBoardAndWhiteTurn() {
         Game game = new Game();
 
         Piece[][] snapshot = game.getBoardSnapshot();

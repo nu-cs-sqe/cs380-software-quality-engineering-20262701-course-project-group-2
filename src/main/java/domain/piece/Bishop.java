@@ -1,12 +1,9 @@
 package domain.piece;
 
 import domain.Location;
-
-import java.util.HashSet;
 import java.util.Set;
 
 public class Bishop extends Piece {
-
     private static final int[][] DIRECTIONS = {
             {-1, -1},
             {1, 1},
@@ -22,7 +19,6 @@ public class Bishop extends Piece {
     public Piece makeCopy() {
         return new Bishop(getColor());
     }
-
 
     public Set<Location> getValidMoves(Location from) {
         return getDirectionalMoves(from, DIRECTIONS);

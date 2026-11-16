@@ -1,9 +1,8 @@
 package domain.piece;
 
 import domain.Location;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -11,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 public class KnightTest {
 
     @Test
-    public void MakeCopy_WhiteKnight_ReturnEquivalentDistinctKnight(){
+    public void MakeCopy_WhiteKnight_ReturnEquivalentDistinctKnight() {
         Knight knight = new Knight(PieceColor.WHITE);
 
         Piece copy = knight.makeCopy();
@@ -22,7 +21,7 @@ public class KnightTest {
     }
 
     @Test
-    public void MakeCopy_BlackKnight_ReturnEquivalentDistinctKnight(){
+    public void MakeCopy_BlackKnight_ReturnEquivalentDistinctKnight() {
         Knight knight = new Knight(PieceColor.BLACK);
 
         Piece copy = knight.makeCopy();
@@ -33,7 +32,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_AllDirectionsFromCentre_ReturnEight(){
+    public void GetValidMoves_Knight_AllDirectionsFromCentre_ReturnEight() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(3, 3);
 
@@ -48,7 +47,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_CornerTopLeft_ReturnTwo(){
+    public void GetValidMoves_Knight_CornerTopLeft_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(0, 0);
 
@@ -59,7 +58,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_CornerTopRight_ReturnTwo(){
+    public void GetValidMoves_Knight_CornerTopRight_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(7, 0);
 
@@ -70,7 +69,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_CornerBottomLeft_ReturnTwo(){
+    public void GetValidMoves_Knight_CornerBottomLeft_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(0, 7);
 
@@ -81,7 +80,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_CornerBottomRight_ReturnTwo(){
+    public void GetValidMoves_Knight_CornerBottomRight_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(7, 7);
 
@@ -92,7 +91,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_OneInFromTopLeftCorner_ReturnFour(){
+    public void GetValidMoves_Knight_OneInFromTopLeftCorner_ReturnFour() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(1, 1);
 
@@ -105,7 +104,7 @@ public class KnightTest {
     }
 
     @Test
-    public void GetValidMoves_Knight_OneInFromBottomRightCorner_ReturnFour(){
+    public void GetValidMoves_Knight_OneInFromBottomRightCorner_ReturnFour() {
         Knight knight = new Knight(PieceColor.WHITE);
         Location from = new Location(6, 6);
 

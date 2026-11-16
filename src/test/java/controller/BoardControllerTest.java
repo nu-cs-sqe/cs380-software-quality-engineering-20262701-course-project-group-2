@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BoardControllerTest {
 
     @Test
-    public void GetBoardSnapshot_FromGame_ReturnInitializedBoard(){
+    public void GetBoardSnapshot_FromGame_ReturnInitializedBoard() {
         Game game = new Game();
         BoardController controller = new BoardController(game);
 
@@ -23,7 +23,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void GetCurrentTurn_OnNewGame_ReturnWhite(){
+    public void GetCurrentTurn_OnNewGame_ReturnWhite() {
         Game game = new Game();
         BoardController controller = new BoardController(game);
 
