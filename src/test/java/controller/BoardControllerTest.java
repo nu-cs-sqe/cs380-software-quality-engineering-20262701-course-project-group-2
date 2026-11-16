@@ -153,4 +153,18 @@ public class BoardControllerTest {
         assertNothingSelected();
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_BlackTurn_SelectBlackPiece(){
+        Location blackPawn = new Location(4, 1);
+        Set<Location> blackPawnMoves = Set.of(new Location(4, 2), new Location(4, 3));
+        expectStartingBoard(PieceColor.BLACK);
+        expect(mockGame.getLegalMoves(blackPawn)).andReturn(blackPawnMoves);
+        replay(mockGame);
+
+        controller.handleSquareClick(blackPawn);
+
+        assertSelection(blackPawn, blackPawnMoves);
+        verify(mockGame);
+    }
 }
