@@ -1,7 +1,6 @@
 package domain.piece;
 
 import domain.Location;
-
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
