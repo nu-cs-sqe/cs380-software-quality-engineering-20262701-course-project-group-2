@@ -59,6 +59,8 @@ public class Game {
         switch (currentPiece.getType()) {
             case KNIGHT:
                 return true;
+            case PAWN:
+                return isPathClear(from, destination) && pieceAt(currentBoardState, destination) == null;
             default:
                 return isPathClear(from, destination);
         }
