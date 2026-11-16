@@ -2,7 +2,6 @@ package domain;
 
 import domain.piece.Piece;
 import domain.piece.PieceColor;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,13 +36,14 @@ public final class Game {
         Piece currentPiece = pieceAt(currentBoardState, from);
         Set<Location> returnSet = new HashSet<>();
 
-        for (Location candidate : currentPiece.getValidMoves(from)){
-            if (!isBlockedByFriendly(currentBoardState, currentPiece, candidate)
-                    && isPathClearByType(currentBoardState, currentPiece, from, candidate)) {
+        for (Location candidate : currentPiece.getValidMoves(from)) {
+            boolean legal = isPathClearByType(currentBoardState, currentPiece, from, candidate);
+            if (!isBlockedByFriendly(currentBoardState, currentPiece, candidate) && legal) {
                 returnSet.add(candidate);
             }
         }
-        if (currentPiece.getType() == PAWN){
+
+        if (currentPiece.getType() == PAWN) {
             returnSet.addAll(addPawnCaptures(currentBoardState, currentPiece, from));
         }
 
@@ -54,18 +54,21 @@ public final class Game {
         return boardState[location.getRow()][location.getColumn()];
     }
 
-    private static boolean isPathClearByType(Piece[][] boardState, Piece piece, Location from, Location destination) {
+    private static boolean isPathClearByType(
+            Piece[][] boardState, Piece piece, Location from, Location destination) {
         switch (piece.getType()) {
             case KNIGHT:
                 return true;
             case PAWN:
-                return isPathClear(boardState, from, destination) && pieceAt(boardState, destination) == null;
+                return isPathClear(boardState, from, destination)
+                        && pieceAt(boardState, destination) == null;
             default:
                 return isPathClear(boardState, from, destination);
         }
     }
 
-    private static boolean isBlockedByFriendly(Piece[][] boardState, Piece piece, Location destination) {
+    private static boolean isBlockedByFriendly(
+            Piece[][] boardState, Piece piece, Location destination) {
         Piece destinationPiece = pieceAt(boardState, destination);
         return destinationPiece != null && destinationPiece.getColor() == piece.getColor();
     }
