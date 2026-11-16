@@ -216,4 +216,16 @@ public class BoardControllerTest {
         assertNothingSelected();
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_ClickUnhighlightedOpponentPiece_ClearSelection(){
+        expectWhitePawnCanBeSelected();
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(new Location(3, 1));
+
+        assertNothingSelected();
+        verify(mockGame);
+    }
 }
