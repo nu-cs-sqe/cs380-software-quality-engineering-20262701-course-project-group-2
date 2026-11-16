@@ -167,4 +167,19 @@ public class BoardControllerTest {
         assertSelection(blackPawn, blackPawnMoves);
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_MoveToHighlightedSquare_MoveCompletedAndTurnProgresses(){
+        Location destination = new Location(4, 5);
+        expectWhitePawnCanBeSelected();
+        mockGame.movePiece(WHITE_PAWN, destination);
+        mockGame.switchTurn();
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(destination);
+
+        assertNothingSelected();
+        verify(mockGame);
+    }
 }

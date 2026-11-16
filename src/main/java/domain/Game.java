@@ -23,8 +23,14 @@ public class Game {
     }
 
     public Set<Location> getLegalMoves(Location location){
-        throw new UnsupportedOperationException("getLegalMoves not implemented yet (It is on annie's branch currently)");
+        throw new UnsupportedOperationException("getLegalMoves is not implemented yet");
     }
 
+    public void movePiece(Location from, Location to){
+        throw new UnsupportedOperationException("movePiece is not implemented yet");
+    }
 
+    public void switchTurn(){
+        throw new UnsupportedOperationException("switchTurn is not implemented yet");
+    }
 }

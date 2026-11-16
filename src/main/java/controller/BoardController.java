@@ -33,9 +33,17 @@ public class BoardController {
     }
 
     public void handleSquareClick(Location location){
-        if (isOwnPiece(location)) {
+        if (highlightedSquares.contains(location)) {
+            moveSelectedPieceTo(location);
+        } else if (isOwnPiece(location)) {
             select(location);
         }
+    }
+
+    private void moveSelectedPieceTo(Location destination){
+        game.movePiece(selectedSquare, destination);
+        game.switchTurn();
+        clearSelection();
     }
 
     private boolean isOwnPiece(Location location){
@@ -46,5 +54,10 @@ public class BoardController {
     private void select(Location location){
         selectedSquare = location;
         highlightedSquares = Set.copyOf(game.getLegalMoves(location));
+    }
+
+    private void clearSelection(){
+        selectedSquare = null;
+        highlightedSquares = Set.of();
     }
 }
