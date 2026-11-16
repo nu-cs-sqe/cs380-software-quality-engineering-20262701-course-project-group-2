@@ -55,7 +55,7 @@ public class GameTest {
 
     // M3
     @Test
-    public void GetLegalMoves_Pawn_BlockedAhead_ReturnEmpty(){
+    public void GetLegalMoves_Pawn_BlockedAhead_ReturnEmpty() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(4, 3, new Pawn(PieceColor.BLACK))
@@ -68,7 +68,7 @@ public class GameTest {
 
     // M4
     @Test
-    public void GetLegalMoves_Pawn_OneCapturePossible_ReturnTwo(){
+    public void GetLegalMoves_Pawn_OneCapturePossible_ReturnTwo() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(5, 3, new Pawn(PieceColor.BLACK))
@@ -82,7 +82,7 @@ public class GameTest {
 
     // M5
     @Test
-    public void GetLegalMoves_Pawn_TwoCapturesPossible_ReturnThree(){
+    public void GetLegalMoves_Pawn_TwoCapturesPossible_ReturnThree() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(3, 3, new Pawn(PieceColor.BLACK)),
@@ -101,7 +101,7 @@ public class GameTest {
 
     // M40
     @Test
-    public void GetLegalMoves_Pawn_OnStartRowBlockedAhead_ReturnEmpty(){
+    public void GetLegalMoves_Pawn_OnStartRowBlockedAhead_ReturnEmpty() {
         Game game = gameWith(
                 square(4, 6, new Pawn(PieceColor.WHITE)),
                 square(4, 5, new Pawn(PieceColor.BLACK))
@@ -114,7 +114,7 @@ public class GameTest {
 
     // M41
     @Test
-    public void GetLegalMoves_Pawn_OwnPieceDiagonal_NotCapture(){
+    public void GetLegalMoves_Pawn_OwnPieceDiagonal_NotCapture() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(5, 3, new Knight(PieceColor.WHITE))
@@ -128,7 +128,7 @@ public class GameTest {
 
     // M42
     @Test
-    public void GetLegalMoves_Pawn_OpponentDirectlyAhead_NotCapture(){
+    public void GetLegalMoves_Pawn_OpponentDirectlyAhead_NotCapture() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(4, 3, new Pawn(PieceColor.BLACK))
@@ -141,7 +141,7 @@ public class GameTest {
 
     // M43
     @Test
-    public void GetLegalMoves_Pawn_OnLeftEdge_NoOffBoardDiagonal(){
+    public void GetLegalMoves_Pawn_OnLeftEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
                 square(0, 4, new Pawn(PieceColor.WHITE)),
                 square(1, 3, new Pawn(PieceColor.BLACK))
@@ -155,7 +155,7 @@ public class GameTest {
 
     // M13
     @Test
-    public void GetLegalMoves_Knight_PathBlocked_ReturnTwo(){
+    public void GetLegalMoves_Knight_PathBlocked_ReturnTwo() {
         Game game = gameOnStandardBoard();
 
         Set<Location> expected = Set.of(new Location(0, 5), new Location(2, 5));
@@ -166,7 +166,7 @@ public class GameTest {
 
     // M19
     @Test
-    public void GetLegalMoves_Knight_NoValidDestinations_ReturnEmpty(){
+    public void GetLegalMoves_Knight_NoValidDestinations_ReturnEmpty() {
         Game game = gameWith(
                 square(0, 0, new Knight(PieceColor.WHITE)),
                 square(1, 2, new Rook(PieceColor.WHITE)),
@@ -183,7 +183,7 @@ public class GameTest {
     // knight on (3,4) cannot reach, so the opponent sits on (5,3), an actual
     // knight destination from (3,4).
     @Test
-    public void GetLegalMoves_Knight_OpponentOnDestination_ReturnIncludingOpponent(){
+    public void GetLegalMoves_Knight_OpponentOnDestination_ReturnIncludingOpponent() {
         Game game = gameWith(
                 square(3, 4, new Knight(PieceColor.WHITE)),
                 square(5, 3, new Pawn(PieceColor.BLACK))
@@ -206,7 +206,7 @@ public class GameTest {
 
     // M10
     @Test
-    public void GetLegalMoves_Bishop_Blocked_ReturnEmpty(){
+    public void GetLegalMoves_Bishop_Blocked_ReturnEmpty() {
         Game game = gameWith(
                 square(2, 7, new Bishop(PieceColor.WHITE)),
                 square(1, 6, new Pawn(PieceColor.WHITE)),
@@ -222,7 +222,7 @@ public class GameTest {
     // The BVA expected set lists only the blocked diagonal; the open diagonal
     // (1,6) and (0,5) is documented here as well.
     @Test
-    public void GetLegalMoves_Bishop_OpponentInDiagonal_ReturnUpToOpponent(){
+    public void GetLegalMoves_Bishop_OpponentInDiagonal_ReturnUpToOpponent() {
         Game game = gameWith(
                 square(2, 7, new Bishop(PieceColor.WHITE)),
                 square(3, 4, new Pawn(PieceColor.WHITE)),
@@ -242,7 +242,7 @@ public class GameTest {
 
     // M6
     @Test
-    public void GetLegalMoves_Rook_ReturnEmpty(){
+    public void GetLegalMoves_Rook_ReturnEmpty() {
         Game game = gameWith(
                 square(0, 7, new Rook(PieceColor.WHITE)),
                 square(0, 6, new Pawn(PieceColor.WHITE)),
@@ -256,7 +256,7 @@ public class GameTest {
 
     // M7
     @Test
-    public void GetLegalMoves_Rook_AdjacentTilesUnblocked_ReturnAdjacent(){
+    public void GetLegalMoves_Rook_AdjacentTilesUnblocked_ReturnAdjacent() {
         Game game = standardGameWith(
                 cleared(7, 6),
                 cleared(6, 7),
@@ -276,7 +276,7 @@ public class GameTest {
 
     // M9
     @Test
-    public void GetLegalMoves_Rook_BlockedByOpponent_ReturnUpToOpponent(){
+    public void GetLegalMoves_Rook_BlockedByOpponent_ReturnUpToOpponent() {
         Game game = gameWith(
                 square(7, 7, new Rook(PieceColor.WHITE)),
                 square(7, 3, new Pawn(PieceColor.BLACK)),
@@ -296,7 +296,7 @@ public class GameTest {
 
     // M16
     @Test
-    public void GetLegalMoves_Queen_BoxedIn_ReturnEmpty(){
+    public void GetLegalMoves_Queen_BoxedIn_ReturnEmpty() {
         Game game = gameOnStandardBoard();
 
         Set<Location> actual = game.getLegalMoves(new Location(3, 7));
@@ -306,7 +306,7 @@ public class GameTest {
 
     // M17
     @Test
-    public void GetLegalMoves_Queen_AdjacentsCleared_ReturnAdjacent(){
+    public void GetLegalMoves_Queen_AdjacentsCleared_ReturnAdjacent() {
         Game game = standardGameWith(
                 cleared(3, 6),
                 square(3, 4, new Pawn(PieceColor.WHITE))
@@ -320,7 +320,7 @@ public class GameTest {
 
     // M23
     @Test
-    public void GetLegalMoves_Queen_OpponentInFile_ReturnUpToOpponent(){
+    public void GetLegalMoves_Queen_OpponentInFile_ReturnUpToOpponent() {
         Game game = standardGameWith(
                 cleared(3, 6),
                 square(3, 3, new Pawn(PieceColor.BLACK))
@@ -339,7 +339,7 @@ public class GameTest {
 
     // M14
     @Test
-    public void GetLegalMoves_King_BoxedIn_ReturnEmpty(){
+    public void GetLegalMoves_King_BoxedIn_ReturnEmpty() {
         Game game = gameOnStandardBoard();
 
         Set<Location> actual = game.getLegalMoves(new Location(4, 7));
@@ -349,7 +349,7 @@ public class GameTest {
 
     // M15
     @Test
-    public void GetLegalMoves_King_OneNeighbourFreed_ReturnOne(){
+    public void GetLegalMoves_King_OneNeighbourFreed_ReturnOne() {
         Game game = standardGameWith(
                 cleared(4, 6),
                 square(4, 4, new Pawn(PieceColor.WHITE))
@@ -363,7 +363,7 @@ public class GameTest {
 
     // M21
     @Test
-    public void GetLegalMoves_King_OpponentAdjacent_ReturnIncludingOpponent(){
+    public void GetLegalMoves_King_OpponentAdjacent_ReturnIncludingOpponent() {
         Game game = standardGameWith(
                 square(4, 6, new Pawn(PieceColor.BLACK))
         );
@@ -415,34 +415,34 @@ public class GameTest {
     }
 
 
-    private static Square square(int column, int row, Piece piece){
+    private static Square square(int column, int row, Piece piece) {
         return new Square(column, row, piece);
     }
 
-    private static Square cleared(int column, int row){
+    private static Square cleared(int column, int row) {
         return new Square(column, row, null);
     }
 
-    private static Game gameOnStandardBoard(){
+    private static Game gameOnStandardBoard() {
         return gameOn(new Board().getSnapshot());
     }
 
-    private static Game gameWith(Square... placements){
+    private static Game gameWith(Square... placements) {
         return gameOn(placeOn(new Piece[8][8], placements));
     }
 
-    private static Game standardGameWith(Square... placements){
+    private static Game standardGameWith(Square... placements) {
         return gameOn(placeOn(new Board().getSnapshot(), placements));
     }
 
-    private static Game gameOn(Piece[][] boardState){
+    private static Game gameOn(Piece[][] boardState) {
         Board board = createMock(Board.class);
         expect(board.getSnapshot()).andReturn(boardState).anyTimes();
         replay(board);
         return new Game(board);
     }
 
-    private static Piece[][] placeOn(Piece[][] boardState, Square... placements){
+    private static Piece[][] placeOn(Piece[][] boardState, Square... placements) {
         for (Square placement : placements) {
             boardState[placement.location.getRow()][placement.location.getColumn()] = placement.piece;
         }
@@ -453,7 +453,7 @@ public class GameTest {
         private final Location location;
         private final Piece piece;
 
-        private Square(int column, int row, Piece piece){
+        private Square(int column, int row, Piece piece) {
             this.location = new Location(column, row);
             this.piece = piece;
         }
