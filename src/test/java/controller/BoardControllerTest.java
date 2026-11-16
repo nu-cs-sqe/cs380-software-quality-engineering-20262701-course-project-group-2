@@ -228,4 +228,19 @@ public class BoardControllerTest {
         assertNothingSelected();
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_ClickOtherOwnPieceWhileSelected_NewSelection(){
+        Location knight = new Location(1, 7);
+        Set<Location> knightMoves = Set.of(new Location(0, 5), new Location(2, 5));
+        expectWhitePawnCanBeSelected();
+        expect(mockGame.getLegalMoves(knight)).andReturn(knightMoves);
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(knight);
+
+        assertSelection(knight, knightMoves);
+        verify(mockGame);
+    }
 }
