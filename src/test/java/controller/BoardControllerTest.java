@@ -142,4 +142,15 @@ public class BoardControllerTest {
         assertNothingSelected();
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_SelectOpponentPiece_NoPriorSelection_NoChange(){
+        expectStartingBoard(PieceColor.WHITE);
+        replay(mockGame);
+
+        controller.handleSquareClick(new Location(4, 1));
+
+        assertNothingSelected();
+        verify(mockGame);
+    }
 }

@@ -33,14 +33,14 @@ public class BoardController {
     }
 
     public void handleSquareClick(Location location){
-        if (hasPieceOn(location)) {
+        if (isOwnPiece(location)) {
             select(location);
         }
     }
 
-    private boolean hasPieceOn(Location location){
+    private boolean isOwnPiece(Location location){
         Piece piece = game.getBoardSnapshot()[location.getRow()][location.getColumn()];
-        return piece != null;
+        return piece != null && piece.getColor() == game.getCurrentTurn();
     }
 
     private void select(Location location){
