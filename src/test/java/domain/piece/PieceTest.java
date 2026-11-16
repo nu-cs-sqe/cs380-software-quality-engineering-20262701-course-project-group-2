@@ -1,6 +1,8 @@
 package domain.piece;
 
 import domain.Location;
+
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +57,10 @@ public class PieceTest {
         public Piece makeCopy() {
             return new TestPiece();
         }
+
+        public Set<Location> getValidMoves(Location from) {
+            return new HashSet<>();
+        }
+
     }
 }

@@ -374,6 +374,47 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    // M44
+    @Test
+    public void GetLegalMoves_Pawn_OnRightEdge_NoOffBoardDiagonal() {
+        Game game = gameWith(
+                square(7, 4, new Pawn(PieceColor.WHITE)),
+                square(6, 3, new Pawn(PieceColor.BLACK))
+        );
+
+        Set<Location> expected = Set.of(new Location(7, 3), new Location(6, 3));
+        Set<Location> actual = game.getLegalMoves(new Location(7, 4));
+
+        assertEquals(expected, actual);
+    }
+
+    // M45
+    @Test
+    public void GetLegalMoves_WhitePawn_OnTopEdge_NoOffBoardDiagonal() {
+        Game game = gameWith(
+                square(4, 0, new Pawn(PieceColor.WHITE))
+        );
+
+        Set<Location> expected = Set.of();
+        Set<Location> actual = game.getLegalMoves(new Location(4, 0));
+
+        assertEquals(expected, actual);
+    }
+
+    // M46
+    @Test
+    public void GetLegalMoves_BlackPawn_OnBottomEdge_NoOffBoardDiagonal() {
+        Game game = gameWith(
+                square(4, 7, new Pawn(PieceColor.BLACK))
+        );
+
+        Set<Location> expected = Set.of();
+        Set<Location> actual = game.getLegalMoves(new Location(4, 7));
+
+        assertEquals(expected, actual);
+    }
+
+
     private static Square square(int column, int row, Piece piece){
         return new Square(column, row, piece);
     }
