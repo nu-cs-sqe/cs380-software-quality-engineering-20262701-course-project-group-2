@@ -443,7 +443,9 @@ public class GameTest {
 
     private static Piece[][] placeOn(Piece[][] boardState, Square... placements) {
         for (Square placement : placements) {
-            boardState[placement.location.getRow()][placement.location.getColumn()] = placement.piece;
+            int row = placement.location.getRow();
+            int col = placement.location.getColumn();
+            boardState[row][col] = placement.piece;
         }
         return boardState;
     }
