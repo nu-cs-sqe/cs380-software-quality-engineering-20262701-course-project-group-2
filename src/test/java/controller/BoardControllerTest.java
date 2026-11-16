@@ -3,6 +3,7 @@ package controller;
 import domain.Board;
 import domain.Game;
 import domain.Location;
+import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
 import org.junit.jupiter.api.BeforeEach;
@@ -178,6 +179,27 @@ public class BoardControllerTest {
         controller.handleSquareClick(WHITE_PAWN);
 
         controller.handleSquareClick(destination);
+
+        assertNothingSelected();
+        verify(mockGame);
+    }
+
+    @Test
+    public void HandleSquareClick_MoveToHighlightedCaptureSquare_MoveCompletedAndTurnProgresses(){
+        Location whitePawn = new Location(4, 4);
+        Location blackPawn = new Location(5, 3);
+        Piece[][] snapshot = new Piece[8][8];
+        snapshot[4][4] = new Pawn(PieceColor.WHITE);
+        snapshot[3][5] = new Pawn(PieceColor.BLACK);
+        expect(mockGame.getBoardSnapshot()).andReturn(snapshot).anyTimes();
+        expect(mockGame.getCurrentTurn()).andReturn(PieceColor.WHITE).anyTimes();
+        expect(mockGame.getLegalMoves(whitePawn)).andReturn(Set.of(new Location(4, 3), blackPawn));
+        mockGame.movePiece(whitePawn, blackPawn);
+        mockGame.switchTurn();
+        replay(mockGame);
+        controller.handleSquareClick(whitePawn);
+
+        controller.handleSquareClick(blackPawn);
 
         assertNothingSelected();
         verify(mockGame);
