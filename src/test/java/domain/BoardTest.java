@@ -108,4 +108,23 @@ public class BoardTest {
             assertPiece(snapshot[7][column], majorPieces[column], PieceColor.WHITE);
         }
     }
+
+    // M37
+    @Test
+    public void MovePiece_ToEmptySquare_RelocatePiece() {
+        Board board = new Board();
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 5);
+
+        board.movePiece(from, to);
+
+        Piece[][] snapshot = board.getSnapshot();
+
+        assertNull(snapshot[6][4]);
+        assertPiece(
+                snapshot[5][4],
+                PieceType.PAWN,
+                PieceColor.WHITE
+        );
+    }
 }
