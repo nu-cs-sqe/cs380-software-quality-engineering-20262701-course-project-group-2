@@ -46,6 +46,10 @@ public class BoardControllerTest {
         assertEquals(expectedHighlights, controller.getHighlightedSquares());
     }
 
+    private void assertNothingSelected(){
+        assertSelection(null, Set.of());
+    }
+
     @Test
     public void GetBoardSnapshot_FromGame_ReturnInitializedBoard(){
         Game game = new Game();
@@ -125,6 +129,17 @@ public class BoardControllerTest {
         controller.handleSquareClick(king);
 
         assertSelection(king, kingMoves);
+        verify(mockGame);
+    }
+
+    @Test
+    public void HandleSquareClick_SelectEmptySquare_NoPriorSelection_NoChange(){
+        expectStartingBoard(PieceColor.WHITE);
+        replay(mockGame);
+
+        controller.handleSquareClick(new Location(4, 4));
+
+        assertNothingSelected();
         verify(mockGame);
     }
 }

@@ -33,7 +33,14 @@ public class BoardController {
     }
 
     public void handleSquareClick(Location location){
-        select(location);
+        if (hasPieceOn(location)) {
+            select(location);
+        }
+    }
+
+    private boolean hasPieceOn(Location location){
+        Piece piece = game.getBoardSnapshot()[location.getRow()][location.getColumn()];
+        return piece != null;
     }
 
     private void select(Location location){
