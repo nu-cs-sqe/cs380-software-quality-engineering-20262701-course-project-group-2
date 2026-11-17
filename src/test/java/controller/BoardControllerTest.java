@@ -255,4 +255,16 @@ public class BoardControllerTest {
         assertNothingSelected();
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_ClickOutsideBoardUpperColumnWhileSelected_NoChange(){
+        expectWhitePawnCanBeSelected();
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(new Location(8, 5));
+
+        assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
+        verify(mockGame);
+    }
 }

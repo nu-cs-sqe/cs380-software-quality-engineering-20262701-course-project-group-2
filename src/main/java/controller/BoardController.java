@@ -8,6 +8,8 @@ import domain.piece.PieceColor;
 import java.util.Set;
 
 public class BoardController {
+    private static final int BOARD_SIZE = 8;
+
     private final Game game;
     private Location selectedSquare;
     private Set<Location> highlightedSquares = Set.of();
@@ -33,6 +35,9 @@ public class BoardController {
     }
 
     public void handleSquareClick(Location location){
+        if (!isInsideBoard(location)) {
+            return;
+        }
         if (highlightedSquares.contains(location)) {
             moveSelectedPieceTo(location);
         } else if (isOwnPiece(location) && !location.equals(selectedSquare)) {
@@ -40,6 +45,10 @@ public class BoardController {
         } else {
             clearSelection();
         }
+    }
+
+    private boolean isInsideBoard(Location location){
+        return location.getColumn() < BOARD_SIZE;
     }
 
     private void moveSelectedPieceTo(Location destination){
