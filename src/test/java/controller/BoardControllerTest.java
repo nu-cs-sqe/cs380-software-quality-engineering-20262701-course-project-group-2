@@ -243,4 +243,16 @@ public class BoardControllerTest {
         assertSelection(knight, knightMoves);
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_ClickSelectedSquareAgain_NoChange(){
+        expectWhitePawnCanBeSelected();
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(WHITE_PAWN);
+
+        assertNothingSelected();
+        verify(mockGame);
+    }
 }

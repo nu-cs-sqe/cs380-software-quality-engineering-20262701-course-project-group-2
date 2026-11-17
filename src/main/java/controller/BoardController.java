@@ -35,7 +35,7 @@ public class BoardController {
     public void handleSquareClick(Location location){
         if (highlightedSquares.contains(location)) {
             moveSelectedPieceTo(location);
-        } else if (isOwnPiece(location)) {
+        } else if (isOwnPiece(location) && !location.equals(selectedSquare)) {
             select(location);
         } else {
             clearSelection();
