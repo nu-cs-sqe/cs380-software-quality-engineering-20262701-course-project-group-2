@@ -14,15 +14,15 @@ public class BoardController {
     private Location selectedSquare;
     private Set<Location> highlightedSquares = Set.of();
 
-    public BoardController(Game game){
+    public BoardController(Game game) {
         this.game = game;
     }
 
-    public Piece[][] getBoardSnapshot(){
+    public Piece[][] getBoardSnapshot() {
         return game.getBoardSnapshot();
     }
 
-    public PieceColor getCurrentTurn(){
+    public PieceColor getCurrentTurn() {
         return game.getCurrentTurn();
     }
 

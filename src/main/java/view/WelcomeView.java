@@ -1,11 +1,33 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Optional;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class WelcomeView extends JFrame {
     private static final int MAX_PLAYER_NAME_LENGTH = 30;
+    private static final int WINDOW_WIDTH = 600;
+    private static final int WINDOW_HEIGHT = 600;
+    private static final Color BACKGROUND_COLOR = new Color(104, 76, 150);
+    private static final String FONT_NAME = "Arial";
+    private static final int TITLE_FONT_SIZE = 28;
+    private static final int NAME_FONT_SIZE = 16;
+    private static final int TEXT_FIELD_COLUMNS = 20;
+    private static final int BUTTON_FONT_SIZE = 20;
+    private static final int START_BUTTON_ROW = 3;
+    private static final int COMPONENT_INSET = 10;
 
     private JTextField player1NameField;
     private JTextField player2NameField;
@@ -17,7 +39,7 @@ public class WelcomeView extends JFrame {
 
     private void configureWelcomeView() {
         setTitle("Welcome Screen!");
-        setSize(600, 600);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -43,7 +65,7 @@ public class WelcomeView extends JFrame {
 
     private JPanel createWelcomePanel() {
         JPanel welcomePanel = new JPanel(new GridBagLayout());
-        welcomePanel.setBackground(new Color(104, 76, 150));
+        welcomePanel.setBackground(BACKGROUND_COLOR);
         return welcomePanel;
     }
 
@@ -52,7 +74,7 @@ public class WelcomeView extends JFrame {
                 "Welcome to our Chess Game!",
                 SwingConstants.CENTER
         );
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        welcomeLabel.setFont(new Font(FONT_NAME, Font.BOLD, TITLE_FONT_SIZE));
         welcomeLabel.setForeground(Color.WHITE);
 
         welcomePanel.add(
@@ -67,7 +89,7 @@ public class WelcomeView extends JFrame {
             int row
     ) {
         JLabel nameLabel = new JLabel(labelText);
-        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        nameLabel.setFont(new Font(FONT_NAME, Font.PLAIN, NAME_FONT_SIZE));
         nameLabel.setForeground(Color.WHITE);
 
         welcomePanel.add(
@@ -75,8 +97,8 @@ public class WelcomeView extends JFrame {
                 createConstraints(0, row, 1)
         );
 
-        JTextField nameField = new JTextField(20);
-        nameField.setFont(new Font("Arial", Font.PLAIN, 16));
+        JTextField nameField = new JTextField(TEXT_FIELD_COLUMNS);
+        nameField.setFont(new Font(FONT_NAME, Font.PLAIN, NAME_FONT_SIZE));
 
         welcomePanel.add(
                 nameField,
@@ -88,7 +110,7 @@ public class WelcomeView extends JFrame {
 
     private void addStartGameButton(JPanel welcomePanel) {
         JButton startGameButton = new JButton("Start Game");
-        startGameButton.setFont(new Font("Arial", Font.BOLD, 20));
+        startGameButton.setFont(new Font(FONT_NAME, Font.BOLD, BUTTON_FONT_SIZE));
         startGameButton.setOpaque(true);
         startGameButton.setBackground(Color.WHITE);
         startGameButton.setForeground(Color.BLACK);
@@ -100,7 +122,7 @@ public class WelcomeView extends JFrame {
 
         welcomePanel.add(
                 startGameButton,
-                createConstraints(0, 3, 2)
+                createConstraints(0, START_BUTTON_ROW, 2)
         );
     }
 
@@ -110,7 +132,12 @@ public class WelcomeView extends JFrame {
             int gridWidth
     ) {
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(
+                COMPONENT_INSET,
+                COMPONENT_INSET,
+                COMPONENT_INSET,
+                COMPONENT_INSET
+        );
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = column;
         constraints.gridy = row;
@@ -147,18 +174,28 @@ public class WelcomeView extends JFrame {
         }
 
         if (player1Name.length() > MAX_PLAYER_NAME_LENGTH) {
-            return Optional.of("Player 1's name cannot exceed " + MAX_PLAYER_NAME_LENGTH + " characters.");
+            return Optional.of(String.format(
+                    "Player 1's name cannot exceed %d characters.",
+                    MAX_PLAYER_NAME_LENGTH
+            ));
         }
 
         if (player2Name.length() > MAX_PLAYER_NAME_LENGTH) {
-            return Optional.of("Player 2's name cannot exceed " + MAX_PLAYER_NAME_LENGTH + " characters.");
+            return Optional.of(String.format(
+                    "Player 2's name cannot exceed %d characters.",
+                    MAX_PLAYER_NAME_LENGTH
+            ));
         }
 
         return Optional.empty();
     }
 
     private void showValidationError(String message) {
-        JOptionPane.showMessageDialog(this, message,
-                "Invalid Player Name",JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                "Invalid Player Name",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 }

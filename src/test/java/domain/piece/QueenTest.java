@@ -1,9 +1,8 @@
 package domain.piece;
 
 import domain.Location;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -12,7 +11,7 @@ public class QueenTest {
 
     // QC1
     @Test
-    public void MakeCopy_WhiteQueen_ReturnEquivalentDistinctQueen(){
+    public void MakeCopy_WhiteQueen_ReturnEquivalentDistinctQueen() {
         Queen queen = new Queen(PieceColor.WHITE);
 
         Piece copy = queen.makeCopy();
@@ -24,7 +23,7 @@ public class QueenTest {
 
     // QC2
     @Test
-    public void MakeCopy_BlackQueen_ReturnEquivalentDistinctQueen(){
+    public void MakeCopy_BlackQueen_ReturnEquivalentDistinctQueen() {
         Queen queen = new Queen(PieceColor.BLACK);
 
         Piece copy = queen.makeCopy();
@@ -36,7 +35,7 @@ public class QueenTest {
 
     // M24
     @Test
-    public void GetValidMoves_Queen_AllDirectionsFromCentre_returnTwentySeven(){
+    public void GetValidMoves_Queen_AllDirectionsFromCentre_returnTwentySeven() {
         Queen queen = new Queen(PieceColor.WHITE);
         Location from = new Location(3, 3);
 
@@ -82,7 +81,7 @@ public class QueenTest {
 
     // M52
     @Test
-    public void GetValidMoves_Queen_CornerTopLeft_returnTwentyOne(){
+    public void GetValidMoves_Queen_CornerTopLeft_returnTwentyOne() {
         Queen queen = new Queen(PieceColor.WHITE);
         Location from = new Location(0, 0);
 
@@ -121,7 +120,7 @@ public class QueenTest {
 
     // M53
     @Test
-    public void GetValidMoves_Queen_CornerTopRight_returnTwentyOne(){
+    public void GetValidMoves_Queen_CornerTopRight_returnTwentyOne() {
         Queen queen = new Queen(PieceColor.WHITE);
         Location from = new Location(7, 0);
 
@@ -160,7 +159,7 @@ public class QueenTest {
 
     // M54
     @Test
-    public void GetValidMoves_Queen_CornerBottomLeft_returnTwentyOne(){
+    public void GetValidMoves_Queen_CornerBottomLeft_returnTwentyOne() {
         Queen queen = new Queen(PieceColor.WHITE);
         Location from = new Location(0, 7);
 
@@ -199,7 +198,7 @@ public class QueenTest {
 
     // M55
     @Test
-    public void GetValidMoves_Queen_CornerBottomRight_returnTwentyOne(){
+    public void GetValidMoves_Queen_CornerBottomRight_returnTwentyOne() {
         Queen queen = new Queen(PieceColor.WHITE);
         Location from = new Location(7, 7);
 

@@ -10,14 +10,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BoardTest {
 
-    private void assertPiece(Piece piece, PieceType expectedType, PieceColor expectedColor){
+    private void assertPiece(Piece piece, PieceType expectedType, PieceColor expectedColor) {
         assertEquals(expectedType, piece.getType());
         assertEquals(expectedColor, piece.getColor());
     }
 
     // B1
     @Test
-    public void GetSnapshot_OnNewBoard_Return8x8Board(){
+    public void GetSnapshot_OnNewBoard_Return8x8Board() {
         Board board = new Board();
 
         Piece[][] snapshot = board.getSnapshot();
@@ -26,7 +26,7 @@ public class BoardTest {
         int actualRows = snapshot.length;
         assertEquals(expectedRows, actualRows);
 
-        for(Piece[] row : snapshot){
+        for (Piece[] row : snapshot) {
             int expectedColumns = 8;
             int actualColumns = row.length;
             assertEquals(expectedColumns, actualColumns);
@@ -35,7 +35,7 @@ public class BoardTest {
 
     // B2
     @Test
-    public void GetSnapshot_OnNewBoard_InitializeBoundaryPositions(){
+    public void GetSnapshot_OnNewBoard_InitializeBoundaryPositions() {
         Board board = new Board();
 
         Piece[][] snapshot = board.getSnapshot();
@@ -46,7 +46,7 @@ public class BoardTest {
 
     // B3
     @Test
-    public void GetSnapshot_OnNewBoard_ReturnCorrectPieceCounts(){
+    public void GetSnapshot_OnNewBoard_ReturnCorrectPieceCounts() {
         Board board = new Board();
 
         Piece[][] snapshot = board.getSnapshot();
@@ -56,16 +56,16 @@ public class BoardTest {
         int whitePieces = 0;
         int emptySquares = 0;
 
-        for(Piece[] row : snapshot){
-            for(Piece piece : row){
-                if(piece == null){
+        for (Piece[] row : snapshot) {
+            for (Piece piece : row) {
+                if (piece == null) {
                     emptySquares++;
                 } else {
                     occupiedSquares++;
 
-                    if(piece.getColor() == PieceColor.BLACK){
+                    if (piece.getColor() == PieceColor.BLACK) {
                         blackPieces++;
-                    } else if(piece.getColor() == PieceColor.WHITE){
+                    } else if (piece.getColor() == PieceColor.WHITE) {
                         whitePieces++;
                     }
                 }
@@ -79,7 +79,7 @@ public class BoardTest {
     }
 
     @Test
-    public void GetSnapshot_OnNewBoard_PlaceAllPiecesInStartingPositions(){
+    public void GetSnapshot_OnNewBoard_PlaceAllPiecesInStartingPositions() {
         Board board = new Board();
 
         Piece[][] snapshot = board.getSnapshot();
@@ -95,7 +95,7 @@ public class BoardTest {
                 PieceType.ROOK
         };
 
-        for(int column = 0; column < 8; column++){
+        for (int column = 0; column < 8; column++) {
             assertPiece(snapshot[0][column], majorPieces[column], PieceColor.BLACK);
             assertPiece(snapshot[1][column], PieceType.PAWN, PieceColor.BLACK);
 

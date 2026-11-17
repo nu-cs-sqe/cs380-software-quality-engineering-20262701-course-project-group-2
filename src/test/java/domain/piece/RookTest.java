@@ -1,9 +1,8 @@
 package domain.piece;
 
 import domain.Location;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -12,7 +11,7 @@ public class RookTest {
 
     // RC1
     @Test
-    public void MakeCopy_WhiteRook_ReturnEquivalentDistinctRook(){
+    public void MakeCopy_WhiteRook_ReturnEquivalentDistinctRook() {
         Rook rook = new Rook(PieceColor.WHITE);
 
         Piece copy = rook.makeCopy();
@@ -24,7 +23,7 @@ public class RookTest {
 
     // RC2
     @Test
-    public void MakeCopy_BlackRook_ReturnEquivalentDistinctRook(){
+    public void MakeCopy_BlackRook_ReturnEquivalentDistinctRook() {
         Rook rook = new Rook(PieceColor.BLACK);
 
         Piece copy = rook.makeCopy();
@@ -36,7 +35,7 @@ public class RookTest {
 
     // M8
     @Test
-    public void GetValidMoves_Rook_AllTilesUnblocked_ReturnAllRowAndColumn(){
+    public void GetValidMoves_Rook_AllTilesUnblocked_ReturnAllRowAndColumn() {
         Rook rook = new Rook(PieceColor.WHITE);
         Location from = new Location(7, 7);
 
@@ -64,7 +63,7 @@ public class RookTest {
 
     // M48
     @Test
-    public void GetValidMoves_Rook_CornerTopLeft_returnFourteen(){
+    public void GetValidMoves_Rook_CornerTopLeft_returnFourteen() {
         Rook rook = new Rook(PieceColor.WHITE);
         Location from = new Location(0, 0);
 
@@ -95,7 +94,7 @@ public class RookTest {
 
     // M49
     @Test
-    public void GetValidMoves_Rook_CornerTopRight_returnFourteen(){
+    public void GetValidMoves_Rook_CornerTopRight_returnFourteen() {
         Rook rook = new Rook(PieceColor.WHITE);
         Location from = new Location(7, 0);
 
@@ -126,7 +125,7 @@ public class RookTest {
 
     // M50
     @Test
-    public void GetValidMoves_Rook_CornerBottomLeft_returnFourteen(){
+    public void GetValidMoves_Rook_CornerBottomLeft_returnFourteen() {
         Rook rook = new Rook(PieceColor.WHITE);
         Location from = new Location(0, 7);
 
@@ -157,7 +156,7 @@ public class RookTest {
 
     // M51
     @Test
-    public void GetValidMoves_Rook_CornerBottomRight_returnFourteen(){
+    public void GetValidMoves_Rook_CornerBottomRight_returnFourteen() {
         Rook rook = new Rook(PieceColor.WHITE);
         Location from = new Location(7, 7);
 

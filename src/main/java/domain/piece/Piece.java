@@ -1,7 +1,6 @@
 package domain.piece;
 
 import domain.Location;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,25 +25,27 @@ public abstract class Piece {
 
     public abstract Piece makeCopy();
 
+    public abstract Set<Location> getValidMoves(Location from);
+
     protected Set<Location> getDirectionalMoves(Location from, int[][] directions) {
         Set<Location> moves = new HashSet<>();
 
-        if(directions == null){
+        if (directions == null) {
             return moves;
         }
 
-        for(int[] direction : directions){
+        for (int[] direction : directions) {
             int columnDelta = direction[0];
             int rowDelta = direction[1];
 
-            if(columnDelta == 0 && rowDelta == 0){
+            if (columnDelta == 0 && rowDelta == 0) {
                 continue;
             }
 
             int column = from.getColumn() + columnDelta;
             int row = from.getRow() + rowDelta;
 
-            while(isInsideBoard(column, row)){
+            while (isInsideBoard(column, row)) {
                 moves.add(new Location(column, row));
                 column += columnDelta;
                 row += rowDelta;
