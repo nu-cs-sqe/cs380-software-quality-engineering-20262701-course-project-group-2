@@ -50,7 +50,7 @@ public class BoardController {
     private boolean isInsideBoard(Location location){
         int column = location.getColumn();
         int row = location.getRow();
-        return column >= 0 && column < BOARD_SIZE && row >= 0;
+        return column >= 0 && column < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
     }
 
     private void moveSelectedPieceTo(Location destination){
