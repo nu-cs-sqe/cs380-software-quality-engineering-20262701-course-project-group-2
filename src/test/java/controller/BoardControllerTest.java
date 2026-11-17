@@ -267,4 +267,16 @@ public class BoardControllerTest {
         assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
         verify(mockGame);
     }
+
+    @Test
+    public void HandleSquareClick_ClickOutsideBoardLowerColumnWhileSelected_NoChange(){
+        expectWhitePawnCanBeSelected();
+        replay(mockGame);
+        controller.handleSquareClick(WHITE_PAWN);
+
+        controller.handleSquareClick(new Location(-1, 5));
+
+        assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
+        verify(mockGame);
+    }
 }

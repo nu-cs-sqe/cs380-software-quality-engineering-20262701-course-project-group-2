@@ -48,7 +48,8 @@ public class BoardController {
     }
 
     private boolean isInsideBoard(Location location){
-        return location.getColumn() < BOARD_SIZE;
+        int column = location.getColumn();
+        return column >= 0 && column < BOARD_SIZE;
     }
 
     private void moveSelectedPieceTo(Location destination){
