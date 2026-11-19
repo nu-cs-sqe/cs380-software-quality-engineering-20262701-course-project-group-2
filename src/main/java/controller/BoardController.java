@@ -4,7 +4,6 @@ import domain.Game;
 import domain.Location;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
-
 import java.util.Set;
 
 public class BoardController {
@@ -26,15 +25,15 @@ public class BoardController {
         return game.getCurrentTurn();
     }
 
-    public Location getSelectedSquare(){
+    public Location getSelectedSquare() {
         return selectedSquare;
     }
 
-    public Set<Location> getHighlightedSquares(){
+    public Set<Location> getHighlightedSquares() {
         return highlightedSquares;
     }
 
-    public void handleSquareClick(Location location){
+    public void handleSquareClick(Location location) {
         if (!isInsideBoard(location)) {
             return;
         }
@@ -47,29 +46,29 @@ public class BoardController {
         }
     }
 
-    private boolean isInsideBoard(Location location){
+    private boolean isInsideBoard(Location location) {
         int column = location.getColumn();
         int row = location.getRow();
         return column >= 0 && column < BOARD_SIZE && row >= 0 && row < BOARD_SIZE;
     }
 
-    private void moveSelectedPieceTo(Location destination){
+    private void moveSelectedPieceTo(Location destination) {
         game.movePiece(selectedSquare, destination);
         game.switchTurn();
         clearSelection();
     }
 
-    private boolean isOwnPiece(Location location){
+    private boolean isOwnPiece(Location location) {
         Piece piece = game.getBoardSnapshot()[location.getRow()][location.getColumn()];
         return piece != null && piece.getColor() == game.getCurrentTurn();
     }
 
-    private void select(Location location){
+    private void select(Location location) {
         selectedSquare = location;
         highlightedSquares = Set.copyOf(game.getLegalMoves(location));
     }
 
-    private void clearSelection(){
+    private void clearSelection() {
         selectedSquare = null;
         highlightedSquares = Set.of();
     }
