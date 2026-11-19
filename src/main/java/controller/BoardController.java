@@ -42,7 +42,7 @@ public class BoardController {
         } else if (isOwnPiece(location) && !location.equals(selectedSquare)) {
             select(location);
         } else {
-            clearSelection();
+            deselect();
         }
     }
 
@@ -55,7 +55,7 @@ public class BoardController {
     private void moveSelectedPieceTo(Location destination) {
         game.movePiece(selectedSquare, destination);
         game.switchTurn();
-        clearSelection();
+        deselect();
     }
 
     private boolean isOwnPiece(Location location) {
@@ -68,7 +68,7 @@ public class BoardController {
         highlightedSquares = Set.copyOf(game.getLegalMoves(location));
     }
 
-    private void clearSelection() {
+    private void deselect() {
         selectedSquare = null;
         highlightedSquares = Set.of();
     }
