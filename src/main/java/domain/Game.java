@@ -8,11 +8,11 @@ import java.util.Set;
 
 import static domain.piece.PieceType.PAWN;
 
-public final class Game {
+public class Game {
     private static final int BOARD_SIZE = 8;
 
     private final Board board;
-    private final PieceColor currentTurn;
+    private PieceColor currentTurn;
 
     public Game() {
         this(new Board());
@@ -29,6 +29,14 @@ public final class Game {
 
     public Piece[][] getBoardSnapshot() {
         return board.getSnapshot();
+    }
+
+    public void movePiece(Location from, Location to) {
+        throw new UnsupportedOperationException("movePiece is not implemented yet");
+    }
+
+    public void switchTurn() {
+        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
     public Set<Location> getLegalMoves(Location from) {
