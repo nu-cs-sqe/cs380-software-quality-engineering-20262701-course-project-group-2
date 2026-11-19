@@ -1,3 +1,5 @@
 This folder should include the system design. It can be in the form of design diagrams or a textual description of what classes the system shall have and their relationships.
 
-It is optional for the team to document the design in this folder. A popular alternative is to document the design in the Project Management Board. 
+- [`current_design_methods.md`](current_design_methods.md) describes the methods and responsibilities that exist in the current source tree.
+- [`design_chess_plan.puml`](design_chess_plan.puml) is the current-state class diagram.
+- [`future_design_scope.md`](future_design_scope.md) records deferred capabilities and candidate APIs. It is not a current implementation contract.
