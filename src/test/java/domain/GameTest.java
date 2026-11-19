@@ -413,6 +413,16 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void SwitchTurn_White_ReturnBlack() {
+        Game game = new Game();
+
+        game.switchTurn();
+
+        PieceColor expected = PieceColor.BLACK;
+        PieceColor actual = game.getCurrentTurn();
+        assertEquals(expected, actual);
+    }
 
     private static Square square(int column, int row, Piece piece) {
         return new Square(column, row, piece);

@@ -12,7 +12,7 @@ public class Game {
     private static final int BOARD_SIZE = 8;
 
     private final Board board;
-    private final PieceColor currentTurn;
+    private PieceColor currentTurn;
 
     public Game() {
         this(new Board());
@@ -36,7 +36,7 @@ public class Game {
     }
 
     public void switchTurn() {
-        throw new UnsupportedOperationException("switchTurn is not implemented yet");
+        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
     public Set<Location> getLegalMoves(Location from) {
