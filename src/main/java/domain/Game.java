@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static domain.piece.PieceType.PAWN;
 
-public final class Game {
+public class Game {
     private static final int BOARD_SIZE = 8;
 
     private final Board board;
@@ -31,11 +31,11 @@ public final class Game {
         return board.getSnapshot();
     }
 
-    public void movePiece(Location from, Location to){
+    public void movePiece(Location from, Location to) {
         throw new UnsupportedOperationException("movePiece is not implemented yet");
     }
 
-    public void switchTurn(){
+    public void switchTurn() {
         throw new UnsupportedOperationException("switchTurn is not implemented yet");
     }
 
