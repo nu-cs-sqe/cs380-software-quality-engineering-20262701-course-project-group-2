@@ -1,134 +1,74 @@
 # BVA Analysis: `BoardController`
 
-### Method under test: `handleSquareClick(Location location)`
+## Method under test: `handleSquareClick(Location location)`
 
-**Purpose / use:** This is the controller entry point called by `BoardView` whenever the user clicks a square. It converts raw UI clicks into selection, re-selection, or a legal move.
+**Purpose / use:** Converts a BoardView click into selection, reselection, deselection, or delegation of an approved move.
 
-**Expected behavior:** Converts a board click into selection/re-selection/move behavior. It should only allow the active player's pieces to be selected, use `Game.getLegalMoves(...)` for highlights, perform a move only when the clicked destination is highlighted, clear selection after a completed/invalid move attempt as specified below, and advance the turn after a completed move.
+**Current behavior:**
 
-1. Nothing selected + click a piece of the active player's colour -> that square becomes selected and its valid destinations are highlighted
-2. Piece selected + click a highlighted destination -> the move is performed, and the selection and highlight are cleared
-3. Piece selected + click another own piece -> selection changes to the newly clicked own piece and highlights are recomputed
-4. Piece selected + click anything else on the board -> no move and the selection is cleared
+1. off-board click → ignore and preserve current selection;
+2. highlighted destination → call `Game.movePiece`, call `Game.switchTurn`, clear selection/highlights;
+3. different active-player piece → select it and copy `Game.getLegalMoves(...)` into highlights;
+4. every other in-board click → clear selection/highlights.
 
-### Step 1-3: Analysis
+The controller unit tests below use a mocked Game. They prove controller decisions and calls, not real Board mutation.
 
-Inputs:
-- Selection state: cases {nothing selected, own piece selected}
-- Clicked square content: cases {own piece, opponent piece, empty square}
-- Clicked square relative to the highlighted set: cases {inside the set, outside the set}
-- Clicked square relative to the selected square: cases {same square, different square}
-- Coordinate: interval [0,7] for column and row
-- Current turn: cases {WHITE, BLACK}
+### Nothing selected
 
-Outputs:
-- Selected square: cases {`null`, a `Location`}
-- Highlighted set: cases {empty, exactly 1 square, 2 or more squares}
-- Board snapshot: cases {unchanged, one piece relocated, one piece captured}
-- Current turn: cases {unchanged, switched}
+| Test Case ID                                                                 | Method(s) under test          | State of the System                                                                | Expected Output                                                    | Implemented?       |
+|------------------------------------------------------------------------------|-------------------------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------|--------------------|
+| C1<br><sub>handleSquareClick_SelectOwnPawn_NewSelection</sub>                | `handleSquareClick(Location)` | Mocked standard board; Game reports WHITE; click `(4,6)` and moves `{(4,5),(4,4)}` | selected `(4,6)`; highlights `{(4,5),(4,4)}`                       | :white_check_mark: |
+| C2<br><sub>handleSquareClick_SelectOwnPieceWithNoMoves_EmptyHighlights</sub> | `handleSquareClick(Location)` | Mocked standard board; WHITE; click boxed-in rook `(0,7)`; Game returns `{}`       | selected `(0,7)`; highlights empty                                 | :white_check_mark: |
+| C3<br><sub>handleSquareClick_ClickEmpty_NoSelection</sub>                    | `handleSquareClick(Location)` | Mocked standard board; WHITE; click empty `(4,4)`                                  | selected `null`; highlights empty                                  | :white_check_mark: |
+| C4<br><sub>handleSquareClick_ClickOpponent_NoSelection</sub>                 | `handleSquareClick(Location)` | Mocked standard board; WHITE; click BLACK pawn `(4,1)`                             | selected `null`; highlights empty                                  | :white_check_mark: |
+| C24<br><sub>handleSquareClick_GameReportsBlack_SelectBlackPiece</sub>        | `handleSquareClick(Location)` | Mock Game reports BLACK turn and black-pawn moves; click `(4,1)`                   | selected `(4,1)`; highlights equal Game result; turn remains BLACK | :white_check_mark: |
 
-### Step 4: Test Cases
+### Selection populated
 
-#### Nothing selected
-
-| Test Case ID                                                                       | Method(s) under test                   | State of the System                                                                                                                                   | Expected Output                                                                                             | Implemented? |
-|------------------------------------------------------------------------------------|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|--------------|
-| C1<br><sub>handleSquareClick_selectOwnPawn_NoPriorSelection_NewSelection</sub>     | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• nothing selected<br>• click: (4, 6) (white pawn)                                                          | selected = (4, 6); highlight = {(4, 5), (4, 4)}; board unchanged; turn unchanged (WHITE)                    | :white_check_mark:          |
-| C2<br><sub>handleSquareClick_selectOwnPiece_NoValidDestinations_NoHighlights</sub> | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• nothing selected<br>• click: (0, 7) (white rook, boxed in by the pawn on (0, 6) and the knight on (1, 7)) | selected = (0, 7); highlight = empty set; board unchanged; no exception                                     | :white_check_mark:          |
-| C3<br><sub>handleSquareClick_selectEmptySquare_NoPriorSelection_NoChange</sub>     | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• nothing selected<br>• click: (4, 4) (empty)                                                               | selected = `null`; highlight = empty set; board unchanged                                                   | :white_check_mark:          |
-| C4<br><sub>handleSquareClick_selectOpponentPiece_NoPriorSelection_NoChange</sub>   | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• nothing selected<br>• click: (4, 1) (black pawn)                                                          | selected = `null` (black pieces cannot be selected on white's turn); highlight = empty set; board unchanged | :white_check_mark:          |
-
-#### Selection populated
-
-| Test Case ID                                                                                     | Method(s) under test                   | State of the System                                                                                                                                                             | Expected Output                                                                                                                                              | Implemented? |
-|--------------------------------------------------------------------------------------------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| C5<br><sub>handleSquareClick_moveToHighlightedSquare_moveCompletedAndTurnProgresses</sub>        | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6) (highlight = {(4, 5), (4, 4)})<br>• click: (4, 5) (inside the highlight)                                              | move performed; `snapshot[6][4]` is `null`, `snapshot[5][4]` is a WHITE PAWN; selected = `null`; highlight = empty set; turn becomes BLACK                   | :white_check_mark:          |
-| C6<br><sub>handleSquareClick_moveToHighlightedCaptureSquare_moveCompletedAndTurnProgresses</sub> | `handleSquareClick(Location location)` | white pawn (4, 6) -> (4, 4), black pawn (5, 1) -> (5, 3), WHITE to move<br>• select (4, 4) (highlight = {(4, 3), (5, 3)})<br>• click: (5, 3) (black pawn, inside the highlight) | capture performed; `snapshot[3][5]` is a WHITE PAWN, the black pawn is gone, piece count is 31; selected = `null`; highlight = empty set; turn becomes BLACK | :white_check_mark:          |
-| C7<br><sub>handleSquareClick_clickSelectedSquareAgain_NoChange</sub>                             | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (4, 6) (same square, not a destination)                                                                   | deselected; selected = `null`; highlight = empty set; board unchanged; turn unchanged (WHITE)                                                                | :white_check_mark:          |
-| C8<br><sub>handleSquareClick_clickOtherOwnPieceWhileSelected_NewSelection</sub>                  | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (1, 7) (white knight)                                                                                     | selection switches to (1, 7); highlight recomputed as {(0, 5), (2, 5)}; board unchanged; turn unchanged (WHITE)                                              | :white_check_mark:          |
-| C9<br><sub>handleSquareClick_clickUnhighlightedEmptySquare_ClearSelection</sub>                  | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (6, 5) (empty, outside the highlight)                                                                     | no move; board unchanged; selected = `null`; highlight = empty set; turn unchanged (WHITE)                                                                   | :white_check_mark:          |
-| C10<br><sub>handleSquareClick_clickUnhighlightedOpponentPiece_ClearSelection</sub>               | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (3, 1) (black pawn, outside the highlight)                                                                | no move; the black pawn is not captured; board unchanged; selected = `null`; highlight = empty set; turn unchanged (WHITE)                                   | :white_check_mark:          |
-| C11<br><sub>handleSquareClick_clickOutsideBoardUpperColumnWhileSelected_NoChange</sub>           | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (8, 5) (column one above the valid interval)                                                              | click ignored; selection is kept (selected = (4, 6), highlight = {(4, 5), (4, 4)}); board unchanged; turn unchanged                                          | :white_check_mark:          |
-| C20<br><sub>handleSquareClick_clickOutsideBoardLowerColumnWhileSelected_NoChange</sub>           | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (-1, 5) (column one below the valid interval)                                                             | click ignored; selection and highlights are kept; board unchanged; turn unchanged                                                                            | :white_check_mark:          |
-| C21<br><sub>handleSquareClick_clickOutsideBoardLowerRowWhileSelected_NoChange</sub>              | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (5, -1) (row one below the valid interval)                                                                | click ignored; selection and highlights are kept; board unchanged; turn unchanged                                                                            | :white_check_mark:          |
-| C22<br><sub>handleSquareClick_clickOutsideBoardUpperRowWhileSelected_NoChange</sub>              | `handleSquareClick(Location location)` | standard starting board, WHITE to move<br>• select (4, 6)<br>• click: (5, 8) (row one above the valid interval)                                                                 | click ignored; selection and highlights are kept; board unchanged; turn unchanged                                                                            | :white_check_mark:          |
-| C24<br><sub>handleSquareClick_BlackTurn_SelectBlackPiece</sub>                                   | `handleSquareClick(Location location)` | one valid WHITE move has been completed, so current turn is BLACK<br>• nothing selected<br>• click: (4, 1) (black pawn)                                                         | selected = (4, 1); highlights are the black pawn's valid destinations; board unchanged; turn remains BLACK                                                   | :white_check_mark:          |
-
-### Method under test: `getSelectedSquare()`
-
-**Purpose / use:** Lets the view know which square, if any, should be shown as selected.
-
-**Expected behavior:** Returns the currently selected board square, or `null` when no piece is selected.
-
-| Test Case ID                                                      | Method(s) under test  | State of the System                                                                                                        | Expected Output | Implemented? |
-|-------------------------------------------------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
-| C12<br><sub>getSelectedSquare_NoClick_ReturnNull</sub>            | `getSelectedSquare()` | newly constructed `BoardController`, standard starting board<br>• no click handled yet                                     | `null`          | :white_check_mark:          |
-| C13<br><sub>getSelectedSquare_PieceSelected_ReturnLocation</sub>  | `getSelectedSquare()` | standard starting board, WHITE to move<br>• `handleSquareClick((4, 6))` (white pawn)                                       | `(4, 6)`        | :white_check_mark:          |
-| C14<br><sub>getSelectedSquare_AfterCompletedMove_ReturnNull</sub> | `getSelectedSquare()` | standard starting board, WHITE to move<br>• `handleSquareClick((4, 6))`, then `handleSquareClick((4, 5))` (move performed) | `null`          | :white_check_mark:          |
-
-### Method under test: `getHighlightedSquares()`
-
-**Purpose / use:** Supplies the legal destination squares that `BoardView` should highlight for the player.
-
-**Expected behavior:** Returns the current set of fully legal destination squares for the selected piece. The set is empty when nothing is selected or when the selected piece has no legal move.
-
-| Test Case ID                                                                   | Method(s) under test      | State of the System                                                                                        | Expected Output                                                                                                                                                       | Implemented? |
-|--------------------------------------------------------------------------------|---------------------------|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| C15<br><sub>getHighlightedSquares_NoSelection_ReturnEmpty</sub>                | `getHighlightedSquares()` | newly constructed `BoardController`<br>• no click handled yet                                              | empty set                                                                                                                                                             | :white_check_mark:          |
-| C16<br><sub>getHighlightedSquares_SelectionMade_returnEmpty</sub>              | `getHighlightedSquares()` | standard starting board, WHITE to move<br>• `handleSquareClick((0, 7))` (white rook, no valid destination) | empty set, while `getSelectedSquare()` is `(0, 7)` — same size as C15 but a different reason, so "nothing selected" and "selected with no move" must not be conflated | :white_check_mark:          |
-| C17<br><sub>getHighlightedSquares_SelectionWithValidMoves_returnNonEmpty</sub> | `getHighlightedSquares()` | standard starting board, WHITE to move<br>• `handleSquareClick((4, 6))` (white pawn)                       | exactly `{(4, 5), (4, 4)}`                                                                                                                                            | :white_check_mark:          |
-| C23<br><sub>getHighlightedSquares_SelectionWithExactlyOneMove_returnOne</sub>  | `getHighlightedSquares()` | use the board state from [Game.getLegalMoves](../domain/Game.md) test M15 (a case moved there from the old King BVA)<br>• WHITE to move<br>• select the white king on (4, 7)             | exactly `{(4, 6)}` — covers the exactly-one boundary for the highlighted set size    | :white_check_mark:          |
-
-### Method under test: `getCurrentTurn()`
-
-**Purpose / use:** Gives the game-stat UI the same current-turn information owned by Game.
-
-**Expected behavior:** Exposes the current turn from `Game` for the views/controller UI state.
-
-| Test Case ID                                              | Method(s) under test | State of the System                                                       | Expected Output    | Implemented? |
-|-----------------------------------------------------------|----------------------|---------------------------------------------------------------------------|--------------------|--------------|
-| C18<br><sub>getCurrentTurn_NewGame_ReturnWhite</sub>      | `getCurrentTurn()`   | newly constructed `BoardController`<br>• no click handled yet             | `PieceColor.WHITE` | :X:          |
-| C19<br><sub>getCurrentTurn_AfterOneMove_ReturnBlack</sub> | `getCurrentTurn()`   | after one valid WHITE move has been completed through `handleSquareClick` | `PieceColor.BLACK` | :X:          |
-
-### Method under test: `getBoardSnapshot()`
-
-**Purpose / use:** Gives `BoardView` the current board it needs to draw.
-
-**Expected behavior:** Exposes the current board snapshot from `Game` for display.
-
-| Test Case ID                                                            | Method(s) under test | State of the System                                                                       | Expected Output                                                | Implemented? |
-|-------------------------------------------------------------------------|----------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------|--------------|
-| C25<br><sub>getBoardSnapshot_NewController_ReturnInitializedBoard</sub> | `getBoardSnapshot()` | newly constructed `BoardController`                                                       | initialized board snapshot satisfying Board setup tests B1-B4  | :X:          |
-| C26<br><sub>getBoardSnapshot_AfterMove_ReturnUpdatedBoard</sub>         | `getBoardSnapshot()` | standard starting board<br>• move white pawn (4, 6) -> (4, 5) through `handleSquareClick` | source square is empty and destination contains the WHITE PAWN | :X:          |
+| Test Case ID                                                                          | Method(s) under test          | State of the System                                                                       | Expected Output                                                                       | Implemented?       |
+|---------------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|--------------------|
+| C5<br><sub>handleSquareClick_HighlightedEmptyDestination_DelegateMoveAndClear</sub>   | `handleSquareClick(Location)` | Select `(4,6)`; click highlighted `(4,5)`                                                 | `Game.movePiece((4,6),(4,5))` and `switchTurn()` called; selection/highlights cleared | :white_check_mark: |
+| C6<br><sub>handleSquareClick_HighlightedCaptureDestination_DelegateMoveAndClear</sub> | `handleSquareClick(Location)` | Mock board has WHITE `(4,4)`, BLACK `(5,3)`; select WHITE; click highlighted BLACK square | `Game.movePiece((4,4),(5,3))` and `switchTurn()` called; selection/highlights cleared | :white_check_mark: |
+| C7<br><sub>handleSquareClick_ClickSelectedSquareAgain_ClearSelection</sub>            | `handleSquareClick(Location)` | Select `(4,6)`; click `(4,6)` again                                                       | selection/highlights cleared; no move call                                            | :white_check_mark: |
+| C8<br><sub>handleSquareClick_ClickDifferentOwnPiece_Reselect</sub>                    | `handleSquareClick(Location)` | Select WHITE pawn; click WHITE knight `(1,7)`                                             | knight selected; highlights replaced with knight moves                                | :white_check_mark: |
+| C9<br><sub>handleSquareClick_ClickUnhighlightedEmpty_ClearSelection</sub>             | `handleSquareClick(Location)` | Select WHITE pawn; click unhighlighted empty `(6,5)`                                      | selection/highlights cleared; no move call                                            | :white_check_mark: |
+| C10<br><sub>handleSquareClick_ClickUnhighlightedOpponent_ClearSelection</sub>         | `handleSquareClick(Location)` | Select WHITE pawn; click unhighlighted BLACK piece `(3,1)`                                | selection/highlights cleared; no move call                                            | :white_check_mark: |
+| C11<br><sub>handleSquareClick_ColumnEight_Ignore</sub>                                | `handleSquareClick(Location)` | Selection exists; click `(8,5)`                                                           | selection/highlights preserved                                                        | :white_check_mark: |
+| C20<br><sub>handleSquareClick_ColumnNegativeOne_Ignore</sub>                          | `handleSquareClick(Location)` | Selection exists; click `(-1,5)`                                                          | selection/highlights preserved                                                        | :white_check_mark: |
+| C21<br><sub>handleSquareClick_RowNegativeOne_Ignore</sub>                             | `handleSquareClick(Location)` | Selection exists; click `(5,-1)`                                                          | selection/highlights preserved                                                        | :white_check_mark: |
+| C22<br><sub>handleSquareClick_RowEight_Ignore</sub>                                   | `handleSquareClick(Location)` | Selection exists; click `(5,8)`                                                           | selection/highlights preserved                                                        | :white_check_mark: |
 
 ---
 
-### Planned method under test: `getGameMode()`
+## Getter methods
 
-**Purpose / use:** Lets the UI read the selected ruleset through the controller instead of accessing Game directly.
+Simple getters do not need independent boundary analysis, but the existing observable-state tests are retained for traceability.
 
-**Expected behavior:** Returns the current Game's `GameMode`.
-
-Inputs:
-
-Outputs:
-
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-|              | `getGameMode()`      |                     |                 | :X:          |
+| Test Case ID                                                             | Method(s) under test      | State of the System                                    | Expected Output                            | Implemented?       |
+|--------------------------------------------------------------------------|---------------------------|--------------------------------------------------------|--------------------------------------------|--------------------|
+| C12<br><sub>getSelectedSquare_NoClick_ReturnNull</sub>                   | `getSelectedSquare()`     | New controller                                         | `null`                                     | :white_check_mark: |
+| C13<br><sub>getSelectedSquare_AfterSelection_ReturnLocation</sub>        | `getSelectedSquare()`     | C1 selection performed                                 | `(4,6)`                                    | implemented by C1  |
+| C14<br><sub>getSelectedSquare_AfterDelegatedMove_ReturnNull</sub>        | `getSelectedSquare()`     | C5 move delegation completed                           | `null`                                     | implemented by C5  |
+| C15<br><sub>getHighlightedSquares_NoSelection_ReturnEmpty</sub>          | `getHighlightedSquares()` | New controller                                         | empty set                                  | :white_check_mark: |
+| C16<br><sub>getHighlightedSquares_SelectedPieceNoMoves_ReturnEmpty</sub> | `getHighlightedSquares()` | C2 selection performed                                 | empty set while selected square is `(0,7)` | implemented by C2  |
+| C17<br><sub>getHighlightedSquares_SelectedPawn_ReturnTwo</sub>           | `getHighlightedSquares()` | C1 selection performed                                 | `{(4,5),(4,4)}`                            | implemented by C1  |
+| C23<br><sub>getHighlightedSquares_GameReturnsOneMove_ReturnOne</sub>     | `getHighlightedSquares()` | Mock Game returns exactly `{(4,6)}` for selected king  | exactly `{(4,6)}`                          | :white_check_mark: |
+| C18<br><sub>getCurrentTurn_NewGame_ReturnWhite</sub>                     | `getCurrentTurn()`        | Controller with real new Game                          | WHITE                                      | :white_check_mark: |
+| C19<br><sub>getCurrentTurn_AfterRealMove_ReturnBlack</sub>               | `getCurrentTurn()`        | Complete a real WHITE move through the controller      | BLACK                                      | :X:                |
+| C25<br><sub>getBoardSnapshot_NewController_Return8x8Snapshot</sub>       | `getBoardSnapshot()`      | Controller with real new Game                          | 8 rows and 8 columns per row               | :white_check_mark: |
+| C26<br><sub>getBoardSnapshot_AfterRealMove_ReturnUpdatedBoard</sub>      | `getBoardSnapshot()`      | Complete real WHITE `(4,6) → (4,5)` through controller | source empty; destination WHITE PAWN       | :X:                |
 
 ---
 
-### Planned method under test: `getWinner()`
+## Feature-thread integration cases
 
-**Purpose / use:** Lets the UI determine whether there is a winner and which player won.
+These cases use a real Game and Board. They are intentionally separate from C5/C6, which are controller unit tests with mocks.
 
-**Expected behavior:** Returns the current Game's winner, or `null` while no winner exists.
+| Test Case ID                                                                         | Methods under test                                                           | State of the System                                                            | Expected Output                                                                            | Implemented? |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------|
+| C27<br><sub>handleSquareClick_RealGameOrdinaryMove_UpdateBoardTurnAndSelection</sub> | `handleSquareClick`, `getBoardSnapshot`, `getCurrentTurn`, selection getters | New game; click `(4,6)`, then `(4,5)`                                          | WHITE pawn relocated; turn BLACK; selection/highlights empty                               | :X:          |
+| C28<br><sub>handleSquareClick_RealGameCapture_UpdateBoardTurnAndPieceCount</sub>     | same feature thread                                                          | Arrange WHITE pawn `(4,4)`, BLACK pawn `(5,3)`, WHITE to move; capture `(5,3)` | WHITE pawn at destination; source empty; 31 pieces; turn BLACK; selection/highlights empty | :X:          |
 
-Inputs:
+## Removed stale API plans
 
-Outputs:
-
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-|              | `getWinner()`        |                     |                 | :X:          |
+`getGameMode()` and `getWinner()` are not current BoardController methods. They are deferred in [`../../design/future_design_scope.md`](../../design/future_design_scope.md).

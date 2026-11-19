@@ -1,61 +1,24 @@
 # BVA Analysis: `Location`
 
-### Method under test: `getColumn()`
+`Location` stores integer coordinates. It does not enforce the chess-board range; callers such as BoardController decide whether a coordinate is in `[0,7]`.
 
-**Purpose / use:** Provides the stored column coordinate to Board/Game code when indexing the board.
+`getColumn()` and `getRow()` are simple getters and do not require separate BVA cases.
 
-**Expected behavior:** Returns the column stored in this `Location`. The method does not decide whether the coordinate is inside the chess board; methods that use a `Location` are responsible for that validation.
+## Method under test: `equals(Object other)`
 
-No additional BVA test cases are applicable. `getColumn()` is a simple getter with no input or branching behavior.
+| Test Case ID                                                      | Method(s) under test | State of the System                          | Expected Output | Implemented?       |
+|-------------------------------------------------------------------|----------------------|----------------------------------------------|-----------------|--------------------|
+| L1<br><sub>equals_SameInstance_ReturnTrue</sub>                   | `equals(Object)`     | Compare a Location to itself                 | `true`          | :white_check_mark: |
+| L2<br><sub>equals_Null_ReturnFalse</sub>                          | `equals(Object)`     | Compare a Location to `null`                 | `false`         | :white_check_mark: |
+| L3<br><sub>equals_DistinctObjectsSameCoordinates_ReturnTrue</sub> | `equals(Object)`     | `(3,4)` compared with a distinct `(3,4)`     | `true`          | :X:                |
+| L4<br><sub>equals_DifferentColumn_ReturnFalse</sub>               | `equals(Object)`     | `(3,4)` compared with `(2,4)`                | `false`         | :X:                |
+| L5<br><sub>equals_DifferentRow_ReturnFalse</sub>                  | `equals(Object)`     | `(3,4)` compared with `(3,5)`                | `false`         | :X:                |
+| L6<br><sub>equals_NonLocation_ReturnFalse</sub>                   | `equals(Object)`     | `(3,4)` compared with a String or other type | `false`         | :X:                |
 
-#### Step 4: Planned test cases
+## Method under test: `hashCode()`
 
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-|              | `getColumn()`        |                     |                 | :X:          |
+The required contract is consistency with `equals`; the exact numeric formula is an implementation detail.
 
-### Method under test: `getRow()`
-
-**Purpose / use:** Provides the stored row coordinate to Board/Game code when indexing the board.
-
-**Expected behavior:** Returns the row stored in this `Location`. The method does not decide whether the coordinate is inside the chess board; methods that use a `Location` are responsible for that validation.
-
-No additional BVA test cases are applicable. `getRow()` is a simple getter with no input or branching behavior.
-
-#### Step 4: Planned test cases
-
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-|              | `getRow()`           |                     |                 | :X:          |
-
----
-
-### Planned method under test: `equals(Object other)`
-
-**Purpose / use:** Allows two `Location` objects to be compared by their coordinates instead of by object identity.
-
-**Expected behavior:** Returns whether the other object represents the same column and row.
-
-Inputs:
-
-Outputs:
-
-| Test Case ID | Method(s) under test   | State of the System | Expected Output | Implemented? |
-|--------------|------------------------|---------------------|-----------------|--------------|
-|              | `equals(Object other)` |                     |                 | :X:          |
-
----
-
-### Planned method under test: `hashCode()`
-
-**Purpose / use:** Allows `Location` objects to work correctly in `Set<Location>` / hash-based collections used for moves and highlights.
-
-**Expected behavior:** Returns a hash code consistent with `equals()`.
-
-Inputs:
-
-Outputs:
-
-| Test Case ID | Method(s) under test | State of the System | Expected Output | Implemented? |
-|--------------|----------------------|---------------------|-----------------|--------------|
-|              | `hashCode()`         |                     |                 | :X:          |
+| Test Case ID                                                  | Method(s) under test | State of the System                              | Expected Output  | Implemented? |
+|---------------------------------------------------------------|----------------------|--------------------------------------------------|------------------|--------------|
+| L7<br><sub>hashCode_EqualLocations_ReturnEqualHashCodes</sub> | `hashCode()`         | Two distinct Locations with the same coordinates | Equal hash codes | :X:          |

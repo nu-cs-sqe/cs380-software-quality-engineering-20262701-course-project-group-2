@@ -1,16 +1,7 @@
 # BVA Analysis: `Main`
 
-### Method under test: `main(String[] args)`
+### Method: `main(String[] args)`
 
-**Purpose / use:** Provides the Java application entry point. It is only responsible for starting the UI.
+**Purpose / use:** Provides the Java application entry point and schedules creation of `WelcomeView` on the Swing event-dispatch thread.
 
-**Expected behavior:** Starts the chess application and opens the initial UI. The command-line `args` are not currently used by the program.
-
-No additional BVA test cases are applicable for the current implementation because `main()` does not branch on or otherwise use `args`.
-
-
-#### Step 4: Planned test cases
-
-| Test Case ID | Method(s) under test  | State of the System | Expected Output | Implemented? |
-|--------------|-----------------------|---------------------|-----------------|--------------|
-|              | `main(String[] args)` |                     |                 | :X:          |
+`args` is unused and the method has no input-dependent branch. No BVA case is required for the current implementation. UI startup verification belongs in a smoke/manual UI test rather than the Move Piece BVA.
