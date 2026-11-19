@@ -31,6 +31,16 @@
 4. [30% done] Annie: updating boardview to render highlighted squares (no PR yet)
 5. [In progress] Andres: validation methods for legal moves in Game class
 
+# Week 7 (11/01/2026-11/08/2026)
+**Planning and Progress Tracking**:
+1. [done] Ian: final pawn tests and knight implementation for getValidMoves
+> PR:https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/11
+2. [done] Andres: set up quality tools (checkstyle, pitest, spotbugs, jacoco, ...) and respective badges
+> PR: https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/20
+4. [80% done] Annie: implementation for getLegalMoves, getPlayableMoves, isCheck
+> PR (just the BVA and getLegalMoves implementation): https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-2/pull/21
+5. [in progress] Ian: handleSquareClick method implementation in board controller
+
 
 # One section per week until the last week of class (the week before the Finals week)
 
