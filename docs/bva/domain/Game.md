@@ -85,9 +85,9 @@ These cases apply occupancy rules only. They do not yet test attacked-square/kin
 
 **Purpose / use:** Delegates an already-approved relocation to Board. It must not switch the turn by itself.
 
-| Test Case ID                                                       | Method(s) under test                    | State of the System                            | Expected Output                                                    | Implemented? |
-|--------------------------------------------------------------------|-----------------------------------------|------------------------------------------------|--------------------------------------------------------------------|--------------|
-| G2<br><sub>movePiece_ApprovedMove_DelegateToBoardAndKeepTurn</sub> | `movePiece(Location from, Location to)` | Inject mocked Board; new Game; `(4,6) → (4,4)` | `Board.movePiece(from,to)` called once; current turn remains WHITE | :X:          |
+| Test Case ID                                                       | Method(s) under test                    | State of the System                            | Expected Output                                                    | Implemented?       |
+|--------------------------------------------------------------------|-----------------------------------------|------------------------------------------------|--------------------------------------------------------------------|--------------------|
+| G2<br><sub>movePiece_ApprovedMove_DelegateToBoardAndKeepTurn</sub> | `movePiece(Location from, Location to)` | Inject mocked Board; new Game; `(4,6) → (4,4)` | `Board.movePiece(from,to)` called once; current turn remains WHITE | :white_check_mark: |
 
 ---
 
