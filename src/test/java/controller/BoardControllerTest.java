@@ -347,4 +347,48 @@ public class BoardControllerTest {
         assertNull(realController.getSelectedSquare());
         assertEquals(Set.of(), realController.getHighlightedSquares());
     }
+
+    // C28
+    @Test
+    public void HandleSquareClick_RealGameCapture_UpdateBoardTurnAndPieceCount() {
+        Game game = new Game();
+        BoardController realController = new BoardController(game);
+
+        Location whitePawnStart = new Location(4, 6);
+        Location whitePawnAdvance = new Location(4, 4);
+        Location blackPawnStart = new Location(5, 1);
+        Location blackPawnAdvance = new Location(5, 3);
+
+        realController.handleSquareClick(whitePawnStart);
+        realController.handleSquareClick(whitePawnAdvance);
+
+        realController.handleSquareClick(blackPawnStart);
+        realController.handleSquareClick(blackPawnAdvance);
+
+        realController.handleSquareClick(whitePawnAdvance);
+        realController.handleSquareClick(blackPawnAdvance);
+
+        Piece[][] snapshot = realController.getBoardSnapshot();
+        Piece capturingPawn = snapshot[3][5];
+
+        assertNull(snapshot[4][4]);
+        assertNotNull(capturingPawn);
+        assertEquals(PieceType.PAWN, capturingPawn.getType());
+        assertEquals(PieceColor.WHITE, capturingPawn.getColor());
+
+        int occupiedSquares = 0;
+
+        for (Piece[] row : snapshot) {
+            for (Piece piece : row) {
+                if (piece != null) {
+                    occupiedSquares++;
+                }
+            }
+        }
+
+        assertEquals(31, occupiedSquares);
+        assertEquals(PieceColor.BLACK, realController.getCurrentTurn());
+        assertNull(realController.getSelectedSquare());
+        assertEquals(Set.of(), realController.getHighlightedSquares());
+    }
 }
