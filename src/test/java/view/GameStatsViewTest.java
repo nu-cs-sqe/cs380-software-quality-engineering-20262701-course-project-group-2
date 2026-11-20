@@ -24,4 +24,26 @@ public class GameStatsViewTest {
 
         assertEquals(expected, actual);
     }
+
+    // GS2
+    @Test
+    public void RefreshCurrentPlayer_AfterTurnChanges_DisplayBlackPlayer() {
+        Game game = new Game();
+        BoardController controller = new BoardController(game);
+
+        GameStatsView view = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller
+        );
+
+        game.switchTurn();
+
+        view.refreshCurrentPlayer();
+
+        String expected = "Current Player: Bob";
+        String actual = view.getCurrentPlayerText();
+
+        assertEquals(expected, actual);
+    }
 }

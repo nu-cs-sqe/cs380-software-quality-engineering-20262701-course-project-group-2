@@ -17,7 +17,7 @@
 
 | ID  | Scenario                                           | Expected result                                                                                                     | Status                         |
 |-----|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------|
-| GS1 | Create the view for a new game                     | Indicator displays Player 1                                                                                         | Automated :white_check_mark:   |
-| GS2 | Change the Game turn to BLACK and refresh the view | Indicator displays Player 2                                                                                         | Pending                        |
+| GS1 | Create the view for a new game                     | Indicator displays Player 1                                                                                         | :white_check_mark:             |
+| GS2 | Change the Game turn to BLACK and refresh the view | Indicator displays Player 2                                                                                         | :white_check_mark:             |
 | GS3 | Complete a real move through the board UI          | Indicator updates automatically to the next player                                                                  | Pending                        |
 | GS4 | Display the game header                            | Current-turn indicator is prominent, larger, and positioned toward the right without overlapping player information | Pending manual UI verification |

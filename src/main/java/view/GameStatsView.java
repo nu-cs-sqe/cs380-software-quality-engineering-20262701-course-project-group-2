@@ -14,6 +14,9 @@ public class GameStatsView extends JPanel {
     private static final int HEADER_FONT_SIZE = 30;
     private static final int PLAYER_FONT_SIZE = 20;
 
+    private final String player1Name;
+    private final String player2Name;
+    private final BoardController boardController;
     private final JLabel currentPlayerLabel;
 
     public GameStatsView(
@@ -21,38 +24,81 @@ public class GameStatsView extends JPanel {
             String player2Name,
             BoardController boardController
     ) {
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
+        this.boardController = boardController;
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(true);
         setBackground(BACKGROUND_COLOR);
 
-        JLabel playerInfoLabel = new JLabel("Player Information");
-        playerInfoLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
+        JLabel playerInfoLabel =
+                new JLabel("Player Information");
+        playerInfoLabel.setFont(
+                new Font(
+                        FONT_NAME,
+                        Font.BOLD,
+                        HEADER_FONT_SIZE
+                )
+        );
         playerInfoLabel.setForeground(Color.WHITE);
 
         JLabel player1Label = new JLabel(
-                "\t\t\tPlayer 1: " + player1Name + " (Team: White)"
+                "Player 1: "
+                        + player1Name
+                        + " (Team: White)"
         );
-        player1Label.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
+        player1Label.setFont(
+                new Font(
+                        FONT_NAME,
+                        Font.BOLD,
+                        PLAYER_FONT_SIZE
+                )
+        );
         player1Label.setForeground(Color.WHITE);
 
         JLabel player2Label = new JLabel(
-                "\t\t\tPlayer 2: " + player2Name + " (Team: Black)"
+                "Player 2: "
+                        + player2Name
+                        + " (Team: Black)"
         );
-        player2Label.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
+        player2Label.setFont(
+                new Font(
+                        FONT_NAME,
+                        Font.BOLD,
+                        PLAYER_FONT_SIZE
+                )
+        );
         player2Label.setForeground(Color.WHITE);
 
-        String currentPlayerName = boardController.getCurrentTurn() == PieceColor.WHITE
-                ? player1Name
-                : player2Name;
-
-        currentPlayerLabel = new JLabel("Current Player: " + currentPlayerName);
-        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
+        currentPlayerLabel = new JLabel();
+        currentPlayerLabel.setFont(
+                new Font(
+                        FONT_NAME,
+                        Font.BOLD,
+                        HEADER_FONT_SIZE
+                )
+        );
         currentPlayerLabel.setForeground(Color.WHITE);
+
+        refreshCurrentPlayer();
 
         add(playerInfoLabel);
         add(player1Label);
         add(player2Label);
         add(currentPlayerLabel);
+    }
+
+    void refreshCurrentPlayer() {
+        String currentPlayerName =
+                boardController.getCurrentTurn()
+                        == PieceColor.WHITE
+                        ? player1Name
+                        : player2Name;
+
+        currentPlayerLabel.setText(
+                "Current Player: " + currentPlayerName
+        );
     }
 
     public String getCurrentPlayerText() {
