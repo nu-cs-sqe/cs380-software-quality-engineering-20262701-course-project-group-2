@@ -29,7 +29,7 @@ public class MainView extends JFrame {
         Game game = new Game();
         boardController = new BoardController(game);
 
-        configureMainView(locale);
+        configureMainView();
         addGameStatsView();
         addBoardView();
 
@@ -37,7 +37,7 @@ public class MainView extends JFrame {
         validate();
     }
 
-    private void configureMainView(Locale locale) {
+    private void configureMainView() {
         ResourceBundle labels = ResourceBundle.getBundle("labels", locale);
 
         setTitle(labels.getString("gameWindowTitle"));
