@@ -3,6 +3,8 @@ package view;
 import controller.BoardController;
 import domain.Game;
 import java.awt.BorderLayout;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JFrame;
 
 public class MainView extends JFrame {
@@ -12,11 +14,17 @@ public class MainView extends JFrame {
     private final String player1Name;
     private final String player2Name;
     private final BoardController boardController;
+    private final Locale locale;
     private GameStatsView gameStatsView;
 
-    public MainView(String player1Name, String player2Name) {
+    public MainView(
+            String player1Name,
+            String player2Name,
+            Locale locale
+    ) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
+        this.locale = locale;
 
         Game game = new Game();
         boardController = new BoardController(game);
@@ -30,7 +38,9 @@ public class MainView extends JFrame {
     }
 
     private void configureMainView() {
-        setTitle("Chess");
+        ResourceBundle labels = ResourceBundle.getBundle("labels", locale);
+
+        setTitle(labels.getString("gameWindowTitle"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
@@ -40,7 +50,8 @@ public class MainView extends JFrame {
         gameStatsView = new GameStatsView(
                 player1Name,
                 player2Name,
-                boardController
+                boardController,
+                locale
         );
         add(gameStatsView, BorderLayout.PAGE_START);
     }

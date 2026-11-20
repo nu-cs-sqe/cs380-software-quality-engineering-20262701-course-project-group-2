@@ -2,6 +2,7 @@ package view;
 
 import controller.BoardController;
 import domain.Game;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +17,8 @@ public class GameStatsViewTest {
         GameStatsView view = new GameStatsView(
                 "Alice",
                 "Bob",
-                controller
+                controller,
+                Locale.ENGLISH
         );
 
         String expected = "Alice (White)";
@@ -34,7 +36,8 @@ public class GameStatsViewTest {
         GameStatsView view = new GameStatsView(
                 "Alice",
                 "Bob",
-                controller
+                controller,
+                Locale.ENGLISH
         );
 
         game.switchTurn();
@@ -45,5 +48,41 @@ public class GameStatsViewTest {
         String actual = view.getCurrentPlayerText();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void GameStatsView_SpanishLocale_DisplaySpanishCurrentPlayer() {
+        Game game = new Game();
+        BoardController controller = new BoardController(game);
+
+        GameStatsView view = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller,
+                Locale.forLanguageTag("es")
+        );
+
+        assertEquals(
+                "Alice (Blanco)",
+                view.getCurrentPlayerText()
+        );
+    }
+
+    @Test
+    public void GameStatsView_FrenchLocale_DisplayFrenchCurrentPlayer() {
+        Game game = new Game();
+        BoardController controller = new BoardController(game);
+
+        GameStatsView view = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller,
+                Locale.FRENCH
+        );
+
+        assertEquals(
+                "Alice (Blanc)",
+                view.getCurrentPlayerText()
+        );
     }
 }
