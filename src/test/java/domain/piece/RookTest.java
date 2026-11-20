@@ -37,23 +37,23 @@ public class RookTest {
     @Test
     public void GetValidMoves_Rook_AllTilesUnblocked_ReturnAllRowAndColumn() {
         Rook rook = new Rook(PieceColor.WHITE);
-        Location from = new Location(7, 7);
+        Location from = new Location(3, 3);
 
         Set<Location> expected = Set.of(
-                new Location(0, 7),
-                new Location(1, 7),
-                new Location(2, 7),
-                new Location(3, 7),
-                new Location(4, 7),
-                new Location(5, 7),
-                new Location(6, 7),
-                new Location(7, 0),
-                new Location(7, 1),
-                new Location(7, 2),
+                new Location(0, 3),
+                new Location(1, 3),
+                new Location(2, 3),
+                new Location(4, 3),
+                new Location(5, 3),
+                new Location(6, 3),
                 new Location(7, 3),
-                new Location(7, 4),
-                new Location(7, 5),
-                new Location(7, 6)
+                new Location(3, 0),
+                new Location(3, 1),
+                new Location(3, 2),
+                new Location(3, 4),
+                new Location(3, 5),
+                new Location(3, 6),
+                new Location(3, 7)
         );
 
         Set<Location> actual = rook.getValidMoves(from);

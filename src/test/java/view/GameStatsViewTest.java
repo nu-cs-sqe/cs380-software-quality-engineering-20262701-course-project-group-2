@@ -19,7 +19,29 @@ public class GameStatsViewTest {
                 controller
         );
 
-        String expected = "Current Player: Alice";
+        String expected = "Alice (White)";
+        String actual = view.getCurrentPlayerText();
+
+        assertEquals(expected, actual);
+    }
+
+    // GS2
+    @Test
+    public void RefreshCurrentPlayer_AfterTurnChanges_DisplayBlackPlayer() {
+        Game game = new Game();
+        BoardController controller = new BoardController(game);
+
+        GameStatsView view = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller
+        );
+
+        game.switchTurn();
+
+        view.refreshCurrentPlayer();
+
+        String expected = "Bob (Black)";
         String actual = view.getCurrentPlayerText();
 
         assertEquals(expected, actual);

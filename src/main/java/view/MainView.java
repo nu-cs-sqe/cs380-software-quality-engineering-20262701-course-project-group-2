@@ -12,6 +12,7 @@ public class MainView extends JFrame {
     private final String player1Name;
     private final String player2Name;
     private final BoardController boardController;
+    private GameStatsView gameStatsView;
 
     public MainView(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -36,7 +37,7 @@ public class MainView extends JFrame {
     }
 
     private void addGameStatsView() {
-        GameStatsView gameStatsView = new GameStatsView(
+        gameStatsView = new GameStatsView(
                 player1Name,
                 player2Name,
                 boardController
@@ -45,7 +46,10 @@ public class MainView extends JFrame {
     }
 
     private void addBoardView() {
-        BoardView boardView = new BoardView(boardController);
+        BoardView boardView = new BoardView(
+                boardController,
+                gameStatsView::refreshCurrentPlayer
+        );
         add(boardView, BorderLayout.CENTER);
     }
 }

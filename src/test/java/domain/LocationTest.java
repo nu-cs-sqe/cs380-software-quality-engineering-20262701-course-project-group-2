@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTest {
 
+    // L1
     @Test
     public void Equals_SameInstance_ReturnTrue() {
         Location location = new Location(3, 4);
@@ -16,6 +17,7 @@ public class LocationTest {
         assertTrue(actual);
     }
 
+    // L2
     @Test
     public void Equals_Null_ReturnFalse() {
         Location location = new Location(3, 4);

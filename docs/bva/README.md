@@ -27,10 +27,10 @@ Here are 2 formats as references. You can use any of them or a revised version o
 
 ### Method under test: `efg()`
 
-|              | State of the System | Expected output | Implemented?              |
-|--------------|---------------------|-----------------|---------------------------|
-| Test Case 3  |                     |                 | :x: or :white_check_mark: |
-| Test Case 4  |                     |                 | implemented in Test Case 1 |
+|             | State of the System | Expected output | Implemented?               |
+|-------------|---------------------|-----------------|----------------------------|
+| Test Case 3 |                     |                 | :x: or :white_check_mark:  |
+| Test Case 4 |                     |                 | implemented in Test Case 1 |
 
 ## Format 2:
 

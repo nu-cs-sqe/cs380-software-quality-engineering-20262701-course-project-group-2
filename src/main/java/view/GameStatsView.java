@@ -2,6 +2,7 @@ package view;
 
 import controller.BoardController;
 import domain.piece.PieceColor;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BoxLayout;
@@ -13,7 +14,11 @@ public class GameStatsView extends JPanel {
     private static final String FONT_NAME = "Arial";
     private static final int HEADER_FONT_SIZE = 30;
     private static final int PLAYER_FONT_SIZE = 20;
+    private static final int TURN_FONT_SIZE = 34;
 
+    private final String player1Name;
+    private final String player2Name;
+    private final BoardController boardController;
     private final JLabel currentPlayerLabel;
 
     public GameStatsView(
@@ -21,9 +26,41 @@ public class GameStatsView extends JPanel {
             String player2Name,
             BoardController boardController
     ) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
+        this.boardController = boardController;
+
+        setLayout(new BorderLayout());
         setOpaque(true);
         setBackground(BACKGROUND_COLOR);
+
+        final JPanel playerInfoPanel = createPlayerInfoPanel();
+
+        JPanel currentTurnPanel = new JPanel();
+        currentTurnPanel.setLayout(new BoxLayout(currentTurnPanel, BoxLayout.Y_AXIS));
+        currentTurnPanel.setOpaque(false);
+
+        JLabel currentTurnLabel = new JLabel("CURRENT TURN");
+        currentTurnLabel.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
+        currentTurnLabel.setForeground(Color.WHITE);
+
+        currentPlayerLabel = new JLabel();
+        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, TURN_FONT_SIZE));
+        currentPlayerLabel.setForeground(Color.WHITE);
+
+        refreshCurrentPlayer();
+
+        currentTurnPanel.add(currentTurnLabel);
+        currentTurnPanel.add(currentPlayerLabel);
+
+        add(playerInfoPanel, BorderLayout.WEST);
+        add(currentTurnPanel, BorderLayout.EAST);
+    }
+
+    private JPanel createPlayerInfoPanel() {
+        JPanel playerInfoPanel = new JPanel();
+        playerInfoPanel.setLayout(new BoxLayout(playerInfoPanel, BoxLayout.Y_AXIS));
+        playerInfoPanel.setOpaque(false);
 
         JLabel playerInfoLabel = new JLabel("Player Information");
         playerInfoLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
@@ -41,18 +78,27 @@ public class GameStatsView extends JPanel {
         player2Label.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
         player2Label.setForeground(Color.WHITE);
 
-        String currentPlayerName = boardController.getCurrentTurn() == PieceColor.WHITE
+        playerInfoPanel.add(playerInfoLabel);
+        playerInfoPanel.add(player1Label);
+        playerInfoPanel.add(player2Label);
+
+        return playerInfoPanel;
+    }
+
+    void refreshCurrentPlayer() {
+        boolean isWhiteTurn = boardController.getCurrentTurn() == PieceColor.WHITE;
+
+        String currentPlayerName = isWhiteTurn
                 ? player1Name
                 : player2Name;
 
-        currentPlayerLabel = new JLabel("Current Player: " + currentPlayerName);
-        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
-        currentPlayerLabel.setForeground(Color.WHITE);
+        String currentPlayerColor = isWhiteTurn
+                ? "White"
+                : "Black";
 
-        add(playerInfoLabel);
-        add(player1Label);
-        add(player2Label);
-        add(currentPlayerLabel);
+        currentPlayerLabel.setText(
+                currentPlayerName + " (" + currentPlayerColor + ")"
+        );
     }
 
     public String getCurrentPlayerText() {

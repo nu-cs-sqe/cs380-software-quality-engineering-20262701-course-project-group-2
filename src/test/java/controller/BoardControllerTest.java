@@ -6,6 +6,7 @@ import domain.Location;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
+import domain.piece.PieceType;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BoardControllerTest {
@@ -51,6 +53,7 @@ public class BoardControllerTest {
         assertSelection(null, Set.of());
     }
 
+    // C25
     @Test
     public void GetBoardSnapshot_FromGame_ReturnInitializedBoard() {
         Game game = new Game();
@@ -58,12 +61,13 @@ public class BoardControllerTest {
 
         Piece[][] snapshot = realController.getBoardSnapshot();
 
-        int expectedRows = 8;
-        int actualRows = snapshot.length;
-
-        assertEquals(expectedRows, actualRows);
+        assertEquals(8, snapshot.length);
+        for (Piece[] row : snapshot) {
+            assertEquals(8, row.length);
+        }
     }
 
+    // C18
     @Test
     public void GetCurrentTurn_OnNewGame_ReturnWhite() {
         Game game = new Game();
@@ -75,6 +79,7 @@ public class BoardControllerTest {
         assertEquals(expected, actual);
     }
 
+    // C12
     @Test
     public void GetSelectedSquare_NoClick_ReturnNull() {
         replay(mockGame);
@@ -85,6 +90,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C15
     @Test
     public void GetHighlightedSquares_NoSelection_ReturnEmpty() {
         replay(mockGame);
@@ -95,6 +101,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C1
     @Test
     public void HandleSquareClick_SelectOwnPawn_NoPriorSelection_NewSelection() {
         expectWhitePawnCanBeSelected();
@@ -106,6 +113,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C2
     @Test
     public void HandleSquareClick_SelectOwnPiece_NoValidDestinations_NoHighlights() {
         Location boxedInRook = new Location(0, 7);
@@ -119,6 +127,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C23
     @Test
     public void GetHighlightedSquares_SelectionWithExactlyOneMove_ReturnOne() {
         Location king = new Location(4, 7);
@@ -133,6 +142,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C3
     @Test
     public void HandleSquareClick_SelectEmptySquare_NoPriorSelection_NoChange() {
         expectStartingBoard(PieceColor.WHITE);
@@ -144,6 +154,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C4
     @Test
     public void HandleSquareClick_SelectOpponentPiece_NoPriorSelection_NoChange() {
         expectStartingBoard(PieceColor.WHITE);
@@ -155,6 +166,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C24
     @Test
     public void HandleSquareClick_BlackTurn_SelectBlackPiece() {
         Location blackPawn = new Location(4, 1);
@@ -169,6 +181,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C5
     @Test
     public void HandleSquareClick_MoveToHighlightedSquare_MoveCompletedAndTurnProgresses() {
         Location destination = new Location(4, 5);
@@ -184,6 +197,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C6
     @Test
     public void HandleSquareClick_MoveToHighlightedCaptureSquare_MoveCompletedAndTurnProgresses() {
         Piece[][] snapshot = new Piece[8][8];
@@ -205,6 +219,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C9
     @Test
     public void HandleSquareClick_ClickUnhighlightedEmptySquare_ClearSelection() {
         expectWhitePawnCanBeSelected();
@@ -217,6 +232,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C10
     @Test
     public void HandleSquareClick_ClickUnhighlightedOpponentPiece_ClearSelection() {
         expectWhitePawnCanBeSelected();
@@ -229,6 +245,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C8
     @Test
     public void HandleSquareClick_ClickOtherOwnPieceWhileSelected_NewSelection() {
         Location knight = new Location(1, 7);
@@ -244,8 +261,9 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C7
     @Test
-    public void HandleSquareClick_ClickSelectedSquareAgain_NoChange() {
+    public void HandleSquareClick_ClickSelectedSquareAgain_ClearSelection() {
         expectWhitePawnCanBeSelected();
         replay(mockGame);
         controller.handleSquareClick(WHITE_PAWN);
@@ -256,6 +274,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C11
     @Test
     public void HandleSquareClick_ClickOutsideBoardUpperColumnWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -268,6 +287,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C20
     @Test
     public void HandleSquareClick_ClickOutsideBoardLowerColumnWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -280,6 +300,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C21
     @Test
     public void HandleSquareClick_ClickOutsideBoardLowerRowWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -292,6 +313,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C22
     @Test
     public void HandleSquareClick_ClickOutsideBoardUpperRowWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -302,5 +324,72 @@ public class BoardControllerTest {
 
         assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
         verify(mockGame);
+    }
+
+    // C27; also verifies C19 and C26
+    @Test
+    public void HandleSquareClick_RealGameOrdinaryMove_UpdateBoardTurnAndSelection() {
+        Game game = new Game();
+        BoardController realController = new BoardController(game);
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 5);
+
+        realController.handleSquareClick(from);
+        realController.handleSquareClick(to);
+
+        Piece[][] snapshot = realController.getBoardSnapshot();
+        Piece movedPiece = snapshot[5][4];
+
+        assertNull(snapshot[6][4]);
+        assertNotNull(movedPiece);
+        assertEquals(PieceType.PAWN, movedPiece.getType());
+        assertEquals(PieceColor.WHITE, movedPiece.getColor());
+        assertEquals(PieceColor.BLACK, realController.getCurrentTurn());
+        assertNull(realController.getSelectedSquare());
+        assertEquals(Set.of(), realController.getHighlightedSquares());
+    }
+
+    // C28
+    @Test
+    public void HandleSquareClick_RealGameCapture_UpdateBoardTurnAndPieceCount() {
+        Game game = new Game();
+        BoardController realController = new BoardController(game);
+
+        Location whitePawnStart = new Location(4, 6);
+        Location whitePawnAdvance = new Location(4, 4);
+        Location blackPawnStart = new Location(5, 1);
+        Location blackPawnAdvance = new Location(5, 3);
+
+        realController.handleSquareClick(whitePawnStart);
+        realController.handleSquareClick(whitePawnAdvance);
+
+        realController.handleSquareClick(blackPawnStart);
+        realController.handleSquareClick(blackPawnAdvance);
+
+        realController.handleSquareClick(whitePawnAdvance);
+        realController.handleSquareClick(blackPawnAdvance);
+
+        Piece[][] snapshot = realController.getBoardSnapshot();
+        Piece capturingPawn = snapshot[3][5];
+
+        assertNull(snapshot[4][4]);
+        assertNotNull(capturingPawn);
+        assertEquals(PieceType.PAWN, capturingPawn.getType());
+        assertEquals(PieceColor.WHITE, capturingPawn.getColor());
+
+        int occupiedSquares = 0;
+
+        for (Piece[] row : snapshot) {
+            for (Piece piece : row) {
+                if (piece != null) {
+                    occupiedSquares++;
+                }
+            }
+        }
+
+        assertEquals(31, occupiedSquares);
+        assertEquals(PieceColor.BLACK, realController.getCurrentTurn());
+        assertNull(realController.getSelectedSquare());
+        assertEquals(Set.of(), realController.getHighlightedSquares());
     }
 }

@@ -5,6 +5,7 @@ import domain.piece.Knight;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
+import domain.piece.PieceType;
 import domain.piece.Rook;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GameTest {
 
@@ -20,34 +24,28 @@ public class GameTest {
     @Test
     public void GetCurrentTurn_OnNewGame_ReturnWhite() {
         Game game = new Game();
-
         PieceColor expected = PieceColor.WHITE;
         PieceColor actual = game.getCurrentTurn();
-
         assertEquals(expected, actual);
     }
 
-    // Integration test for Game & Board
+    // G5
     @Test
-    public void NewGame_InitializeBoard() {
+    public void GetBoardSnapshot_OnNewGame_Return8x8Snapshot() {
         Game game = new Game();
-
         Piece[][] snapshot = game.getBoardSnapshot();
-
-        int expectedRows = 8;
-        int actualRows = snapshot.length;
-
-        assertEquals(expectedRows, actualRows);
+        assertEquals(8, snapshot.length);
+        for (Piece[] row : snapshot) {
+            assertEquals(8, row.length);
+        }
     }
 
-    // Integration test verifying everything works properly at setup
+    // Supporting setup integration smoke test (G1 + G5)
     @Test
     public void NewGame_InitializeBoardAndWhiteTurn() {
         Game game = new Game();
-
         Piece[][] snapshot = game.getBoardSnapshot();
         PieceColor currentTurn = game.getCurrentTurn();
-
         assertEquals(8, snapshot.length);
         assertEquals(PieceColor.WHITE, currentTurn);
     }
@@ -57,11 +55,9 @@ public class GameTest {
     public void GetLegalMoves_Pawn_BlockedAhead_ReturnEmpty() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
-                square(4, 3, new Pawn(PieceColor.BLACK))
+                square(4, 3, new Pawn(PieceColor.WHITE))
         );
-
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
-
         assertEquals(Set.of(), actual);
     }
 
@@ -72,10 +68,8 @@ public class GameTest {
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(5, 3, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> expected = Set.of(new Location(4, 3), new Location(5, 3));
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
-
         assertEquals(expected, actual);
     }
 
@@ -87,14 +81,12 @@ public class GameTest {
                 square(3, 3, new Pawn(PieceColor.BLACK)),
                 square(5, 3, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> expected = Set.of(
                 new Location(4, 3),
                 new Location(3, 3),
                 new Location(5, 3)
         );
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
-
         assertEquals(expected, actual);
     }
 
@@ -105,9 +97,7 @@ public class GameTest {
                 square(4, 6, new Pawn(PieceColor.WHITE)),
                 square(4, 5, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> actual = game.getLegalMoves(new Location(4, 6));
-
         assertEquals(Set.of(), actual);
     }
 
@@ -118,10 +108,8 @@ public class GameTest {
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(5, 3, new Knight(PieceColor.WHITE))
         );
-
         Set<Location> expected = Set.of(new Location(4, 3));
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
-
         assertEquals(expected, actual);
     }
 
@@ -132,9 +120,7 @@ public class GameTest {
                 square(4, 4, new Pawn(PieceColor.WHITE)),
                 square(4, 3, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
-
         assertEquals(Set.of(), actual);
     }
 
@@ -145,10 +131,8 @@ public class GameTest {
                 square(0, 4, new Pawn(PieceColor.WHITE)),
                 square(1, 3, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> expected = Set.of(new Location(0, 3), new Location(1, 3));
         Set<Location> actual = game.getLegalMoves(new Location(0, 4));
-
         assertEquals(expected, actual);
     }
 
@@ -156,10 +140,8 @@ public class GameTest {
     @Test
     public void GetLegalMoves_Knight_PathBlocked_ReturnTwo() {
         Game game = gameOnStandardBoard();
-
         Set<Location> expected = Set.of(new Location(0, 5), new Location(2, 5));
         Set<Location> actual = game.getLegalMoves(new Location(1, 7));
-
         assertEquals(expected, actual);
     }
 
@@ -171,23 +153,17 @@ public class GameTest {
                 square(1, 2, new Rook(PieceColor.WHITE)),
                 square(2, 1, new Bishop(PieceColor.WHITE))
         );
-
         Set<Location> actual = game.getLegalMoves(new Location(0, 0));
-
         assertEquals(Set.of(), actual);
     }
 
     // M20
-    // The BVA row lists a knight on (3,4) together with a destination set that a
-    // knight on (3,4) cannot reach, so the opponent sits on (5,3), an actual
-    // knight destination from (3,4).
     @Test
     public void GetLegalMoves_Knight_OpponentOnDestination_ReturnIncludingOpponent() {
         Game game = gameWith(
                 square(3, 4, new Knight(PieceColor.WHITE)),
                 square(5, 3, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> expected = Set.of(
                 new Location(1, 3),
                 new Location(1, 5),
@@ -199,7 +175,6 @@ public class GameTest {
                 new Location(5, 5)
         );
         Set<Location> actual = game.getLegalMoves(new Location(3, 4));
-
         assertEquals(expected, actual);
     }
 
@@ -211,23 +186,17 @@ public class GameTest {
                 square(1, 6, new Pawn(PieceColor.WHITE)),
                 square(3, 6, new Pawn(PieceColor.WHITE))
         );
-
         Set<Location> actual = game.getLegalMoves(new Location(2, 7));
-
         assertEquals(Set.of(), actual);
     }
 
     // M12
-    // The BVA expected set lists only the blocked diagonal; the open diagonal
-    // (1,6) and (0,5) is documented here as well.
     @Test
     public void GetLegalMoves_Bishop_OpponentInDiagonal_ReturnUpToOpponent() {
         Game game = gameWith(
                 square(2, 7, new Bishop(PieceColor.WHITE)),
-                square(3, 4, new Pawn(PieceColor.WHITE)),
                 square(4, 5, new Pawn(PieceColor.BLACK))
         );
-
         Set<Location> expected = Set.of(
                 new Location(0, 5),
                 new Location(1, 6),
@@ -235,7 +204,6 @@ public class GameTest {
                 new Location(4, 5)
         );
         Set<Location> actual = game.getLegalMoves(new Location(2, 7));
-
         assertEquals(expected, actual);
     }
 
@@ -373,7 +341,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M44
+    // M82
     @Test
     public void GetLegalMoves_Pawn_OnRightEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -387,7 +355,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M45
+    // M83
     @Test
     public void GetLegalMoves_WhitePawn_OnTopEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -400,7 +368,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M46
+    // M84
     @Test
     public void GetLegalMoves_BlackPawn_OnBottomEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -413,6 +381,28 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    // G2
+    @Test
+    public void MovePiece_ApprovedMove_DelegateToBoardAndKeepTurn() {
+        Board board = createMock(Board.class);
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 4);
+
+        board.movePiece(from, to);
+        replay(board);
+
+        Game game = new Game(board);
+
+        game.movePiece(from, to);
+
+        PieceColor expectedTurn = PieceColor.WHITE;
+        PieceColor actualTurn = game.getCurrentTurn();
+
+        assertEquals(expectedTurn, actualTurn);
+        verify(board);
+    }
+
+    // G3
     @Test
     public void SwitchTurn_White_ReturnBlack() {
         Game game = new Game();
@@ -424,6 +414,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    // G4
     @Test
     public void SwitchTurn_Black_ReturnWhite() {
         Game game = new Game();
@@ -434,6 +425,29 @@ public class GameTest {
         PieceColor expected = PieceColor.WHITE;
         PieceColor actual = game.getCurrentTurn();
         assertEquals(expected, actual);
+    }
+
+    // G6
+    @Test
+    public void GetBoardSnapshot_AfterMove_ReturnUpdatedBoard() {
+        Game game = new Game();
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 5);
+
+        game.movePiece(from, to);
+
+        Piece[][] snapshot = game.getBoardSnapshot();
+
+        assertNull(snapshot[6][4]);
+        assertNotNull(snapshot[5][4]);
+        assertEquals(
+                PieceType.PAWN,
+                snapshot[5][4].getType()
+        );
+        assertEquals(
+                PieceColor.WHITE,
+                snapshot[5][4].getColor()
+        );
     }
 
     private static Square square(int column, int row, Piece piece) {
@@ -466,8 +480,8 @@ public class GameTest {
     private static Piece[][] placeOn(Piece[][] boardState, Square... placements) {
         for (Square placement : placements) {
             int row = placement.location.getRow();
-            int col = placement.location.getColumn();
-            boardState[row][col] = placement.piece;
+            int column = placement.location.getColumn();
+            boardState[row][column] = placement.piece;
         }
         return boardState;
     }

@@ -65,4 +65,11 @@ public class Board {
         }
         return snapshot;
     }
+
+    public void movePiece(Location from, Location to) {
+        Piece movingPiece = pieces[from.getRow()][from.getColumn()];
+
+        pieces[from.getRow()][from.getColumn()] = null;
+        pieces[to.getRow()][to.getColumn()] = movingPiece;
+    }
 }
