@@ -20,4 +20,17 @@ public class InternationalizationTest {
                 labels.getString("welcomeMessage")
         );
     }
+
+    @Test
+    public void ResourceBundle_SpanishLocale_ReturnSpanishWelcomeMessage() {
+        ResourceBundle labels = ResourceBundle.getBundle(
+                "labels",
+                Locale.forLanguageTag("es")
+        );
+
+        assertEquals(
+                "¡Bienvenido a nuestro juego de ajedrez!",
+                labels.getString("welcomeMessage")
+        );
+    }
 }
