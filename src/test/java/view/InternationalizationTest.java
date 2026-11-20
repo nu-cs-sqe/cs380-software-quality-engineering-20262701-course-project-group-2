@@ -33,4 +33,17 @@ public class InternationalizationTest {
                 labels.getString("welcomeMessage")
         );
     }
+
+    @Test
+    public void ResourceBundle_FrenchLocale_ReturnFrenchWelcomeMessage() {
+        ResourceBundle labels = ResourceBundle.getBundle(
+                "labels",
+                Locale.FRENCH
+        );
+
+        assertEquals(
+                "Bienvenue dans notre jeu d'échecs !",
+                labels.getString("welcomeMessage")
+        );
+    }
 }
