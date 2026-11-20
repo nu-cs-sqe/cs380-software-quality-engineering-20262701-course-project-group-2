@@ -67,4 +67,22 @@ public class GameStatsViewTest {
                 view.getCurrentPlayerText()
         );
     }
+
+    @Test
+    public void GameStatsView_FrenchLocale_DisplayFrenchCurrentPlayer() {
+        Game game = new Game();
+        BoardController controller = new BoardController(game);
+
+        GameStatsView view = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller,
+                Locale.FRENCH
+        );
+
+        assertEquals(
+                "Alice (Blanc)",
+                view.getCurrentPlayerText()
+        );
+    }
 }
