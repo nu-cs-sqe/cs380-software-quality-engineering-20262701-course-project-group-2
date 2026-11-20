@@ -32,7 +32,7 @@ public class Game {
     }
 
     public void movePiece(Location from, Location to) {
-        throw new UnsupportedOperationException("movePiece is not implemented yet");
+        board.movePiece(from, to);
     }
 
     public void switchTurn() {

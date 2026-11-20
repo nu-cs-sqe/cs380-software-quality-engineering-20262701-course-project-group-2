@@ -9,9 +9,7 @@ import domain.piece.Rook;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameTest {
@@ -405,6 +403,27 @@ public class GameTest {
         Set<Location> actual = game.getLegalMoves(new Location(4, 7));
 
         assertEquals(expected, actual);
+    }
+
+    // G2
+    @Test
+    public void MovePiece_ApprovedMove_DelegateToBoardAndKeepTurn() {
+        Board board = createMock(Board.class);
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 4);
+
+        board.movePiece(from, to);
+        replay(board);
+
+        Game game = new Game(board);
+
+        game.movePiece(from, to);
+
+        PieceColor expectedTurn = PieceColor.WHITE;
+        PieceColor actualTurn = game.getCurrentTurn();
+
+        assertEquals(expectedTurn, actualTurn);
+        verify(board);
     }
 
     // G3
