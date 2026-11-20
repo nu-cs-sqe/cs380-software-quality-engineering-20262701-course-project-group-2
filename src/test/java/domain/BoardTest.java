@@ -147,4 +147,46 @@ public class BoardTest {
                 PieceColor.WHITE
         );
     }
+
+    // M39
+    @Test
+    public void MovePiece_ToOccupiedSquare_CaptureReplacesDestination() {
+        Board board = new Board();
+
+        board.movePiece(
+                new Location(4, 6),
+                new Location(4, 4)
+        );
+        board.movePiece(
+                new Location(5, 1),
+                new Location(5, 3)
+        );
+
+        board.movePiece(
+                new Location(4, 4),
+                new Location(5, 3)
+        );
+
+        Piece[][] snapshot = board.getSnapshot();
+
+        assertNull(snapshot[4][4]);
+        assertPiece(
+                snapshot[3][5],
+                PieceType.PAWN,
+                PieceColor.WHITE
+        );
+
+        int occupiedSquares = 0;
+
+        for (Piece[] row : snapshot) {
+            for (Piece piece : row) {
+                if (piece != null) {
+                    occupiedSquares++;
+                }
+            }
+        }
+
+        int expectedOccupiedSquares = 31;
+        assertEquals(expectedOccupiedSquares, occupiedSquares);
+    }
 }

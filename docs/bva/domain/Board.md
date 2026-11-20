@@ -42,7 +42,7 @@
 |-------------------------------------------------------------------------|-----------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------------------------|--------------------|
 | M37<br><sub>movePiece_ToEmptySquare_PieceRelocated</sub>                | `movePiece(Location from, Location to)` | Standard board; move WHITE PAWN `(4,6) → (4,5)`                                   | `[6][4]` is `null`; `[5][4]` is a WHITE PAWN                       | :white_check_mark: |
 | M38<br><sub>movePiece_ToEmptySquareTwoRows_PieceRelocated</sub>         | `movePiece(Location from, Location to)` | Standard board; move WHITE PAWN `(4,6) → (4,4)`                                   | `[6][4]` is `null`; `[4][4]` is a WHITE PAWN                       | :white_check_mark: |
-| M39<br><sub>movePiece_ToOccupiedSquare_CaptureReplacesDestination</sub> | `movePiece(Location from, Location to)` | After WHITE `(4,6) → (4,4)` and BLACK `(5,1) → (5,3)`; move WHITE `(4,4) → (5,3)` | `[4][4]` is `null`; `[3][5]` is a WHITE PAWN; occupied count is 31 | :X:                |
+| M39<br><sub>movePiece_ToOccupiedSquare_CaptureReplacesDestination</sub> | `movePiece(Location from, Location to)` | After WHITE `(4,6) → (4,4)` and BLACK `(5,1) → (5,3)`; move WHITE `(4,4) → (5,3)` | `[4][4]` is `null`; `[3][5]` is a WHITE PAWN; occupied count is 31 | :white_check_mark: |
 
 ## Removed stale API plans
 
