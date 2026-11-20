@@ -40,29 +40,29 @@ public class Game {
     }
 
     public Set<Location> getLegalMoves(Location from) {
-        Piece[][] currentBoardState = board.getSnapshot();
-        Piece currentPiece = pieceAt(currentBoardState, from);
-        Set<Location> returnSet = new HashSet<>();
+        Piece[][] boardSnapshot = board.getSnapshot();
+        Piece currentPiece = pieceAt(boardSnapshot, from);
+        Set<Location> legalMoves = new HashSet<>();
 
         for (Location candidate : currentPiece.getValidMoves(from)) {
-            boolean legal = isPathClearByType(currentBoardState, currentPiece, from, candidate);
-            if (!isBlockedByFriendly(currentBoardState, currentPiece, candidate) && legal) {
-                returnSet.add(candidate);
+            boolean pathAvailable = isPathAvailableForPiece(boardSnapshot, currentPiece, from, candidate);
+            if (!isBlockedByFriendly(boardSnapshot, currentPiece, candidate) && pathAvailable) {
+                legalMoves.add(candidate);
             }
         }
 
         if (currentPiece.getType() == PAWN) {
-            returnSet.addAll(addPawnCaptures(currentBoardState, currentPiece, from));
+            legalMoves.addAll(getPawnCaptures(boardSnapshot, currentPiece, from));
         }
 
-        return Collections.unmodifiableSet(returnSet);
+        return Collections.unmodifiableSet(legalMoves);
     }
 
     private static Piece pieceAt(Piece[][] boardState, Location location) {
         return boardState[location.getRow()][location.getColumn()];
     }
 
-    private static boolean isPathClearByType(
+    private static boolean isPathAvailableForPiece(
             Piece[][] boardState, Piece piece, Location from, Location destination) {
         switch (piece.getType()) {
             case KNIGHT:
@@ -99,7 +99,7 @@ public class Game {
         return true;
     }
 
-    private static Set<Location> addPawnCaptures(Piece[][] boardState, Piece pawn, Location from) {
+    private static Set<Location> getPawnCaptures(Piece[][] boardState, Piece pawn, Location from) {
         int direction = pawn.getColor() == PieceColor.WHITE ? -1 : 1;
         int row = from.getRow() + direction;
         Set<Location> captureSet = new HashSet<>();
