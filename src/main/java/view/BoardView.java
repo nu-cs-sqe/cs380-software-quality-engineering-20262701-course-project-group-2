@@ -30,9 +30,6 @@ public final class BoardView extends JPanel {
     private final Map<PieceType, Image> blackPieceImages = new HashMap<>();
     private final BoardController boardController;
 
-    private int selectedRow = -1;
-    private int selectedColumn = -1;
-
     public BoardView(BoardController boardController) {
         this.boardController = boardController;
         setPreferredSize(
@@ -127,14 +124,16 @@ public final class BoardView extends JPanel {
     }
 
     private void drawSelectedSquare(Graphics graphics) {
-        if (selectedRow < 0 || selectedColumn < 0) {
+        Location selectedSquare = boardController.getSelectedSquare();
+
+        if (selectedSquare == null) {
             return;
         }
 
         graphics.setColor(SELECTED_SQUARE_COLOR);
         graphics.fillRect(
-                selectedColumn * TILE_SIZE,
-                selectedRow * TILE_SIZE,
+                selectedSquare.getColumn() * TILE_SIZE,
+                selectedSquare.getRow() * TILE_SIZE,
                 TILE_SIZE,
                 TILE_SIZE
         );
@@ -143,16 +142,16 @@ public final class BoardView extends JPanel {
     private final class BoardMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent event) {
-            selectedColumn = event.getX() / TILE_SIZE;
-            selectedRow = event.getY() / TILE_SIZE;
+            int clickedColumn = event.getX() / TILE_SIZE;
+            int clickedRow = event.getY() / TILE_SIZE;
 
-            if (selectedColumn < 0 || selectedColumn >= BOARD_SIZE
-                    || selectedRow < 0 || selectedRow >= BOARD_SIZE) {
+            if (clickedColumn < 0 || clickedColumn >= BOARD_SIZE
+                    || clickedRow < 0 || clickedRow >= BOARD_SIZE) {
                 return;
             }
 
+            boardController.handleSquareClick(new Location(clickedColumn, clickedRow));
             repaint();
-            boardController.handleSquareClick(new Location(selectedColumn, selectedRow));
         }
     }
 }
