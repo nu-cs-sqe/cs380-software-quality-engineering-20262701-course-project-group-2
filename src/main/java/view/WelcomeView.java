@@ -15,6 +15,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class WelcomeView extends JFrame {
     private static final int MAX_PLAYER_NAME_LENGTH = 30;
@@ -35,6 +40,20 @@ public class WelcomeView extends JFrame {
     public WelcomeView() {
         configureWelcomeView();
         createWelcomeScreenUI();
+    }
+
+    static List<Locale> getSupportedLocales() {
+        ResourceBundle labels = ResourceBundle.getBundle(
+                "labels",
+                Locale.ENGLISH
+        );
+
+        return Arrays.stream(
+                        labels.getString("supportedLocales").split(",")
+                )
+                .map(String::strip)
+                .map(Locale::forLanguageTag)
+                .collect(Collectors.toList());
     }
 
     private void configureWelcomeView() {
