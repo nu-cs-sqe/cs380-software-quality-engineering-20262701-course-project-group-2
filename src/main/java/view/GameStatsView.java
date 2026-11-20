@@ -34,6 +34,30 @@ public class GameStatsView extends JPanel {
         setOpaque(true);
         setBackground(BACKGROUND_COLOR);
 
+        final JPanel playerInfoPanel = createPlayerInfoPanel();
+
+        JPanel currentTurnPanel = new JPanel();
+        currentTurnPanel.setLayout(new BoxLayout(currentTurnPanel, BoxLayout.Y_AXIS));
+        currentTurnPanel.setOpaque(false);
+
+        JLabel currentTurnLabel = new JLabel("CURRENT TURN");
+        currentTurnLabel.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
+        currentTurnLabel.setForeground(Color.WHITE);
+
+        currentPlayerLabel = new JLabel();
+        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, TURN_FONT_SIZE));
+        currentPlayerLabel.setForeground(Color.WHITE);
+
+        refreshCurrentPlayer();
+
+        currentTurnPanel.add(currentTurnLabel);
+        currentTurnPanel.add(currentPlayerLabel);
+
+        add(playerInfoPanel, BorderLayout.WEST);
+        add(currentTurnPanel, BorderLayout.EAST);
+    }
+
+    private JPanel createPlayerInfoPanel() {
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setLayout(new BoxLayout(playerInfoPanel, BoxLayout.Y_AXIS));
         playerInfoPanel.setOpaque(false);
@@ -58,25 +82,7 @@ public class GameStatsView extends JPanel {
         playerInfoPanel.add(player1Label);
         playerInfoPanel.add(player2Label);
 
-        JPanel currentTurnPanel = new JPanel();
-        currentTurnPanel.setLayout(new BoxLayout(currentTurnPanel, BoxLayout.Y_AXIS));
-        currentTurnPanel.setOpaque(false);
-
-        JLabel currentTurnLabel = new JLabel("CURRENT TURN");
-        currentTurnLabel.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
-        currentTurnLabel.setForeground(Color.WHITE);
-
-        currentPlayerLabel = new JLabel();
-        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, TURN_FONT_SIZE));
-        currentPlayerLabel.setForeground(Color.WHITE);
-
-        refreshCurrentPlayer();
-
-        currentTurnPanel.add(currentTurnLabel);
-        currentTurnPanel.add(currentPlayerLabel);
-
-        add(playerInfoPanel, BorderLayout.WEST);
-        add(currentTurnPanel, BorderLayout.EAST);
+        return playerInfoPanel;
     }
 
     void refreshCurrentPlayer() {

@@ -45,7 +45,8 @@ public class Game {
         Set<Location> legalMoves = new HashSet<>();
 
         for (Location candidate : currentPiece.getValidMoves(from)) {
-            boolean pathAvailable = isPathAvailableForPiece(boardSnapshot, currentPiece, from, candidate);
+            boolean pathAvailable = isPathAvailableForPiece(
+                    boardSnapshot, currentPiece, from, candidate);
             if (!isBlockedByFriendly(boardSnapshot, currentPiece, candidate) && pathAvailable) {
                 legalMoves.add(candidate);
             }

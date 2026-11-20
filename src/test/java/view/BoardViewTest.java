@@ -2,19 +2,21 @@ package view;
 
 import controller.BoardController;
 import domain.Game;
+import domain.Location;
+import domain.piece.Piece;
+import domain.piece.PieceColor;
+import domain.piece.PieceType;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Set;
-
-import domain.Location;
-import domain.piece.Piece;
-import domain.piece.PieceColor;
-import domain.piece.PieceType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BoardViewTest {
 
@@ -28,48 +30,19 @@ public class BoardViewTest {
         BufferedImage beforeSelection = render(boardView);
         int tileSize = getTileSize(boardView);
 
-        int selectedSquareBefore = getSquareCornerPixel(
-                beforeSelection,
-                4,
-                6,
-                tileSize
-        );
-        int otherPawnSquareBefore = getSquareCornerPixel(
-                beforeSelection,
-                2,
-                6,
-                tileSize
-        );
+        int selectedSquareBefore = getSquareCornerPixel(beforeSelection, 4, 6, tileSize);
+        final int otherPawnSquareBefore = getSquareCornerPixel(beforeSelection, 2, 6, tileSize);
 
         clickSquare(boardView, 4, 6);
 
         BufferedImage afterSelection = render(boardView);
 
-        int selectedSquareAfter = getSquareCornerPixel(
-                afterSelection,
-                4,
-                6,
-                tileSize
-        );
-        int otherPawnSquareAfter = getSquareCornerPixel(
-                afterSelection,
-                2,
-                6,
-                tileSize
-        );
+        int selectedSquareAfter = getSquareCornerPixel(afterSelection, 4, 6, tileSize);
+        int otherPawnSquareAfter = getSquareCornerPixel(afterSelection, 2, 6, tileSize);
 
-        assertEquals(
-                new Location(4, 6),
-                controller.getSelectedSquare()
-        );
-        assertNotEquals(
-                selectedSquareBefore,
-                selectedSquareAfter
-        );
-        assertEquals(
-                otherPawnSquareBefore,
-                otherPawnSquareAfter
-        );
+        assertEquals(new Location(4, 6), controller.getSelectedSquare());
+        assertNotEquals(selectedSquareBefore, selectedSquareAfter);
+        assertEquals(otherPawnSquareBefore, otherPawnSquareAfter);
     }
 
     // V2
@@ -84,7 +57,6 @@ public class BoardViewTest {
         clickSquare(boardView, 4, 6);
 
         BufferedImage afterSelection = render(boardView);
-        int tileSize = getTileSize(boardView);
 
         Set<Location> expectedHighlightedSquares = Set.of(
                 new Location(4, 5),
@@ -96,63 +68,11 @@ public class BoardViewTest {
                 controller.getHighlightedSquares()
         );
 
-        for (int row = 2; row <= 5; row++) {
-            for (int column = 0; column < 8; column++) {
-                Location square = new Location(column, row);
-
-                int centerBefore = getSquareCenterPixel(
-                        beforeSelection,
-                        column,
-                        row,
-                        tileSize
-                );
-                int centerAfter = getSquareCenterPixel(
-                        afterSelection,
-                        column,
-                        row,
-                        tileSize
-                );
-
-                int cornerBefore = getSquareCornerPixel(
-                        beforeSelection,
-                        column,
-                        row,
-                        tileSize
-                );
-                int cornerAfter = getSquareCornerPixel(
-                        afterSelection,
-                        column,
-                        row,
-                        tileSize
-                );
-
-                if (expectedHighlightedSquares.contains(square)) {
-                    assertNotEquals(
-                            centerBefore,
-                            centerAfter,
-                            "Expected move indicator at: " + square
-                    );
-
-                    assertEquals(
-                            cornerBefore,
-                            cornerAfter,
-                            "Move indicator should not fill square: " + square
-                    );
-                } else {
-                    assertEquals(
-                            centerBefore,
-                            centerAfter,
-                            "Unexpected center change at: " + square
-                    );
-
-                    assertEquals(
-                            cornerBefore,
-                            cornerAfter,
-                            "Unexpected corner change at: " + square
-                    );
-                }
-            }
-        }
+        assertMoveIndicators(
+                beforeSelection,
+                afterSelection,
+                expectedHighlightedSquares
+        );
     }
 
     // V3
@@ -162,56 +82,18 @@ public class BoardViewTest {
         BoardView boardView = new BoardView(controller);
         boardView.setSize(boardView.getPreferredSize());
 
-        BufferedImage beforeSelection = render(boardView);
-        int tileSize = getTileSize(boardView);
+        final BufferedImage beforeSelection = render(boardView);
+        final int tileSize = getTileSize(boardView);
 
         clickSquare(boardView, 4, 6);
         clickSquare(boardView, 3, 6);
 
         BufferedImage afterReselection = render(boardView);
+        Set<Location> expectedHighlights = Set.of(new Location(3, 5), new Location(3, 4));
 
-        assertEquals(
-                new Location(3, 6),
-                controller.getSelectedSquare()
-        );
-
-        assertEquals(
-                Set.of(
-                        new Location(3, 5),
-                        new Location(3, 4)
-                ),
-                controller.getHighlightedSquares()
-        );
-
-        assertEquals(
-                getSquareCornerPixel(beforeSelection, 4, 6, tileSize),
-                getSquareCornerPixel(afterReselection, 4, 6, tileSize)
-        );
-
-        assertNotEquals(
-                getSquareCornerPixel(beforeSelection, 3, 6, tileSize),
-                getSquareCornerPixel(afterReselection, 3, 6, tileSize)
-        );
-
-        assertEquals(
-                getSquareCenterPixel(beforeSelection, 4, 5, tileSize),
-                getSquareCenterPixel(afterReselection, 4, 5, tileSize)
-        );
-
-        assertEquals(
-                getSquareCenterPixel(beforeSelection, 4, 4, tileSize),
-                getSquareCenterPixel(afterReselection, 4, 4, tileSize)
-        );
-
-        assertNotEquals(
-                getSquareCenterPixel(beforeSelection, 3, 5, tileSize),
-                getSquareCenterPixel(afterReselection, 3, 5, tileSize)
-        );
-
-        assertNotEquals(
-                getSquareCenterPixel(beforeSelection, 3, 4, tileSize),
-                getSquareCenterPixel(afterReselection, 3, 4, tileSize)
-        );
+        assertEquals(new Location(3, 6), controller.getSelectedSquare());
+        assertEquals(expectedHighlights, controller.getHighlightedSquares());
+        assertReselectionRendering(beforeSelection, afterReselection, tileSize);
     }
 
     // V4
@@ -248,9 +130,9 @@ public class BoardViewTest {
         BoardView boardView = new BoardView(controller);
         boardView.setSize(boardView.getPreferredSize());
 
-        int tileSize = getTileSize(boardView);
+        final int tileSize = getTileSize(boardView);
 
-        BufferedImage beforeMove = render(boardView);
+        final BufferedImage beforeMove = render(boardView);
 
         clickSquare(boardView, 4, 6);
         clickSquare(boardView, 4, 5);
@@ -342,6 +224,79 @@ public class BoardViewTest {
         assertEquals(
                 "Bob (Black)",
                 gameStatsView.getCurrentPlayerText()
+        );
+    }
+
+    private void assertMoveIndicators(
+            BufferedImage beforeSelection,
+            BufferedImage afterSelection,
+            Set<Location> expectedHighlightedSquares) {
+        for (int row = 2; row <= 5; row++) {
+            for (int column = 0; column < 8; column++) {
+                Location square = new Location(column, row);
+                assertMoveIndicator(
+                        beforeSelection,
+                        afterSelection,
+                        square,
+                        expectedHighlightedSquares.contains(square)
+                );
+            }
+        }
+    }
+
+    private void assertMoveIndicator(
+            BufferedImage beforeSelection,
+            BufferedImage afterSelection,
+            Location square,
+            boolean expectedHighlight) {
+        int tileSize = beforeSelection.getWidth() / 8;
+        int column = square.getColumn();
+        int row = square.getRow();
+        final int centerBefore = getSquareCenterPixel(beforeSelection, column, row, tileSize);
+        final int centerAfter = getSquareCenterPixel(afterSelection, column, row, tileSize);
+        final int cornerBefore = getSquareCornerPixel(beforeSelection, column, row, tileSize);
+        final int cornerAfter = getSquareCornerPixel(afterSelection, column, row, tileSize);
+
+        if (expectedHighlight) {
+            assertNotEquals(centerBefore, centerAfter, "Expected move indicator at: " + square);
+            assertEquals(
+                    cornerBefore,
+                    cornerAfter,
+                    "Move indicator should not fill square: " + square
+            );
+        } else {
+            assertEquals(centerBefore, centerAfter, "Unexpected center change at: " + square);
+            assertEquals(cornerBefore, cornerAfter, "Unexpected corner change at: " + square);
+        }
+    }
+
+    private void assertReselectionRendering(
+            BufferedImage beforeSelection,
+            BufferedImage afterReselection,
+            int tileSize) {
+        assertEquals(
+                getSquareCornerPixel(beforeSelection, 4, 6, tileSize),
+                getSquareCornerPixel(afterReselection, 4, 6, tileSize)
+        );
+        assertNotEquals(
+                getSquareCornerPixel(beforeSelection, 3, 6, tileSize),
+                getSquareCornerPixel(afterReselection, 3, 6, tileSize)
+        );
+        assertEquals(
+                getSquareCenterPixel(beforeSelection, 4, 5, tileSize),
+                getSquareCenterPixel(afterReselection, 4, 5, tileSize)
+        );
+        assertEquals(
+                getSquareCenterPixel(beforeSelection, 4, 4, tileSize),
+                getSquareCenterPixel(afterReselection, 4, 4, tileSize)
+        );
+        assertNotEquals(
+                getSquareCenterPixel(beforeSelection, 3, 5, tileSize),
+                getSquareCenterPixel(afterReselection, 3, 5, tileSize)
+        );
+        assertNotEquals(
+                getSquareCenterPixel(beforeSelection, 3, 4, tileSize),
+                getSquareCenterPixel(afterReselection, 3, 4, tileSize)
         );
     }
 
