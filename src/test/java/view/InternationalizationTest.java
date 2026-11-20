@@ -1,5 +1,6 @@
 package view;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,24 @@ public class InternationalizationTest {
         assertEquals(
                 "Bienvenue dans notre jeu d'échecs !",
                 labels.getString("welcomeMessage")
+        );
+    }
+
+    @Test
+    public void ResourceBundle_EnglishDynamicMessage_FormatPlayerNameError() {
+        ResourceBundle labels = ResourceBundle.getBundle(
+                "labels",
+                Locale.ENGLISH
+        );
+
+        String actual = MessageFormat.format(
+                labels.getString("player1NameTooLong"),
+                30
+        );
+
+        assertEquals(
+                "Player 1's name cannot exceed 30 characters.",
+                actual
         );
     }
 }
