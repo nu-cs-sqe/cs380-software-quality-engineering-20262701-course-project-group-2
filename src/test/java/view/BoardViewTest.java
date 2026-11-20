@@ -9,6 +9,9 @@ import java.awt.image.BufferedImage;
 import java.util.Set;
 
 import domain.Location;
+import domain.piece.Piece;
+import domain.piece.PieceColor;
+import domain.piece.PieceType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -236,6 +239,43 @@ public class BoardViewTest {
 
         assertNull(controller.getSelectedSquare());
         assertEquals(ordinaryDarkSquareColor, clickedSquareColor);
+    }
+
+    // V5
+    @Test
+    public void CompleteLegalMove_RedrawPieceAndClearSelectionAndIndicators() {
+        BoardController controller = new BoardController(new Game());
+        BoardView boardView = new BoardView(controller);
+        boardView.setSize(boardView.getPreferredSize());
+
+        int tileSize = getTileSize(boardView);
+
+        BufferedImage beforeMove = render(boardView);
+
+        clickSquare(boardView, 4, 6);
+        clickSquare(boardView, 4, 5);
+
+        BufferedImage afterMove = render(boardView);
+
+        assertNull(controller.getSelectedSquare());
+        assertEquals(Set.of(), controller.getHighlightedSquares());
+
+        assertNotEquals(
+                getSquareCenterPixel(beforeMove, 4, 5, tileSize),
+                getSquareCenterPixel(afterMove, 4, 5, tileSize)
+        );
+
+        assertNotEquals(
+                getSquareCenterPixel(beforeMove, 4, 6, tileSize),
+                getSquareCenterPixel(afterMove, 4, 6, tileSize)
+        );
+
+        Piece[][] snapshot = controller.getBoardSnapshot();
+
+        assertNull(snapshot[6][4]);
+        assertNotNull(snapshot[5][4]);
+        assertEquals(PieceType.PAWN, snapshot[5][4].getType());
+        assertEquals(PieceColor.WHITE, snapshot[5][4].getColor());
     }
 
     // GS3
