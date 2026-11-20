@@ -4,6 +4,8 @@ import controller.BoardController;
 import domain.Game;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainView extends JFrame {
     private static final int WINDOW_WIDTH = 800;
@@ -14,14 +16,14 @@ public class MainView extends JFrame {
     private final BoardController boardController;
     private GameStatsView gameStatsView;
 
-    public MainView(String player1Name, String player2Name) {
+    public MainView(String player1Name, String player2Name, Locale locale) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
 
         Game game = new Game();
         boardController = new BoardController(game);
 
-        configureMainView();
+        configureMainView(locale);
         addGameStatsView();
         addBoardView();
 
@@ -29,8 +31,10 @@ public class MainView extends JFrame {
         validate();
     }
 
-    private void configureMainView() {
-        setTitle("Chess");
+    private void configureMainView(Locale locale) {
+        ResourceBundle labels = ResourceBundle.getBundle("labels", locale);
+
+        setTitle(labels.getString("gameWindowTitle"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);

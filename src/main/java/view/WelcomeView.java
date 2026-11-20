@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javax.swing.JComboBox;
 
 public class WelcomeView extends JFrame {
     private static final int MAX_PLAYER_NAME_LENGTH = 30;
@@ -31,13 +32,17 @@ public class WelcomeView extends JFrame {
     private static final int NAME_FONT_SIZE = 16;
     private static final int TEXT_FIELD_COLUMNS = 20;
     private static final int BUTTON_FONT_SIZE = 20;
-    private static final int START_BUTTON_ROW = 3;
+    private static final int LANGUAGE_ROW = 3;
+    private static final int START_BUTTON_ROW = 4;
     private static final int COMPONENT_INSET = 10;
 
+    private final List<Locale> supportedLocales;
     private JTextField player1NameField;
     private JTextField player2NameField;
+    private JComboBox<String> languageSelector;
 
     public WelcomeView() {
+        supportedLocales = getSupportedLocales();
         configureWelcomeView();
         createWelcomeScreenUI();
     }
@@ -77,9 +82,33 @@ public class WelcomeView extends JFrame {
                 "Player 2 Name:",
                 2
         );
+        addLanguageSelector(welcomePanel);
         addStartGameButton(welcomePanel);
 
         add(welcomePanel);
+    }
+
+    private void addLanguageSelector(JPanel welcomePanel) {
+        JLabel languageLabel = new JLabel("Language:");
+        languageLabel.setFont(new Font(FONT_NAME, Font.PLAIN, NAME_FONT_SIZE));
+        languageLabel.setForeground(Color.WHITE);
+
+        welcomePanel.add(
+                languageLabel,
+                createConstraints(0, LANGUAGE_ROW, 1)
+        );
+
+        String[] languageNames = supportedLocales.stream()
+                .map(locale -> locale.getDisplayLanguage(locale))
+                .toArray(String[]::new);
+
+        languageSelector = new JComboBox<>(languageNames);
+        languageSelector.setFont(new Font(FONT_NAME, Font.PLAIN, NAME_FONT_SIZE));
+
+        welcomePanel.add(
+                languageSelector,
+                createConstraints(1, LANGUAGE_ROW, 1)
+        );
     }
 
     private JPanel createWelcomePanel() {
@@ -175,8 +204,10 @@ public class WelcomeView extends JFrame {
             return;
         }
 
+        Locale selectedLocale = supportedLocales.get(languageSelector.getSelectedIndex());
+
         dispose();
-        new MainView(player1Name, player2Name);
+        new MainView(player1Name, player2Name, selectedLocale);
     }
 
     private Optional<String> validatePlayerNames(String player1Name, String player2Name) {
