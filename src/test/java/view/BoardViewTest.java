@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.Set;
 
 import domain.Location;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,89 @@ public class BoardViewTest {
                 otherPawnSquareBefore,
                 otherPawnSquareAfter
         );
+    }
+
+    // V2
+    @Test
+    public void ClickActivePlayerPiece_PaintCenteredIndicatorsOnHighlightedSquares() {
+        BoardController controller = new BoardController(new Game());
+        BoardView boardView = new BoardView(controller);
+        boardView.setSize(boardView.getPreferredSize());
+
+        BufferedImage beforeSelection = render(boardView);
+
+        clickSquare(boardView, 4, 6);
+
+        BufferedImage afterSelection = render(boardView);
+        int tileSize = getTileSize(boardView);
+
+        Set<Location> expectedHighlightedSquares = Set.of(
+                new Location(4, 5),
+                new Location(4, 4)
+        );
+
+        assertEquals(
+                expectedHighlightedSquares,
+                controller.getHighlightedSquares()
+        );
+
+        for (int row = 2; row <= 5; row++) {
+            for (int column = 0; column < 8; column++) {
+                Location square = new Location(column, row);
+
+                int centerBefore = getSquareCenterPixel(
+                        beforeSelection,
+                        column,
+                        row,
+                        tileSize
+                );
+                int centerAfter = getSquareCenterPixel(
+                        afterSelection,
+                        column,
+                        row,
+                        tileSize
+                );
+
+                int cornerBefore = getSquareCornerPixel(
+                        beforeSelection,
+                        column,
+                        row,
+                        tileSize
+                );
+                int cornerAfter = getSquareCornerPixel(
+                        afterSelection,
+                        column,
+                        row,
+                        tileSize
+                );
+
+                if (expectedHighlightedSquares.contains(square)) {
+                    assertNotEquals(
+                            centerBefore,
+                            centerAfter,
+                            "Expected move indicator at: " + square
+                    );
+
+                    assertEquals(
+                            cornerBefore,
+                            cornerAfter,
+                            "Move indicator should not fill square: " + square
+                    );
+                } else {
+                    assertEquals(
+                            centerBefore,
+                            centerAfter,
+                            "Unexpected center change at: " + square
+                    );
+
+                    assertEquals(
+                            cornerBefore,
+                            cornerAfter,
+                            "Unexpected corner change at: " + square
+                    );
+                }
+            }
+        }
     }
 
     // V4
@@ -151,6 +235,18 @@ public class BoardViewTest {
         return renderedBoard.getRGB(
                 column * tileSize + inset,
                 row * tileSize + inset
+        );
+    }
+
+    private int getSquareCenterPixel(
+            BufferedImage renderedBoard,
+            int column,
+            int row,
+            int tileSize) {
+
+        return renderedBoard.getRGB(
+                squareCenter(column, tileSize),
+                squareCenter(row, tileSize)
         );
     }
 }

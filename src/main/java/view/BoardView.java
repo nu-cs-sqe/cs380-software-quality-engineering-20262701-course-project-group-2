@@ -25,6 +25,9 @@ public final class BoardView extends JPanel {
     private static final Color LIGHT_SQUARE_COLOR = new Color(240, 217, 181);
     private static final Color DARK_SQUARE_COLOR = new Color(181, 136, 99);
     private static final Color SELECTED_SQUARE_COLOR = new Color(164, 149, 195);
+    private static final Color MOVE_INDICATOR_COLOR = new Color(128, 0, 128);
+    private static final int MOVE_INDICATOR_DIAMETER = TILE_SIZE / 4;
+    private static final int MOVE_INDICATOR_OFFSET = (TILE_SIZE - MOVE_INDICATOR_DIAMETER) / 2;
 
     private final Map<PieceType, Image> whitePieceImages = new HashMap<>();
     private final Map<PieceType, Image> blackPieceImages = new HashMap<>();
@@ -45,6 +48,7 @@ public final class BoardView extends JPanel {
         drawBoard(graphics);
         drawSelectedSquare(graphics);
         drawPieces(graphics);
+        drawMoveIndicators(graphics);
     }
 
     private void drawBoard(Graphics graphics) {
@@ -137,6 +141,29 @@ public final class BoardView extends JPanel {
                 TILE_SIZE,
                 TILE_SIZE
         );
+    }
+
+    private void drawMoveIndicators(Graphics graphics) {
+        graphics.setColor(MOVE_INDICATOR_COLOR);
+
+        for (Location highlightedSquare
+                : boardController.getHighlightedSquares()) {
+
+            int indicatorX =
+                    highlightedSquare.getColumn() * TILE_SIZE
+                            + MOVE_INDICATOR_OFFSET;
+
+            int indicatorY =
+                    highlightedSquare.getRow() * TILE_SIZE
+                            + MOVE_INDICATOR_OFFSET;
+
+            graphics.fillOval(
+                    indicatorX,
+                    indicatorY,
+                    MOVE_INDICATOR_DIAMETER,
+                    MOVE_INDICATOR_DIAMETER
+            );
+        }
     }
 
     private final class BoardMouseListener extends MouseAdapter {
