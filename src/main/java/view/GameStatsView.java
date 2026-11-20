@@ -32,56 +32,25 @@ public class GameStatsView extends JPanel {
         setOpaque(true);
         setBackground(BACKGROUND_COLOR);
 
-        JLabel playerInfoLabel =
-                new JLabel("Player Information");
-        playerInfoLabel.setFont(
-                new Font(
-                        FONT_NAME,
-                        Font.BOLD,
-                        HEADER_FONT_SIZE
-                )
-        );
+        JLabel playerInfoLabel = new JLabel("Player Information");
+        playerInfoLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
         playerInfoLabel.setForeground(Color.WHITE);
 
-        JLabel player1Label = new JLabel(
-                "Player 1: "
-                        + player1Name
-                        + " (Team: White)"
-        );
-        player1Label.setFont(
-                new Font(
-                        FONT_NAME,
-                        Font.BOLD,
-                        PLAYER_FONT_SIZE
-                )
-        );
+        JLabel player1Label = new JLabel("\t\t\tPlayer 1: " + player1Name + " (Team: White)");
+        player1Label.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
         player1Label.setForeground(Color.WHITE);
 
-        JLabel player2Label = new JLabel(
-                "Player 2: "
-                        + player2Name
-                        + " (Team: Black)"
-        );
-        player2Label.setFont(
-                new Font(
-                        FONT_NAME,
-                        Font.BOLD,
-                        PLAYER_FONT_SIZE
-                )
-        );
+        JLabel player2Label = new JLabel("\t\t\tPlayer 2: " + player2Name + " (Team: Black)");
+        player2Label.setFont(new Font(FONT_NAME, Font.BOLD, PLAYER_FONT_SIZE));
         player2Label.setForeground(Color.WHITE);
 
-        currentPlayerLabel = new JLabel();
-        currentPlayerLabel.setFont(
-                new Font(
-                        FONT_NAME,
-                        Font.BOLD,
-                        HEADER_FONT_SIZE
-                )
-        );
-        currentPlayerLabel.setForeground(Color.WHITE);
+        String currentPlayerName = boardController.getCurrentTurn() == PieceColor.WHITE
+                ? player1Name
+                : player2Name;
 
-        refreshCurrentPlayer();
+        currentPlayerLabel = new JLabel("Current Player: " + currentPlayerName);
+        currentPlayerLabel.setFont(new Font(FONT_NAME, Font.BOLD, HEADER_FONT_SIZE));
+        currentPlayerLabel.setForeground(Color.WHITE);
 
         add(playerInfoLabel);
         add(player1Label);
@@ -90,15 +59,11 @@ public class GameStatsView extends JPanel {
     }
 
     void refreshCurrentPlayer() {
-        String currentPlayerName =
-                boardController.getCurrentTurn()
-                        == PieceColor.WHITE
-                        ? player1Name
-                        : player2Name;
+        String currentPlayerName = boardController.getCurrentTurn() == PieceColor.WHITE
+                ? player1Name
+                : player2Name;
 
-        currentPlayerLabel.setText(
-                "Current Player: " + currentPlayerName
-        );
+        currentPlayerLabel.setText("Current Player: " + currentPlayerName);
     }
 
     public String getCurrentPlayerText() {

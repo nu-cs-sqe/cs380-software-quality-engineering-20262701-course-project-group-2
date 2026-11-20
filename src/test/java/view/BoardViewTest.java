@@ -179,6 +179,37 @@ public class BoardViewTest {
         assertEquals(ordinaryDarkSquareColor, clickedSquareColor);
     }
 
+    // GS3
+    @Test
+    public void CompleteMove_RefreshCurrentPlayerIndicator() {
+        BoardController controller = new BoardController(new Game());
+
+        GameStatsView gameStatsView = new GameStatsView(
+                "Alice",
+                "Bob",
+                controller
+        );
+
+        BoardView boardView = new BoardView(
+                controller,
+                gameStatsView::refreshCurrentPlayer
+        );
+        boardView.setSize(boardView.getPreferredSize());
+
+        assertEquals(
+                "Current Player: Alice",
+                gameStatsView.getCurrentPlayerText()
+        );
+
+        clickSquare(boardView, 4, 6);
+        clickSquare(boardView, 4, 5);
+
+        assertEquals(
+                "Current Player: Bob",
+                gameStatsView.getCurrentPlayerText()
+        );
+    }
+
     private void clickSquare(
             BoardView boardView,
             int column,

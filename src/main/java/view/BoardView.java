@@ -32,9 +32,16 @@ public final class BoardView extends JPanel {
     private final Map<PieceType, Image> whitePieceImages = new HashMap<>();
     private final Map<PieceType, Image> blackPieceImages = new HashMap<>();
     private final BoardController boardController;
+    private final Runnable turnChangedHandler;
 
     public BoardView(BoardController boardController) {
+        this(boardController, () -> {
+        });
+    }
+
+    BoardView(BoardController boardController, Runnable turnChangedHandler) {
         this.boardController = boardController;
+        this.turnChangedHandler = turnChangedHandler;
         setPreferredSize(
                 new Dimension(BOARD_SIZE * TILE_SIZE, BOARD_SIZE * TILE_SIZE)
         );
@@ -146,16 +153,9 @@ public final class BoardView extends JPanel {
     private void drawMoveIndicators(Graphics graphics) {
         graphics.setColor(MOVE_INDICATOR_COLOR);
 
-        for (Location highlightedSquare
-                : boardController.getHighlightedSquares()) {
-
-            int indicatorX =
-                    highlightedSquare.getColumn() * TILE_SIZE
-                            + MOVE_INDICATOR_OFFSET;
-
-            int indicatorY =
-                    highlightedSquare.getRow() * TILE_SIZE
-                            + MOVE_INDICATOR_OFFSET;
+        for (Location highlightedSquare : boardController.getHighlightedSquares()) {
+            int indicatorX = highlightedSquare.getColumn() * TILE_SIZE + MOVE_INDICATOR_OFFSET;
+            int indicatorY = highlightedSquare.getRow() * TILE_SIZE + MOVE_INDICATOR_OFFSET;
 
             graphics.fillOval(
                     indicatorX,
@@ -177,7 +177,15 @@ public final class BoardView extends JPanel {
                 return;
             }
 
+            PieceColor turnBeforeClick = boardController.getCurrentTurn();
+
             boardController.handleSquareClick(new Location(clickedColumn, clickedRow));
+
+            PieceColor turnAfterClick = boardController.getCurrentTurn();
+            if (turnAfterClick != turnBeforeClick) {
+                turnChangedHandler.run();
+            }
+
             repaint();
         }
     }
