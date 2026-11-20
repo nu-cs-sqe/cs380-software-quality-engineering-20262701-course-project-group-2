@@ -21,7 +21,7 @@
 | Test Case ID                                                   | Method(s) under test | State of the System                      | Expected Output                                         | Implemented?       |
 |----------------------------------------------------------------|----------------------|------------------------------------------|---------------------------------------------------------|--------------------|
 | G5<br><sub>getBoardSnapshot_NewGame_Return8x8Snapshot</sub>    | `getBoardSnapshot()` | Newly initialized Game                   | Non-null snapshot with 8 rows and 8 columns per row     | :white_check_mark: |
-| G6<br><sub>getBoardSnapshot_AfterMove_ReturnUpdatedBoard</sub> | `getBoardSnapshot()` | New Game; call `movePiece((4,6), (4,5))` | Source is empty and destination contains the WHITE PAWN | :X:                |
+| G6<br><sub>getBoardSnapshot_AfterMove_ReturnUpdatedBoard</sub> | `getBoardSnapshot()` | New Game; call `movePiece((4,6), (4,5))` | Source is empty and destination contains the WHITE PAWN | :white_check_mark: |
 
 ---
 

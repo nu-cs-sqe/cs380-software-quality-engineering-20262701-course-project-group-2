@@ -1,16 +1,12 @@
 package domain;
 
-import domain.piece.Bishop;
-import domain.piece.Knight;
-import domain.piece.Pawn;
-import domain.piece.Piece;
-import domain.piece.PieceColor;
-import domain.piece.Rook;
+import domain.piece.*;
+
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
@@ -449,6 +445,29 @@ public class GameTest {
         PieceColor expected = PieceColor.WHITE;
         PieceColor actual = game.getCurrentTurn();
         assertEquals(expected, actual);
+    }
+
+    // G6
+    @Test
+    public void GetBoardSnapshot_AfterMove_ReturnUpdatedBoard() {
+        Game game = new Game();
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 5);
+
+        game.movePiece(from, to);
+
+        Piece[][] snapshot = game.getBoardSnapshot();
+
+        assertNull(snapshot[6][4]);
+        assertNotNull(snapshot[5][4]);
+        assertEquals(
+                PieceType.PAWN,
+                snapshot[5][4].getType()
+        );
+        assertEquals(
+                PieceColor.WHITE,
+                snapshot[5][4].getColor()
+        );
     }
 
     private static Square square(int column, int row, Piece piece) {
