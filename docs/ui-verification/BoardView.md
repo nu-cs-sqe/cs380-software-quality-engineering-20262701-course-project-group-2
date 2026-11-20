@@ -22,6 +22,6 @@ Because the View and controller have separate selection state, the visible squar
 | V3 | Reselect another active-player piece               | Old selection/highlights disappear; new selection/highlights appear | :white_check_mark: |
 | V4 | Click an unhighlighted in-board square             | Selection/highlights disappear visually                             | :white_check_mark: |
 | V5 | Complete a legal move                              | Piece redraws at destination; selection/highlights disappear        | :white_check_mark: |
-| V6 | Click outside the board component                  | Controller/UI state remains unchanged                               | Pending            |
+| V6 | Click outside the board component                  | Controller/UI state remains unchanged                               | :white_check_mark: |
 
 Do not add a private `drawHighlightedSquare(...)` API merely to satisfy the old documentation. The implementation should be chosen during the UI step and verified through observable painting behavior or a focused rendering test.

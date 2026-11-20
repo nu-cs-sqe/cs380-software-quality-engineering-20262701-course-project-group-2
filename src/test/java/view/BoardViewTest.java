@@ -278,6 +278,42 @@ public class BoardViewTest {
         assertEquals(PieceColor.WHITE, snapshot[5][4].getColor());
     }
 
+    // V6
+    @Test
+    public void ClickOutsideBoard_PreserveSelectionAndMoveIndicators() {
+        BoardController controller = new BoardController(new Game());
+        BoardView boardView = new BoardView(controller);
+        boardView.setSize(boardView.getPreferredSize());
+
+        clickSquare(boardView, 4, 6);
+
+        Location selectedBefore = controller.getSelectedSquare();
+        Set<Location> highlightsBefore = controller.getHighlightedSquares();
+        Piece[][] boardBefore = controller.getBoardSnapshot();
+
+        clickSquare(boardView, 8, 6);
+
+        assertEquals(selectedBefore, controller.getSelectedSquare());
+        assertEquals(highlightsBefore, controller.getHighlightedSquares());
+
+        Piece[][] boardAfter = controller.getBoardSnapshot();
+
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 8; column++) {
+                Piece beforePiece = boardBefore[row][column];
+                Piece afterPiece = boardAfter[row][column];
+
+                if (beforePiece == null) {
+                    assertNull(afterPiece);
+                } else {
+                    assertNotNull(afterPiece);
+                    assertEquals(beforePiece.getType(), afterPiece.getType());
+                    assertEquals(beforePiece.getColor(), afterPiece.getColor());
+                }
+            }
+        }
+    }
+
     // GS3
     @Test
     public void CompleteMove_RefreshCurrentPlayerIndicator() {
