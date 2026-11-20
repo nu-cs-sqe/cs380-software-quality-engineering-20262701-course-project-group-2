@@ -27,20 +27,20 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // Integration test for Game & Board
+    // G5
     @Test
-    public void NewGame_InitializeBoard() {
+    public void GetBoardSnapshot_OnNewGame_Return8x8Snapshot() {
         Game game = new Game();
 
         Piece[][] snapshot = game.getBoardSnapshot();
 
-        int expectedRows = 8;
-        int actualRows = snapshot.length;
-
-        assertEquals(expectedRows, actualRows);
+        assertEquals(8, snapshot.length);
+        for (Piece[] row : snapshot) {
+            assertEquals(8, row.length);
+        }
     }
 
-    // Integration test verifying everything works properly at setup
+    // Supporting setup integration smoke test (G1 + G5)
     @Test
     public void NewGame_InitializeBoardAndWhiteTurn() {
         Game game = new Game();
@@ -57,7 +57,7 @@ public class GameTest {
     public void GetLegalMoves_Pawn_BlockedAhead_ReturnEmpty() {
         Game game = gameWith(
                 square(4, 4, new Pawn(PieceColor.WHITE)),
-                square(4, 3, new Pawn(PieceColor.BLACK))
+                square(4, 3, new Pawn(PieceColor.WHITE))
         );
 
         Set<Location> actual = game.getLegalMoves(new Location(4, 4));
@@ -178,9 +178,6 @@ public class GameTest {
     }
 
     // M20
-    // The BVA row lists a knight on (3,4) together with a destination set that a
-    // knight on (3,4) cannot reach, so the opponent sits on (5,3), an actual
-    // knight destination from (3,4).
     @Test
     public void GetLegalMoves_Knight_OpponentOnDestination_ReturnIncludingOpponent() {
         Game game = gameWith(
@@ -218,13 +215,10 @@ public class GameTest {
     }
 
     // M12
-    // The BVA expected set lists only the blocked diagonal; the open diagonal
-    // (1,6) and (0,5) is documented here as well.
     @Test
     public void GetLegalMoves_Bishop_OpponentInDiagonal_ReturnUpToOpponent() {
         Game game = gameWith(
                 square(2, 7, new Bishop(PieceColor.WHITE)),
-                square(3, 4, new Pawn(PieceColor.WHITE)),
                 square(4, 5, new Pawn(PieceColor.BLACK))
         );
 
@@ -373,7 +367,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M44
+    // M82
     @Test
     public void GetLegalMoves_Pawn_OnRightEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -387,7 +381,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M45
+    // M83
     @Test
     public void GetLegalMoves_WhitePawn_OnTopEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -400,7 +394,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    // M46
+    // M84
     @Test
     public void GetLegalMoves_BlackPawn_OnBottomEdge_NoOffBoardDiagonal() {
         Game game = gameWith(
@@ -413,6 +407,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    // G3
     @Test
     public void SwitchTurn_White_ReturnBlack() {
         Game game = new Game();
@@ -424,6 +419,7 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
+    // G4
     @Test
     public void SwitchTurn_Black_ReturnWhite() {
         Game game = new Game();
@@ -466,8 +462,8 @@ public class GameTest {
     private static Piece[][] placeOn(Piece[][] boardState, Square... placements) {
         for (Square placement : placements) {
             int row = placement.location.getRow();
-            int col = placement.location.getColumn();
-            boardState[row][col] = placement.piece;
+            int column = placement.location.getColumn();
+            boardState[row][column] = placement.piece;
         }
         return boardState;
     }

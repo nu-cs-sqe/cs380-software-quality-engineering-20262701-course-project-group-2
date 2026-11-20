@@ -78,6 +78,7 @@ public class BoardTest {
         assertEquals(32, emptySquares);
     }
 
+    // B4
     @Test
     public void GetSnapshot_OnNewBoard_PlaceAllPiecesInStartingPositions() {
         Board board = new Board();

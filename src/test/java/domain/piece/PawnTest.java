@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 public class PawnTest {
 
+    // PC1
     @Test
     public void MakeCopy_WhitePawn_ReturnEquivalentDistinctPawn() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -20,6 +21,7 @@ public class PawnTest {
         assertEquals(PieceColor.WHITE, copy.getColor());
     }
 
+    // PC2
     @Test
     public void MakeCopy_BlackPawn_ReturnEquivalentDistinctPawn() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -31,6 +33,7 @@ public class PawnTest {
         assertEquals(PieceColor.BLACK, copy.getColor());
     }
 
+    // M1
     @Test
     public void GetValidMoves_Pawn_OnStartRow_ReturnTwo() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -42,6 +45,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M2
     @Test
     public void GetValidMoves_Pawn_OffStartRow_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -53,6 +57,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M78
     @Test
     public void GetValidMoves_Pawn_WhiteJustPastStartRow_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -64,6 +69,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M44
     @Test
     public void GetValidMoves_Pawn_OneStepFromLastRank_ReturnLastRank() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -75,6 +81,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M76
     @Test
     public void GetValidMoves_Pawn_WhiteOnLeftEdgeStartRow_ReturnTwo() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -86,6 +93,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M18
     @Test
     public void GetValidMoves_Pawn_Black_ReturnTwo() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -97,6 +105,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M72
     @Test
     public void GetValidMoves_Pawn_BlackOffStartRow_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -108,6 +117,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M79
     @Test
     public void GetValidMoves_Pawn_BlackJustPastStartRow_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -119,6 +129,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M73
     @Test
     public void GetValidMoves_Pawn_BlackOneStepFromLastRank_ReturnLastRank() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -130,6 +141,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M77
     @Test
     public void GetValidMoves_Pawn_BlackOnRightEdgeStartRow_ReturnTwo() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -141,6 +153,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M74
     @Test
     public void GetValidMoves_Pawn_WhiteOnLastRank_ReturnEmpty() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -152,6 +165,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M75
     @Test
     public void GetValidMoves_Pawn_BlackOnLastRank_ReturnEmpty() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -163,6 +177,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M68
     @Test
     public void GetValidMoves_Pawn_OneStepFromLastRankAtLeftEdge_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -174,6 +189,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M69
     @Test
     public void GetValidMoves_Pawn_OneStepFromLastRankAtRightEdge_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.WHITE);
@@ -185,6 +201,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M70
     @Test
     public void GetValidMoves_Pawn_BlackOneStepFromLastRankAtLeftEdge_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.BLACK);
@@ -196,6 +213,7 @@ public class PawnTest {
         assertEquals(expected, actual);
     }
 
+    // M71
     @Test
     public void GetValidMoves_Pawn_BlackOneStepFromLastRankAtRightEdge_ReturnOne() {
         Pawn pawn = new Pawn(PieceColor.BLACK);

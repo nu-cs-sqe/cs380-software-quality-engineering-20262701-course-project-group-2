@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 public class KnightTest {
 
+    // NC1
     @Test
     public void MakeCopy_WhiteKnight_ReturnEquivalentDistinctKnight() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -20,6 +21,7 @@ public class KnightTest {
         assertEquals(PieceColor.WHITE, copy.getColor());
     }
 
+    // NC2
     @Test
     public void MakeCopy_BlackKnight_ReturnEquivalentDistinctKnight() {
         Knight knight = new Knight(PieceColor.BLACK);
@@ -31,6 +33,7 @@ public class KnightTest {
         assertEquals(PieceColor.BLACK, copy.getColor());
     }
 
+    // M25
     @Test
     public void GetValidMoves_Knight_AllDirectionsFromCentre_ReturnEight() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -46,6 +49,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M60
     @Test
     public void GetValidMoves_Knight_CornerTopLeft_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -57,6 +61,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M61
     @Test
     public void GetValidMoves_Knight_CornerTopRight_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -68,6 +73,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M62
     @Test
     public void GetValidMoves_Knight_CornerBottomLeft_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -79,6 +85,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M63
     @Test
     public void GetValidMoves_Knight_CornerBottomRight_ReturnTwo() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -90,6 +97,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M80
     @Test
     public void GetValidMoves_Knight_OneInFromTopLeftCorner_ReturnFour() {
         Knight knight = new Knight(PieceColor.WHITE);
@@ -103,6 +111,7 @@ public class KnightTest {
         assertEquals(expected, actual);
     }
 
+    // M81
     @Test
     public void GetValidMoves_Knight_OneInFromBottomRightCorner_ReturnFour() {
         Knight knight = new Knight(PieceColor.WHITE);

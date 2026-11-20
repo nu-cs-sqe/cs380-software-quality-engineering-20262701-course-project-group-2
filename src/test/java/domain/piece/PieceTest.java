@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PieceTest {
 
+    // Supporting helper coverage; not a public-method BVA case.
     @Test
     public void GetDirectionalMoves_NullDirections_ReturnEmptySet() {
         Piece piece = new TestPiece();
@@ -20,6 +21,7 @@ public class PieceTest {
         assertTrue(actual.isEmpty());
     }
 
+    // Supporting helper coverage; not a public-method BVA case.
     @Test
     public void GetDirectionalMoves_ZeroDirection_ReturnEmptySet() {
         Piece piece = new TestPiece();
@@ -36,6 +38,7 @@ public class PieceTest {
         assertTrue(actual.isEmpty());
     }
 
+    // PT1
     @Test
     public void ToString_WhiteRook_ReturnColorAndType() {
         Piece piece = new TestPiece();

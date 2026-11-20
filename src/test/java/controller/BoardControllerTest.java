@@ -51,6 +51,7 @@ public class BoardControllerTest {
         assertSelection(null, Set.of());
     }
 
+    // C25
     @Test
     public void GetBoardSnapshot_FromGame_ReturnInitializedBoard() {
         Game game = new Game();
@@ -58,12 +59,13 @@ public class BoardControllerTest {
 
         Piece[][] snapshot = realController.getBoardSnapshot();
 
-        int expectedRows = 8;
-        int actualRows = snapshot.length;
-
-        assertEquals(expectedRows, actualRows);
+        assertEquals(8, snapshot.length);
+        for (Piece[] row : snapshot) {
+            assertEquals(8, row.length);
+        }
     }
 
+    // C18
     @Test
     public void GetCurrentTurn_OnNewGame_ReturnWhite() {
         Game game = new Game();
@@ -75,6 +77,7 @@ public class BoardControllerTest {
         assertEquals(expected, actual);
     }
 
+    // C12
     @Test
     public void GetSelectedSquare_NoClick_ReturnNull() {
         replay(mockGame);
@@ -85,6 +88,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C15
     @Test
     public void GetHighlightedSquares_NoSelection_ReturnEmpty() {
         replay(mockGame);
@@ -95,6 +99,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C1
     @Test
     public void HandleSquareClick_SelectOwnPawn_NoPriorSelection_NewSelection() {
         expectWhitePawnCanBeSelected();
@@ -106,6 +111,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C2
     @Test
     public void HandleSquareClick_SelectOwnPiece_NoValidDestinations_NoHighlights() {
         Location boxedInRook = new Location(0, 7);
@@ -119,6 +125,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C23
     @Test
     public void GetHighlightedSquares_SelectionWithExactlyOneMove_ReturnOne() {
         Location king = new Location(4, 7);
@@ -133,6 +140,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C3
     @Test
     public void HandleSquareClick_SelectEmptySquare_NoPriorSelection_NoChange() {
         expectStartingBoard(PieceColor.WHITE);
@@ -144,6 +152,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C4
     @Test
     public void HandleSquareClick_SelectOpponentPiece_NoPriorSelection_NoChange() {
         expectStartingBoard(PieceColor.WHITE);
@@ -155,6 +164,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C24
     @Test
     public void HandleSquareClick_BlackTurn_SelectBlackPiece() {
         Location blackPawn = new Location(4, 1);
@@ -169,6 +179,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C5
     @Test
     public void HandleSquareClick_MoveToHighlightedSquare_MoveCompletedAndTurnProgresses() {
         Location destination = new Location(4, 5);
@@ -184,6 +195,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C6
     @Test
     public void HandleSquareClick_MoveToHighlightedCaptureSquare_MoveCompletedAndTurnProgresses() {
         Piece[][] snapshot = new Piece[8][8];
@@ -205,6 +217,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C9
     @Test
     public void HandleSquareClick_ClickUnhighlightedEmptySquare_ClearSelection() {
         expectWhitePawnCanBeSelected();
@@ -217,6 +230,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C10
     @Test
     public void HandleSquareClick_ClickUnhighlightedOpponentPiece_ClearSelection() {
         expectWhitePawnCanBeSelected();
@@ -229,6 +243,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C8
     @Test
     public void HandleSquareClick_ClickOtherOwnPieceWhileSelected_NewSelection() {
         Location knight = new Location(1, 7);
@@ -244,8 +259,9 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C7
     @Test
-    public void HandleSquareClick_ClickSelectedSquareAgain_NoChange() {
+    public void HandleSquareClick_ClickSelectedSquareAgain_ClearSelection() {
         expectWhitePawnCanBeSelected();
         replay(mockGame);
         controller.handleSquareClick(WHITE_PAWN);
@@ -256,6 +272,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C11
     @Test
     public void HandleSquareClick_ClickOutsideBoardUpperColumnWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -268,6 +285,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C20
     @Test
     public void HandleSquareClick_ClickOutsideBoardLowerColumnWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -280,6 +298,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C21
     @Test
     public void HandleSquareClick_ClickOutsideBoardLowerRowWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
@@ -292,6 +311,7 @@ public class BoardControllerTest {
         verify(mockGame);
     }
 
+    // C22
     @Test
     public void HandleSquareClick_ClickOutsideBoardUpperRowWhileSelected_NoChange() {
         expectWhitePawnCanBeSelected();
