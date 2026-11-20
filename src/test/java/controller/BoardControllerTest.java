@@ -7,6 +7,8 @@ import domain.piece.Pawn;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
 import java.util.Set;
+
+import domain.piece.PieceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +16,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardControllerTest {
 
@@ -322,5 +323,28 @@ public class BoardControllerTest {
 
         assertSelection(WHITE_PAWN, WHITE_PAWN_MOVES);
         verify(mockGame);
+    }
+
+    // C27; also verifies C19 and C26
+    @Test
+    public void HandleSquareClick_RealGameOrdinaryMove_UpdateBoardTurnAndSelection() {
+        Game game = new Game();
+        BoardController realController = new BoardController(game);
+        Location from = new Location(4, 6);
+        Location to = new Location(4, 5);
+
+        realController.handleSquareClick(from);
+        realController.handleSquareClick(to);
+
+        Piece[][] snapshot = realController.getBoardSnapshot();
+        Piece movedPiece = snapshot[5][4];
+
+        assertNull(snapshot[6][4]);
+        assertNotNull(movedPiece);
+        assertEquals(PieceType.PAWN, movedPiece.getType());
+        assertEquals(PieceColor.WHITE, movedPiece.getColor());
+        assertEquals(PieceColor.BLACK, realController.getCurrentTurn());
+        assertNull(realController.getSelectedSquare());
+        assertEquals(Set.of(), realController.getHighlightedSquares());
     }
 }

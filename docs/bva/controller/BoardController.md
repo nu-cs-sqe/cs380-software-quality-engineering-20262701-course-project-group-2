@@ -54,9 +54,9 @@ Simple getters do not need independent boundary analysis, but the existing obser
 | C17<br><sub>getHighlightedSquares_SelectedPawn_ReturnTwo</sub>           | `getHighlightedSquares()` | C1 selection performed                                 | `{(4,5),(4,4)}`                            | implemented by C1  |
 | C23<br><sub>getHighlightedSquares_GameReturnsOneMove_ReturnOne</sub>     | `getHighlightedSquares()` | Mock Game returns exactly `{(4,6)}` for selected king  | exactly `{(4,6)}`                          | :white_check_mark: |
 | C18<br><sub>getCurrentTurn_NewGame_ReturnWhite</sub>                     | `getCurrentTurn()`        | Controller with real new Game                          | WHITE                                      | :white_check_mark: |
-| C19<br><sub>getCurrentTurn_AfterRealMove_ReturnBlack</sub>               | `getCurrentTurn()`        | Complete a real WHITE move through the controller      | BLACK                                      | :X:                |
+| C19<br><sub>getCurrentTurn_AfterRealMove_ReturnBlack</sub>               | `getCurrentTurn()`        | Complete a real WHITE move through the controller      | BLACK                                      | implemented by C27 |
 | C25<br><sub>getBoardSnapshot_NewController_Return8x8Snapshot</sub>       | `getBoardSnapshot()`      | Controller with real new Game                          | 8 rows and 8 columns per row               | :white_check_mark: |
-| C26<br><sub>getBoardSnapshot_AfterRealMove_ReturnUpdatedBoard</sub>      | `getBoardSnapshot()`      | Complete real WHITE `(4,6) → (4,5)` through controller | source empty; destination WHITE PAWN       | :X:                |
+| C26<br><sub>getBoardSnapshot_AfterRealMove_ReturnUpdatedBoard</sub>      | `getBoardSnapshot()`      | Complete real WHITE `(4,6) → (4,5)` through controller | source empty; destination WHITE PAWN       | implemented by C27 |
 
 ---
 
@@ -64,10 +64,10 @@ Simple getters do not need independent boundary analysis, but the existing obser
 
 These cases use a real Game and Board. They are intentionally separate from C5/C6, which are controller unit tests with mocks.
 
-| Test Case ID                                                                         | Methods under test                                                           | State of the System                                                            | Expected Output                                                                            | Implemented? |
-|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------|
-| C27<br><sub>handleSquareClick_RealGameOrdinaryMove_UpdateBoardTurnAndSelection</sub> | `handleSquareClick`, `getBoardSnapshot`, `getCurrentTurn`, selection getters | New game; click `(4,6)`, then `(4,5)`                                          | WHITE pawn relocated; turn BLACK; selection/highlights empty                               | :X:          |
-| C28<br><sub>handleSquareClick_RealGameCapture_UpdateBoardTurnAndPieceCount</sub>     | same feature thread                                                          | Arrange WHITE pawn `(4,4)`, BLACK pawn `(5,3)`, WHITE to move; capture `(5,3)` | WHITE pawn at destination; source empty; 31 pieces; turn BLACK; selection/highlights empty | :X:          |
+| Test Case ID                                                                         | Methods under test                                                           | State of the System                                                            | Expected Output                                                                            | Implemented?       |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------|
+| C27<br><sub>handleSquareClick_RealGameOrdinaryMove_UpdateBoardTurnAndSelection</sub> | `handleSquareClick`, `getBoardSnapshot`, `getCurrentTurn`, selection getters | New game; click `(4,6)`, then `(4,5)`                                          | WHITE pawn relocated; turn BLACK; selection/highlights empty                               | :white_check_mark: |
+| C28<br><sub>handleSquareClick_RealGameCapture_UpdateBoardTurnAndPieceCount</sub>     | same feature thread                                                          | Arrange WHITE pawn `(4,4)`, BLACK pawn `(5,3)`, WHITE to move; capture `(5,3)` | WHITE pawn at destination; source empty; 31 pieces; turn BLACK; selection/highlights empty | :X:                |
 
 ## Removed stale API plans
 
