@@ -3,9 +3,9 @@ package view;
 import controller.BoardController;
 import domain.Game;
 import java.awt.BorderLayout;
-import javax.swing.JFrame;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.swing.JFrame;
 
 public class MainView extends JFrame {
     private static final int WINDOW_WIDTH = 800;
@@ -14,11 +14,17 @@ public class MainView extends JFrame {
     private final String player1Name;
     private final String player2Name;
     private final BoardController boardController;
+    private final Locale locale;
     private GameStatsView gameStatsView;
 
-    public MainView(String player1Name, String player2Name, Locale locale) {
+    public MainView(
+            String player1Name,
+            String player2Name,
+            Locale locale
+    ) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
+        this.locale = locale;
 
         Game game = new Game();
         boardController = new BoardController(game);
@@ -44,7 +50,8 @@ public class MainView extends JFrame {
         gameStatsView = new GameStatsView(
                 player1Name,
                 player2Name,
-                boardController
+                boardController,
+                locale
         );
         add(gameStatsView, BorderLayout.PAGE_START);
     }

@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.Locale;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -204,7 +205,8 @@ public class BoardViewTest {
         GameStatsView gameStatsView = new GameStatsView(
                 "Alice",
                 "Bob",
-                controller
+                controller,
+                Locale.ENGLISH
         );
 
         BoardView boardView = new BoardView(
