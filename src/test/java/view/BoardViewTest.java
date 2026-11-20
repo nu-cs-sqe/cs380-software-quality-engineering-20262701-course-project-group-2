@@ -152,6 +152,65 @@ public class BoardViewTest {
         }
     }
 
+    // V3
+    @Test
+    public void ReselectActivePlayerPiece_UpdateSelectionAndMoveIndicators() {
+        BoardController controller = new BoardController(new Game());
+        BoardView boardView = new BoardView(controller);
+        boardView.setSize(boardView.getPreferredSize());
+
+        BufferedImage beforeSelection = render(boardView);
+        int tileSize = getTileSize(boardView);
+
+        clickSquare(boardView, 4, 6);
+        clickSquare(boardView, 3, 6);
+
+        BufferedImage afterReselection = render(boardView);
+
+        assertEquals(
+                new Location(3, 6),
+                controller.getSelectedSquare()
+        );
+
+        assertEquals(
+                Set.of(
+                        new Location(3, 5),
+                        new Location(3, 4)
+                ),
+                controller.getHighlightedSquares()
+        );
+
+        assertEquals(
+                getSquareCornerPixel(beforeSelection, 4, 6, tileSize),
+                getSquareCornerPixel(afterReselection, 4, 6, tileSize)
+        );
+
+        assertNotEquals(
+                getSquareCornerPixel(beforeSelection, 3, 6, tileSize),
+                getSquareCornerPixel(afterReselection, 3, 6, tileSize)
+        );
+
+        assertEquals(
+                getSquareCenterPixel(beforeSelection, 4, 5, tileSize),
+                getSquareCenterPixel(afterReselection, 4, 5, tileSize)
+        );
+
+        assertEquals(
+                getSquareCenterPixel(beforeSelection, 4, 4, tileSize),
+                getSquareCenterPixel(afterReselection, 4, 4, tileSize)
+        );
+
+        assertNotEquals(
+                getSquareCenterPixel(beforeSelection, 3, 5, tileSize),
+                getSquareCenterPixel(afterReselection, 3, 5, tileSize)
+        );
+
+        assertNotEquals(
+                getSquareCenterPixel(beforeSelection, 3, 4, tileSize),
+                getSquareCenterPixel(afterReselection, 3, 4, tileSize)
+        );
+    }
+
     // V4
     @Test
     public void ClickUnhighlightedSquare_AfterSelection_RemoveVisibleSelection() {
