@@ -197,7 +197,7 @@ public class BoardViewTest {
         boardView.setSize(boardView.getPreferredSize());
 
         assertEquals(
-                "Current Player: Alice",
+                "Alice (White)",
                 gameStatsView.getCurrentPlayerText()
         );
 
@@ -205,7 +205,7 @@ public class BoardViewTest {
         clickSquare(boardView, 4, 5);
 
         assertEquals(
-                "Current Player: Bob",
+                "Bob (Black)",
                 gameStatsView.getCurrentPlayerText()
         );
     }

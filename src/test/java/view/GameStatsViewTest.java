@@ -19,7 +19,7 @@ public class GameStatsViewTest {
                 controller
         );
 
-        String expected = "Current Player: Alice";
+        String expected = "Alice (White)";
         String actual = view.getCurrentPlayerText();
 
         assertEquals(expected, actual);
@@ -41,7 +41,7 @@ public class GameStatsViewTest {
 
         view.refreshCurrentPlayer();
 
-        String expected = "Current Player: Bob";
+        String expected = "Bob (Black)";
         String actual = view.getCurrentPlayerText();
 
         assertEquals(expected, actual);
